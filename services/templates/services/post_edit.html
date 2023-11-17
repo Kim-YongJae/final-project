@@ -1,0 +1,14 @@
+<!-- your_app/templates/your_app/post_edit.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>글 수정하기</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="title" value="{{ post.title }}"><br>
+        <textarea name="content">{{ post.content }}</textarea><br>
+        <input type="submit" value="수정">
+    </form>
+    <a href="{% url 'post_detail' post.pk %}">취소</a>
+{% endblock %}

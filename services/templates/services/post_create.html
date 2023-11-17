@@ -1,0 +1,14 @@
+<!-- your_app/templates/your_app/post_create.html -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>새 글 쓰기</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="title" placeholder="제목"><br>
+        <textarea name="content" placeholder="내용"></textarea><br>
+        <input type="submit" value="저장">
+    </form>
+    <a href="{% url 'post_list' %}">취소</a>
+{% endblock %}
