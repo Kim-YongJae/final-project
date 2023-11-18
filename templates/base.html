@@ -79,9 +79,13 @@
                     </div>
                     {% endif %}
                     <div class="sb-sidenav-menu-heading"> 레시피 관리</div>
-                    <a class="nav-link collapsed" href="{% url 'R_index' %}">
+                    <a class="nav-link collapsed" href="{% url 'recipe_list' %}">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        레시피
+                        레시피 리스트
+                    </a>
+                    <a class="nav-link collapsed" href="{% url 'recipe_reset' %}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        레시피 입력
                     </a>
                     <a class="nav-link" href="{% url 'M_index' %}">
                         <div class="sb-nav-link-icon"><i class="fa fa-camera-retro"></i></div>

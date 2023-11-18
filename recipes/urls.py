@@ -16,8 +16,11 @@ Including another URLconf
 """
 from django.urls import path
 
-from recipes import views
 
+from recipes.views import RecipeList, RecipeDetail
+## 여기 url이랑 base.html과 관련 여기 name과 거기서 url 이름과 연결됨
 urlpatterns = [
-    path("R_index/", views.R_index, name="R_index"),
+    path('recipes/', RecipeList.as_view(), name='recipe_list'),
+    path('recipes/<int:recipe_id>/', RecipeDetail.as_view(), name='recipe_detail'),
+    # path('recipe/reset/', RecipeReset.as_view(), name='recipe_reset'),
 ]
