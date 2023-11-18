@@ -1,17 +1,17 @@
-from django.shortcuts import render
-
 # Create your views here.
 # views.py
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from django.contrib.auth.decorators import login_required
 from .forms import PostForm  # PostForm은 게시물 생성을 위한 폼입니다.
+from django.http import HttpResponseNotAllowed
+from django.contrib import messages
 
 def post_list(request):
     posts = Post.objects.all()
     return render(request, 'services/post_list.html', {'posts': posts})
 
-@login_required
+
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'services/post_detail.html', {'post': post})
@@ -35,6 +35,10 @@ def post_create(request):
 @login_required
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    # 작성자 확인
+    if post.author != request.user:
+        return redirect('post_detail', pk=pk)  # 혹은 원하는 경로로 리다이렉트
+
     if request.method == 'POST':
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
@@ -48,8 +52,12 @@ def post_edit(request, pk):
 @login_required
 def post_delete(request, pk):
     post = get_object_or_404(Post, pk=pk)
+
+    if post.author != request.user:
+        return redirect('post_detail', pk=pk)  # 혹은 원하는 경로로 리다이렉트
+
     if request.method == 'POST':
         post.delete()  # 게시물 삭제
         return redirect('post_list')  # 삭제 후 목록 페이지로 이동
-
-    return render(request, 'services/post_delete.html', {'post': post})
+    else:
+        return HttpResponseNotAllowed(['POST'])  # POST 요청 외에는 허용하지 않음

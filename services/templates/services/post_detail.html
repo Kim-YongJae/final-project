@@ -7,7 +7,77 @@
     <p>{{ post.content }}</p>
     <p>작성자: {{ post.author.username }}</p>
     <p>작성일: {{ post.created_at }}</p>
-    <a href="{% url 'post_edit' post.pk %}">수정</a>
-    <a href="{% url 'post_delete' post.pk %}">삭제</a>
+    {% if not user.is_authenticated %}
+        <a href="#" id="edit-post">수정</a>
+        <a href="#" id="delete-post">삭제</a>
+    {% else %}
+        <a href="{% url 'post_edit' post.pk %}">수정</a>
+        <a href="#" id="delete-post1">삭제</a>
+    {% endif %}
     <a href="{% url 'post_list' %}">목록으로 돌아가기</a>
+
+    <script>
+        document.getElementById("delete-post").addEventListener("click", function(event) {
+            event.preventDefault(); // 기본 동작(링크 이동) 방지
+
+            var confirmation = confirm("게시물을 삭제하시겠습니까?");
+            if (confirmation) {
+                // 사용자가 '네'를 선택한 경우
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "{% url 'post_delete' post.pk %}");
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        window.location.href = "{% url 'post_list' %}"; // 삭제 후 목록 페이지로 이동
+                    }
+                };
+                xhr.send();
+            }
+        });
+    </script>
+    <script>
+        document.getElementById("delete-post1").addEventListener("click", function(event) {
+            event.preventDefault(); // 기본 동작(링크 이동) 방지
+
+            var confirmation = confirm("게시물을 삭제하시겠습니까?");
+            if (confirmation) {
+                // 사용자가 '네'를 선택한 경우
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "{% url 'post_delete' post.pk %}");
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        window.location.href = "{% url 'post_list' %}"; // 삭제 후 목록 페이지로 이동
+                    }
+                };
+                xhr.send();
+            }
+        });
+    </script>
+    <script>
+        // 로그인 필요 팝업 표시 함수
+        function displayLoginPopup() {
+            alert('로그인이 필요합니다.');
+            // 또는 모달 창, 다른 커스텀 팝업 등으로 변경 가능
+            // 팝업 창에 로그인 링크를 제공하여 사용자가 로그인 페이지로 이동할 수 있도록 할 수 있습니다.
+        }
+
+        // 이벤트 리스너를 사용하여 클릭 시 로그인 팝업 표시
+        document.addEventListener('DOMContentLoaded', function() {
+            var deletePostLink = document.getElementById("delete-post");
+            var editPostLink = document.getElementById("edit-post");
+
+            editPostLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                displayLoginPopup();
+            });
+
+            deletePostLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                displayLoginPopup();
+            });
+        });
+    </script>
 {% endblock %}
