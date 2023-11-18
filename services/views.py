@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Post
 from django.contrib.auth.decorators import login_required
 from .forms import PostForm  # PostForm은 게시물 생성을 위한 폼입니다.
-from django.http import HttpResponseNotAllowed
+from django.http import HttpResponseNotAllowed, HttpResponseForbidden, HttpResponse
 from django.contrib import messages
 
 def post_list(request):
@@ -61,3 +61,10 @@ def post_delete(request, pk):
         return redirect('post_list')  # 삭제 후 목록 페이지로 이동
     else:
         return HttpResponseNotAllowed(['POST'])  # POST 요청 외에는 허용하지 않음
+
+def check_permission(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if post.author != request.user:
+        return HttpResponseForbidden()  # 권한이 없는 경우 403 Forbidden 반환
+    else:
+        return HttpResponse()  # 권한이 있는 경우 아무 작업 없이 200 OK 반환
