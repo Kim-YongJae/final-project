@@ -5,7 +5,8 @@ from .models import Post
 from django.contrib.auth.decorators import login_required
 from .forms import PostForm  # PostForm은 게시물 생성을 위한 폼입니다.
 from django.http import HttpResponseNotAllowed, HttpResponseForbidden, HttpResponse
-from django.contrib import messages
+from django.utils.safestring import mark_safe
+
 
 def post_list(request):
     posts = Post.objects.order_by('-created_at')
@@ -14,6 +15,7 @@ def post_list(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    post.content = mark_safe(post.content)
     return render(request, 'services/post_detail.html', {'post': post})
 
 @login_required

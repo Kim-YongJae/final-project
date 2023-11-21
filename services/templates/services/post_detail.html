@@ -1,21 +1,57 @@
 <!-- your_app/templates/your_app/post_detail.html -->
 {% extends 'base.html' %}
 
+{% load static %}
 {% block content %}
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.content }}</p>
-    <p>작성자: {{ post.author.username }}</p>
-    <p>작성일: {{ post.created_at }}</p>
-    {% if user.is_authenticated %}
-        {% if post.author != user %}
-            <a href="#" class="edit-post">수정</a>
-        {% else %}
-            <a href="{% url 'post_edit' post.pk %}">수정</a>
-        {% endif %}
-        <a href="#" class="delete-post" data-post-id="{{ post.pk }}">삭제</a>
-    {% endif %}
-    <a href="{% url 'post_list' %}">목록으로 돌아가기</a>
+    <link href="{% static 'css/post_detail_style.css' %}" rel="stylesheet"/>
+    <div class="board_wrap">
+        <div class="board_title">
+            <strong>게시판</strong>
+            <p>이곳은 커뮤니티입니다.</p>
+        </div>
+        <div class="board_view_wrap">
+            <div class="board_view">
+                <div class="title">
+                    {{ post.title }}
+                </div>
+                <div class="info">
+                    <dl>
+                        <dt>번호</dt>
+                        <dt>{{ post.id }}</dt>
+                    </dl>
+                    <dl>
+                        <dt>글쓴이</dt>
+                        <dt>{{ post.author.username }}</dt>
+                    </dl>
+                    <dl>
+                        <dt>작성일</dt>
+                        <dt>{{ post.created_at|date:"Y.m.d H:i:s" }}</dt>
+                    </dl>
+                    <dl>
+                        <dt>조회</dt>
+                        <dt>33</dt>
+                    </dl>
+                </div>
+                <div class="cont">
+                    {{ post.content | safe }}
+                </div>
+            </div>
 
+            {% if user.is_authenticated %}
+                {% if post.author != user %}
+                {% else %}
+                    <div class="bt_wrap">
+                        <a href="{% url 'post_edit' post.pk %}">수정</a>
+                        <a href="#" class="delete-post" data-post-id="{{ post.pk }}">삭제</a>
+                    </div>
+                {% endif %}
+            {% endif %}
+            <div class="bt_wrap1">
+                <a href="{% url 'post_list' %}">전체 글</a>
+            </div>
+
+        </div>
+    </div>
     <script>
         var deleteLinks = document.querySelectorAll('.delete-post');
         deleteLinks.forEach(function(link) {

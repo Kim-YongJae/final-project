@@ -35,13 +35,13 @@ a{
     font-size: 1.4rem;
 }
 
-.bt_wrap2{
+.bt_wrap{
     margin-top: 30px;
     text-align: center;
     font-size: 0px;
 }
 
-.bt_wrap2 a{
+.bt_wrap a{
     display: inline-block;
     min-width: 80px;
     margin-left: 10px;
@@ -52,16 +52,48 @@ a{
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.bt_wrap2 a:first-child{
+.bt_wrap a:first-child{
     margin-left: 0;
 }
 
-.bt_wrap2 a.on{
+.bt_wrap a.on{
     background: #000;
     color: #fff;
 }
 
-.bt_wrap2 a:hover{
+.bt_wrap a:hover{
+    background-color: black;
+    color: white;
+}
+
+.bt_wrap1{
+    margin-top: 30px;
+    text-align: right;
+    font-size: 0px;
+}
+
+.bt_wrap1 a{
+    display: inline-block;
+    min-width: 80px;
+    margin-left: 10px;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 2px;
+    font-size: 1.4rem;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bt_wrap1 a:first-child{
+    margin-left: 0;
+}
+
+.bt_wrap1 a.on{
+    background: #000;
+    color: #fff;
+}
+
+.bt_wrap1 a:hover{
     background-color: black;
     color: white;
 }
@@ -159,6 +191,71 @@ a{
     color: #fff;
 }
 
-.board_page a:first-child {
+.board_page a:first-child{
     border-left: 1px solid #ddd;
+}
+
+.board_view{
+    width: 100%;
+    border-top: 2px solid #000;
+}
+
+.board_view .title{
+    padding: 20px 15px;
+    border-bottom: 1px dashed #ddd;
+    font-size: 2rem;
+}
+
+.board_view .info {
+    padding: 15px;
+    border-bottom: 1px solid #999;
+    font-size: 0;
+}
+
+.board_view .info dl{
+    position: relative;
+    display: inline-block;
+    padding: 0 20px;
+}
+
+.board_view .info dl:first-child{
+    padding-left: 0;
+}
+
+.board_view .info dl::before{
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 0;
+    display: block;
+    width: 1px;
+    height: 13px;
+    background: #ddd;
+}
+
+.board_view .info dl:first-child::before{
+    display: none;
+}
+
+.board_view .info dl dt,
+.board_view .info dl dd{
+    display: inline-block;
+    font-size: 1.4rem;
+    margin-right: 20px;
+}
+
+.board_view .info dl dt{
+
+}
+
+.board_view .info dl dd{
+    margin-left: 10px;
+    color: #777;
+}
+
+.board_view .cont{
+    padding: 15px;
+    border-bottom: 1px solid #000;
+    line-height: 160%;
+    font-size: 1.4rem;
 }

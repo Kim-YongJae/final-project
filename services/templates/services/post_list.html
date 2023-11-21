@@ -27,7 +27,7 @@
                     </div>
                     <div class="writer">{{ post.author.username }}</div>
                     <div class="date">
-                        {{ post.created_at|date:"Y.m.d H:i" }}
+                        {{ post.created_at|date:"Y.m.d H:i:s" }}
                     </div>
                     <div class="count">33</div>
                 </div>
@@ -45,11 +45,11 @@
                 <a href="#" class="bt last">>></a>
             </div>
             {% if not user.is_authenticated %}
-                <div class="bt_wrap">
+                <div class="bt_wrap2">
                     <a href="#" id="post-create">글 쓰기</a>
                 </div>
             {% else %}
-                <div class="bt_wrap">
+                <div class="bt_wrap2">
                     <a href="{% url 'post_create' %}">글 쓰기</a>
                 </div>
             {% endif %}
