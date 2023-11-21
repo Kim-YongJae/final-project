@@ -8,7 +8,7 @@ from django.http import HttpResponseNotAllowed, HttpResponseForbidden, HttpRespo
 from django.contrib import messages
 
 def post_list(request):
-    posts = Post.objects.all()
+    posts = Post.objects.order_by('-created_at')
     return render(request, 'services/post_list.html', {'posts': posts})
 
 

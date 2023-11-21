@@ -2,20 +2,59 @@
 
 {% extends 'base.html' %}
 
+{% load static %}
 {% block content %}
-    <h1>게시판</h1>
-    <ul>
-        {% for post in posts %}
-            <li><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></li>
-        {% empty %}
-            <li>No posts yet.</li>
-        {% endfor %}
-    </ul>
-    {% if not user.is_authenticated %}
-        <a href="#" id="post-create">새 글 쓰기</a>
-    {% else %}
-        <a href="{% url 'post_create' %}">새 글 쓰기</a>
-    {% endif %}
+    <link href="{% static 'css/post_list_style.css' %}" rel="stylesheet"/>
+    <div class="board_wrap">
+        <div class="board_title">
+            <strong>게시판</strong>
+            <p>이곳은 커뮤니티입니다.</p>
+        </div>
+        <div class="board_list_wrap">
+            <div class="board_list">
+                <div class="top">
+                    <div class="num">번호</div>
+                    <div class="title">제목</div>
+                    <div class="writer">글쓴이</div>
+                    <div class="date">작성일</div>
+                    <div class="count">조회</div>
+                </div>
+                {% for post in posts %}
+                <div>
+                    <div class="num">{{ post.id }}</div>
+                    <div class="title">
+                        <li><a href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></li>
+                    </div>
+                    <div class="writer">{{ post.author.username }}</div>
+                    <div class="date">
+                        {{ post.created_at|date:"Y.m.d H:i" }}
+                    </div>
+                    <div class="count">33</div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="board_page">
+                <a href="#" class="bt first"><<</a>
+                <a href="#" class="bt prev"><</a>
+                <a href="#" class="num on">1</a>
+                <a href="#" class="num">2</a>
+                <a href="#" class="num">3</a>
+                <a href="#" class="num">4</a>
+                <a href="#" class="num">5</a>
+                <a href="#" class="bt next">></a>
+                <a href="#" class="bt last">>></a>
+            </div>
+            {% if not user.is_authenticated %}
+                <div class="bt_wrap">
+                    <a href="#" id="post-create">글 쓰기</a>
+                </div>
+            {% else %}
+                <div class="bt_wrap">
+                    <a href="{% url 'post_create' %}">글 쓰기</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 
     <script>
         // 로그인 필요 팝업 표시 함수
