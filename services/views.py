@@ -6,16 +6,27 @@ from django.contrib.auth.decorators import login_required
 from .forms import PostForm  # PostForm은 게시물 생성을 위한 폼입니다.
 from django.http import HttpResponseNotAllowed, HttpResponseForbidden, HttpResponse
 from django.utils.safestring import mark_safe
+from django.core.paginator import Paginator
 
 
 def post_list(request):
-    posts = Post.objects.order_by('-created_at')
-    return render(request, 'services/post_list.html', {'posts': posts})
+    all_posts = Post.objects.order_by('-created_at')
+    paginator = Paginator(all_posts, 10)  # 페이지당 10개의 포스트를 보여줌
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    for post in page_obj:
+        post.views = post.views  # 조회수 필드 가져오기
+        post.save()  # 변경사항 저장
+
+    return render(request, 'services/post_list.html', {'page_obj': page_obj})
 
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    post.content = mark_safe(post.content)
+    post.content = mark_safe(post.content) # content를 안전한 HTML로 표시
+    post.increase_views()  # 조회수 증가 메서드 호출
     return render(request, 'services/post_detail.html', {'post': post})
 
 @login_required
