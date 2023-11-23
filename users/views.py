@@ -111,21 +111,35 @@ def register(request):
         messages.error(request, f"Signup 실패")
         return render(request, 'users/register.html', {'form': form})
 
-
+# 20231123 아이디 찾기 화면 수정
 def search_id(request):
     id_found = False  # 아이디를 찾았는지 여부를 나타내는 변수 초기화
     found_id = ""  # 찾은 아이디를 저장하는 변수 초기화
     if request.method == "POST":  # POST 요청인 경우에만 처리
-        first_name = request.POST.get('first_name')  # POST 데이터에서 이름 추출
-        last_name = request.POST.get('last_name')  # POST 데이터에서 성 추출
+        email = request.POST.get('email')  # POST 데이터에서 이메일 추출
         try:
-            user = User.objects.get(first_name=first_name, last_name=last_name)  # 이름과 성으로 사용자 검색
+            user = User.objects.get(email=email)  # 이메일로 사용자 검색
             id_found = True  # 아이디를 찾았음을 표시
             found_id = user.username  # 찾은 사용자의 아이디 저장
-            messages.success(request, f"{first_name + last_name}님의 아이디를 찾았습니다.")  # 성공 메시지 추가
-        except User.DoesNotExist:  # 해당 조건의 사용자가 없는 경우
-            messages.error(request, f"입력한 이름과 성에 해당하는 사용자가 없습니다.")  # 에러 메시지 추가
+            messages.success(request, f"{email}로 등록된 아이디를 찾았습니다.")  # 성공 메시지 추가
+        except User.DoesNotExist:  # 해당 이메일의 사용자가 없는 경우
+            messages.error(request, f"입력한 이메일로 등록된 사용자가 없습니다.")  # 에러 메시지 추가
     return render(request, 'users/search_id.html', {'id_found': id_found, 'found_id': found_id})
+
+# def search_id(request):
+#     id_found = False  # 아이디를 찾았는지 여부를 나타내는 변수 초기화
+#     found_id = ""  # 찾은 아이디를 저장하는 변수 초기화
+#     if request.method == "POST":  # POST 요청인 경우에만 처리
+#         first_name = request.POST.get('first_name')  # POST 데이터에서 이름 추출
+#         last_name = request.POST.get('last_name')  # POST 데이터에서 성 추출
+#         try:
+#             user = User.objects.get(first_name=first_name, last_name=last_name)  # 이름과 성으로 사용자 검색
+#             id_found = True  # 아이디를 찾았음을 표시
+#             found_id = user.username  # 찾은 사용자의 아이디 저장
+#             messages.success(request, f"{first_name + last_name}님의 아이디를 찾았습니다.")  # 성공 메시지 추가
+#         except User.DoesNotExist:  # 해당 조건의 사용자가 없는 경우
+#             messages.error(request, f"입력한 이름과 성에 해당하는 사용자가 없습니다.")  # 에러 메시지 추가
+#     return render(request, 'users/search_id.html', {'id_found': id_found, 'found_id': found_id})
 
 
 # 사용자 검증과 비밀번호 재설정 함수
