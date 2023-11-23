@@ -94,6 +94,38 @@ a{
     color: white;
 }
 
+.bt_wrap2{
+    margin-top: 5px;
+    text-align: right;
+    font-size: 0px;
+}
+
+.bt_wrap2 a{
+    display: inline-block;
+    min-width: 80px;
+    margin-left: 10px;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 2px;
+    font-size: 14px;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bt_wrap2 a:first-child{
+    margin-left: 0;
+}
+
+.bt_wrap2 a.on{
+    background: #000;
+    color: #fff;
+}
+
+.bt_wrap2 a:hover{
+    background-color: black;
+    color: white;
+}
+
 .board_list{
     width: 100%;
     border-top: 2px solid #000;

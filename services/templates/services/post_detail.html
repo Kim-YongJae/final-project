@@ -45,11 +45,18 @@
                     </div>
                 {% endif %}
             {% endif %}
-
             <div class="bt_wrap1">
-                <a href="{% url 'comment_new' post.pk %}">댓글 쓰기</a>
                 <a href="{% url 'post_list' %}">전체 글</a>
             </div>
+            {% if not user.is_authenticated %}
+                <div class="bt_wrap2">
+                    <a href="#" id="comment-new">댓글 쓰기</a>
+                </div>
+            {% else %}
+                <div class="bt_wrap2">
+                    <a href="{% url 'comment_new' post.pk %}">댓글 쓰기</a>
+                </div>
+            {% endif %}
             <div class="comments-count">
                 {% with total_comments=post.comment_set.all|length %}
                     <strong>전체 댓글 {{ total_comments }}개</strong>
@@ -145,5 +152,23 @@
             };
             xhr.send();
         }
+    </script>
+    <script>
+        // 로그인 필요 팝업 표시 함수
+        function displayLoginPopup() {
+            alert('로그인이 필요합니다.');
+            // 또는 모달 창, 다른 커스텀 팝업 등으로 변경 가능
+            // 팝업 창에 로그인 링크를 제공하여 사용자가 로그인 페이지로 이동할 수 있도록 할 수 있습니다.
+        }
+
+        // 이벤트 리스너를 사용하여 클릭 시 로그인 팝업 표시 및 기본 이벤트 동작 막기
+        document.addEventListener('DOMContentLoaded', function() {
+            var newPostLink = document.getElementById("comment-new");
+
+            newPostLink.addEventListener('click', function(event) {
+                event.preventDefault();
+                displayLoginPopup();
+            });
+        });
     </script>
 {% endblock %}
