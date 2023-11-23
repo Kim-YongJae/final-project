@@ -4,10 +4,6 @@
     padding: 0;
 }
 
-html{
-    font-size: 10px;
-}
-
 ul,li{
     list-style: none;
 }
@@ -27,12 +23,12 @@ a{
 }
 
 .board_title strong{
-    font-size: 3rem;
+    font-size: 30px;
 }
 
 .board_title p{
     margin-top: 5px;
-    font-size: 1.4rem;
+    font-size: 14px;
 }
 
 .bt_wrap2{
@@ -48,7 +44,7 @@ a{
     padding: 10px;
     border: 1px solid #000;
     border-radius: 2px;
-    font-size: 1.4rem;
+    font-size: 14px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -88,7 +84,7 @@ a{
     display: inline-block;
     padding: 15px 0;
     text-align: center;
-    font-size: 1.4rem;
+    font-size: 14px;
 }
 
 .board_list > div.top > div{
@@ -144,13 +140,13 @@ a{
 
 .board_page a.bt{
     padding-top: 7.5px;
-    font-size: 1.2rem;
+    font-size: 12px;
     letter-spacing: -1px;
 }
 
 .board_page a.num{
     padding-top: 6.5px;
-    font-size: 1.4rem;
+    font-size: 14px;
 }
 
 .board_page a.num.on{

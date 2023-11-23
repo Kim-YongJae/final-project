@@ -4,10 +4,6 @@
     padding: 0;
 }
 
-html{
-    font-size: 10px;
-}
-
 ul,li{
     list-style: none;
 }
@@ -27,12 +23,12 @@ a{
 }
 
 .board_title strong{
-    font-size: 3rem;
+    font-size: 30px;
 }
 
 .board_title p{
     margin-top: 5px;
-    font-size: 1.4rem;
+    font-size: 14px;
 }
 
 .bt_wrap{
@@ -48,7 +44,7 @@ a{
     padding: 10px;
     border: 1px solid #000;
     border-radius: 2px;
-    font-size: 1.4rem;
+    font-size: 14px;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -79,7 +75,7 @@ a{
     padding: 10px;
     border: 1px solid #000;
     border-radius: 2px;
-    font-size: 1.4rem;
+    font-size: 14px;
     text-align: center;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -120,7 +116,7 @@ a{
     display: inline-block;
     padding: 15px 0;
     text-align: center;
-    font-size: 1.4rem;
+    font-size: 14px;
 }
 
 .board_list > div.top > div{
@@ -176,13 +172,13 @@ a{
 
 .board_page a.bt{
     padding-top: 7.5px;
-    font-size: 1.2rem;
+    font-size: 12px;
     letter-spacing: -1px;
 }
 
 .board_page a.num{
     padding-top: 6.5px;
-    font-size: 1.4rem;
+    font-size: 14px;
 }
 
 .board_page a.num.on{
@@ -203,7 +199,7 @@ a{
 .board_view .title{
     padding: 20px 15px;
     border-bottom: 1px dashed #ddd;
-    font-size: 2rem;
+    font-size: 20px;
 }
 
 .board_view .info {
@@ -240,7 +236,7 @@ a{
 .board_view .info dl dt,
 .board_view .info dl dd{
     display: inline-block;
-    font-size: 1.4rem;
+    font-size: 14px;
     margin-right: 20px;
 }
 
@@ -257,5 +253,104 @@ a{
     padding: 15px;
     border-bottom: 1px solid #000;
     line-height: 160%;
-    font-size: 1.4rem;
+    font-size: 14px;
+}
+
+.comments-count strong{
+    font-size: 20px;
+}
+
+.comment-list {
+    list-style: none;
+    padding: 0;
+}
+
+.comment-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.comment-name {
+    flex: 0 0 auto; /* Flex 아이템 크기를 고정 */
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.comment-content {
+    flex: 2;
+    margin-left: 30px; /* username과 content 사이의 여백 조절 */
+    font-size: 14px;
+}
+
+.comment-time {
+    margin-left: auto; /* comment-time을 오른쪽으로 이동 */
+    font-size: 14px;
+}
+
+.comment-item:last-child {
+    border-bottom: none; /* 마지막 댓글의 밑에 선 제거 */
+}
+
+.comment-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.comment-item {
+
+}
+
+.comment-actions {
+    display: flex;
+}
+
+.edit-comment,
+.delete-comment {
+    margin-right: 2px;
+}
+
+.edit-comment{
+    padding: 3px 5px; /* 위아래 5px, 좌우 10px의 안쪽 여백 */
+    border: 1px solid #000;
+    border-radius: 2px;
+    background-color: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    outline: none;
+    font-size: 12px; /* 버튼의 글자 크기 */
+    width: auto; /* 필요한 경우, 버튼의 너비를 자동으로 조정 */
+    height: auto; /* 필요한 경우, 버튼의 높이를 자동으로 조정 */
+}
+
+.delete-comment input[type="submit"] {
+    padding: 3px 5px; /* 위아래 5px, 좌우 10px의 안쪽 여백 */
+    border: 1px solid #000;
+    border-radius: 2px;
+    background-color: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    outline: none;
+    font-size: 12px; /* 버튼의 글자 크기 */
+    width: auto; /* 필요한 경우, 버튼의 너비를 자동으로 조정 */
+    height: auto; /* 필요한 경우, 버튼의 높이를 자동으로 조정 */
+}
+
+.edit-comment:first-child {
+    margin-left: 10px;
+}
+
+.edit-comment:hover,
+.delete-comment:hover {
+    background-color: black;
+    color: white;
+}
+
+.delete-comment input[type="submit"]:hover {
+    background-color: black;
+    color: white;
 }

@@ -36,7 +36,6 @@
                     {{ post.content | safe }}
                 </div>
             </div>
-
             {% if user.is_authenticated %}
                 {% if post.author != user %}
                 {% else %}
@@ -46,10 +45,46 @@
                     </div>
                 {% endif %}
             {% endif %}
+
             <div class="bt_wrap1">
+                <a href="{% url 'comment_new' post.pk %}">댓글 쓰기</a>
                 <a href="{% url 'post_list' %}">전체 글</a>
             </div>
-
+            <div class="comments-count">
+                {% with total_comments=post.comment_set.all|length %}
+                    <strong>전체 댓글 {{ total_comments }}개</strong>
+                {% endwith %}
+            </div>
+            <div class="comments-section">
+                {% if post.comment_set.all %}
+                    <ul class="comment-list">
+                        {% for comment in post.comment_set.all %}
+                            <li class="comment-item">
+                                <div class="comment-name">
+                                    <span>{{ comment.author.username }}</span>
+                                </div>
+                                <div class="comment-content">
+                                    <span>{{ comment.content }}</span>
+                                </div>
+                                <div class="comment-time">
+                                    <span>{{ comment.created_at|date:"Y.m.d H:i:s" }}</span>
+                                </div>
+                                {% if comment.author == user %}
+                                    <!-- 사용자의 댓글에 대한 수정 및 삭제 링크 -->
+                                    <div class="comment-actions">
+                                        <a href="{% url 'comment_edit' comment.pk %}" class="edit-comment">수정</a>
+                                        <form method="POST" action="{% url 'comment_delete' comment.pk %}" class="delete-comment">
+                                            {% csrf_token %}
+                                            <input type="submit" value="삭제">
+                                        </form>
+                                    </div>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                {% endif %}
+            </div>
         </div>
     </div>
     <script>

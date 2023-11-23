@@ -1,9 +1,10 @@
 # Create your views here.
 # views.py
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import Post
+from .models import Post, Comment
 from django.contrib.auth.decorators import login_required
-from .forms import PostForm  # PostForm은 게시물 생성을 위한 폼입니다.
+from django.views.decorators.http import require_POST
+from .forms import PostForm, CommentForm  # PostForm은 게시물 생성을 위한 폼입니다.
 from django.http import HttpResponseNotAllowed, HttpResponseForbidden, HttpResponse
 from django.utils.safestring import mark_safe
 from django.core.paginator import Paginator
@@ -74,6 +75,52 @@ def post_delete(request, pk):
         return redirect('post_list')  # 삭제 후 목록 페이지로 이동
     else:
         return HttpResponseNotAllowed(['POST'])  # POST 요청 외에는 허용하지 않음
+
+@login_required
+def comment_new(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            return redirect('post_detail', pk=post_pk)
+    else:
+        form=CommentForm()
+    return render(request, 'services/create_comment.html',{'form': form, 'post_pk':post_pk})
+
+@login_required
+def comment_edit(request, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    if comment.author != request.user:
+        return HttpResponseForbidden()  # 권한이 없는 경우 403 Forbidden 반환
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST, instance=comment)
+        if form.is_valid():
+            form.save()
+            return redirect('post_detail', pk=comment.post.pk)  # 수정된 댓글이 있는 게시물 상세 페이지로 이동
+    else:
+        form = CommentForm(instance=comment)
+
+    return render(request, 'services/edit_comment.html', {'form': form, 'comment': comment})
+
+@login_required
+@require_POST
+def comment_delete(request, comment_pk):
+    comment = get_object_or_404(Comment, pk=comment_pk)
+    if comment.author != request.user:
+        return HttpResponseForbidden()  # 권한이 없는 경우 403 Forbidden 반환
+
+    if request.method == 'POST':
+        post_pk = comment.post.pk  # 삭제 후 해당 게시물로 리디렉션하기 위해 게시물 PK 저장
+        comment.delete()  # 댓글 삭제
+        return redirect('post_detail', pk=post_pk)  # 삭제 후 해당 게시물 상세 페이지로 이동
+
+    return HttpResponseNotAllowed(['POST'])  # POST 요청 외에는 허용하지 않음
+
 
 def check_permission(request, pk):
     post = get_object_or_404(Post, pk=pk)
