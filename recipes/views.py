@@ -7,8 +7,6 @@ from recipes.models import Recipe
 
 
 # Create your views here.
-
-
 class RecipeList(View):
     def get(self, request):
         recipes = Recipe.objects.all().order_by('id')    # 모든 Recipe 객체를 가져와서 ID 기준으로 오름차순 정렬

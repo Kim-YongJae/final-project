@@ -1,0 +1,388 @@
+@charset "UTF-8";
+*{
+    margin: 0;
+    padding: 0;
+}
+
+ul,li{
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.board_wrap{
+    width: 1000px;
+    margin: 100px auto;
+}
+
+.board_title{
+    margin-bottom: 30px;
+}
+
+.board_title strong{
+    font-size: 30px;
+}
+
+.board_title p{
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.bt_wrap{
+    margin-top: 30px;
+    text-align: center;
+    font-size: 0px;
+}
+
+.bt_wrap a{
+    display: inline-block;
+    min-width: 80px;
+    margin-left: 10px;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 2px;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bt_wrap a:first-child{
+    margin-left: 0;
+}
+
+.bt_wrap a.on{
+    background: #000;
+    color: #fff;
+}
+
+.bt_wrap a:hover{
+    background-color: black;
+    color: white;
+}
+
+.bt_wrap1{
+    margin-top: 30px;
+    text-align: right;
+    font-size: 0px;
+}
+
+.bt_wrap1 a{
+    display: inline-block;
+    min-width: 80px;
+    margin-left: 10px;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 2px;
+    font-size: 14px;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bt_wrap1 a:first-child{
+    margin-left: 0;
+}
+
+.bt_wrap1 a.on{
+    background: #000;
+    color: #fff;
+}
+
+.bt_wrap1 a:hover{
+    background-color: black;
+    color: white;
+}
+
+.bt_wrap2{
+    margin-top: 5px;
+    text-align: right;
+    font-size: 0px;
+}
+
+.bt_wrap2 a{
+    display: inline-block;
+    min-width: 80px;
+    margin-left: 10px;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 2px;
+    font-size: 14px;
+    text-align: center;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bt_wrap2 a:first-child{
+    margin-left: 0;
+}
+
+.bt_wrap2 a.on{
+    background: #000;
+    color: #fff;
+}
+
+.bt_wrap2 a:hover{
+    background-color: black;
+    color: white;
+}
+
+.board_list{
+    width: 100%;
+    border-top: 2px solid #000;
+}
+
+.board_list > div{
+    border-bottom: 1px solid #ddd;
+    font-size: 0;
+}
+
+.board_list > div.top{
+    border-bottom: 1px solid #999;
+}
+
+.board_list > div:last-child{
+    border-bottom: 1px solid #000;
+}
+
+.board_list > div > div{
+    display: inline-block;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 14px;
+}
+
+.board_list > div.top > div{
+    font-weight: 600;
+}
+
+.board_list .num{
+    width: 10%;
+    vertical-align: middle;
+}
+
+.board_list .title{
+    width: 60%;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.board_list .top .title{
+    text-align: center;
+}
+
+.board_list .writer{
+    width: 10%;
+    vertical-align: middle;
+}
+
+.board_list .date{
+    width: 10%;
+    vertical-align: middle;
+}
+
+.board_list .count{
+    width: 10%;
+    vertical-align: middle;
+}
+
+.board_page{
+    margin-top: 30px;
+    text-align: center;
+    font-size: 0;
+}
+
+.board_page a{
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    box-sizing: border-box;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+    border-left: 0;
+    line-height: 100%;
+}
+
+.board_page a.bt{
+    padding-top: 7.5px;
+    font-size: 12px;
+    letter-spacing: -1px;
+}
+
+.board_page a.num{
+    padding-top: 6.5px;
+    font-size: 14px;
+}
+
+.board_page a.num.on{
+    border-color: #000;
+    background: #000;
+    color: #fff;
+}
+
+.board_page a:first-child{
+    border-left: 1px solid #ddd;
+}
+
+.board_view{
+    width: 100%;
+    border-top: 2px solid #000;
+}
+
+.board_view .title{
+    padding: 20px 15px;
+    border-bottom: 1px dashed #ddd;
+    font-size: 20px;
+}
+
+.board_view .info {
+    padding: 15px;
+    border-bottom: 1px solid #999;
+    font-size: 0;
+}
+
+.board_view .info dl{
+    position: relative;
+    display: inline-block;
+    padding: 0 20px;
+}
+
+.board_view .info dl:first-child{
+    padding-left: 0;
+}
+
+.board_view .info dl::before{
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 0;
+    display: block;
+    width: 1px;
+    height: 13px;
+    background: #ddd;
+}
+
+.board_view .info dl:first-child::before{
+    display: none;
+}
+
+.board_view .info dl dt,
+.board_view .info dl dd{
+    display: inline-block;
+    font-size: 14px;
+    margin-right: 20px;
+}
+
+.board_view .info dl dt{
+
+}
+
+.board_view .info dl dd{
+    margin-left: 10px;
+    color: #777;
+}
+
+.board_view .cont{
+    padding: 15px;
+    border-bottom: 1px solid #000;
+    line-height: 160%;
+    font-size: 14px;
+}
+
+.comments-count strong{
+    font-size: 20px;
+}
+
+.comment-list {
+    list-style: none;
+    padding: 0;
+}
+
+.comment-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.comment-name {
+    flex: 0 0 auto; /* Flex 아이템 크기를 고정 */
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.comment-content {
+    flex: 2;
+    margin-left: 30px; /* username과 content 사이의 여백 조절 */
+    font-size: 14px;
+}
+
+.comment-time {
+    margin-left: auto; /* comment-time을 오른쪽으로 이동 */
+    font-size: 14px;
+}
+
+.comment-item:last-child {
+    border-bottom: none; /* 마지막 댓글의 밑에 선 제거 */
+}
+
+.comment-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.comment-item {
+
+}
+
+.comment-actions {
+    display: flex;
+}
+
+.edit-comment,
+.delete-comment {
+    margin-right: 2px;
+}
+
+.edit-comment{
+    padding: 3px 5px; /* 위아래 5px, 좌우 10px의 안쪽 여백 */
+    border: 1px solid #000;
+    border-radius: 2px;
+    background-color: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    outline: none;
+    font-size: 12px; /* 버튼의 글자 크기 */
+    width: auto; /* 필요한 경우, 버튼의 너비를 자동으로 조정 */
+    height: auto; /* 필요한 경우, 버튼의 높이를 자동으로 조정 */
+}
+
+.delete-comment input[type="submit"] {
+    padding: 3px 5px; /* 위아래 5px, 좌우 10px의 안쪽 여백 */
+    border: 1px solid #000;
+    border-radius: 2px;
+    background-color: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    outline: none;
+    font-size: 12px; /* 버튼의 글자 크기 */
+    width: auto; /* 필요한 경우, 버튼의 너비를 자동으로 조정 */
+    height: auto; /* 필요한 경우, 버튼의 높이를 자동으로 조정 */
+}
+
+.edit-comment:first-child {
+    margin-left: 10px;
+}
+
+.edit-comment:hover,
+.delete-comment:hover {
+    background-color: black;
+    color: white;
+}
+
+.delete-comment input[type="submit"]:hover {
+    background-color: black;
+    color: white;
+}
