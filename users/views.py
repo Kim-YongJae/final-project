@@ -191,6 +191,7 @@ def reset_password(request):
                 if new_password == confirm_new_password:
                     user.password = make_password(new_password)
                     user.save()
+                    # messages.success(request, "비밀번호가 성공적으로 변경되었습니다. 다시 로그인해주세요.")
                     logout(request)  # 로그아웃
                     return redirect('login')  # 로그인 화면으로 이동
                     # return render(request, 'users/find_password.html', {'password_changed': True})
