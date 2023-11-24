@@ -196,9 +196,9 @@ def reset_password(request):
                     return redirect('login')  # 로그인 화면으로 이동
                     # return render(request, 'users/find_password.html', {'password_changed': True})
                 else:
-                    messages.error(request, "새 비밀번호가 일치하지 않습니다.")
+                    messages.error(request, "새 비밀번호가 일치하지 않습니다!")
             except User.DoesNotExist:
-                messages.error(request, f"해당 아이디 또는 이메일로 된 사용자가 없습니다.")
+                messages.error(request, f"해당 아이디 또는 이메일로 된 사용자가 없습니다!")
     return render(request, 'users/find_password.html', {'form': form, 'password_changed': False})
 
 
