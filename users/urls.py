@@ -21,7 +21,8 @@ from users import views
 urlpatterns = [
     path("", views.index, name="index"),
     path('search_id/', views.search_id, name='search_id'),
-    path('find_password/', views.find_password, name='find_password'),
+    path('find_password/', views.reset_password, name='find_password'),
+    #path('reset_password/', views.reset_password, name='reset_password'),  # reset_password 뷰에 대한 URL 추가 20231124
     path("register/", views.register, name="register"),
     path("login/", views.sign_in, name="login"),
     path('logout/', views.user_logout, name='logout'),

@@ -173,21 +173,63 @@ def check_user(request):
             messages.error(request, f"해당 이름 또는 이메일로 된 사용자가 없습니다.")
     return render(request, 'users/find_password.html', {'password_found': False})
 
+# 20231124 비밀번호 초기화후 변경 코드 추가
+from .forms import ResetPasswordForm
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
+
+def reset_password(request):
+    form = ResetPasswordForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            new_password = form.cleaned_data.get('new_password')
+            confirm_new_password = form.cleaned_data.get('confirm_new_password')
+            try:
+                user = User.objects.get(username=username, email=email)
+                if new_password == confirm_new_password:
+                    user.password = make_password(new_password)
+                    user.save()
+                    logout(request)  # 로그아웃
+                    return redirect('login')  # 로그인 화면으로 이동
+                    # return render(request, 'users/find_password.html', {'password_changed': True})
+                else:
+                    messages.error(request, "새 비밀번호가 일치하지 않습니다.")
+            except User.DoesNotExist:
+                messages.error(request, f"해당 아이디 또는 이메일로 된 사용자가 없습니다.")
+    return render(request, 'users/find_password.html', {'form': form, 'password_changed': False})
+
 
 # 비밀번호 재설정 뷰
-def find_password(request):
-    if request.method == "POST" and request.POST.get('new_password'):
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        try:
-            user = User.objects.get(username=username, email=email)
-            new_password = request.POST.get('new_password')
-            return check_user_and_reset_password(request, user, new_password)
-        except User.DoesNotExist:
-            messages.error(request, f"해당 이름 또는 이메일로 된 사용자가 없습니다.")
-    elif request.method == "POST":
-        return check_user(request)
-    return render(request, 'users/find_password.html', {'password_found': False})
+# def find_password(request):
+#     if request.method == "POST" and request.POST.get('new_password'):
+#         username = request.POST.get('username')
+#         email = request.POST.get('email')
+#         try:
+#             user = User.objects.get(username=username, email=email)
+#             new_password = request.POST.get('new_password')
+#             return check_user_and_reset_password(request, user, new_password)
+#         except User.DoesNotExist:
+#             messages.error(request, f"해당 이름 또는 이메일로 된 사용자가 없습니다.")
+#     elif request.method == "POST":
+#         return check_user(request)
+#     return render(request, 'users/find_password.html', {'password_found': False})
+#
+# # 비밀번호 재설정 뷰
+# def reset_password(request):
+#     if request.method == "POST":
+#         form = PasswordChangeForm(request.user, request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             update_session_auth_hash(request, user)  # 세션의 인증 해시 갱신
+#             messages.success(request, "비밀번호가 성공적으로 변경되었습니다.")
+#             return redirect('Information_Modification')  # 변경 후 리다이렉트할 페이지
+#         else:
+#             messages.error(request, "비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.")
+#     else:
+#         form = PasswordChangeForm(request.user)
+#     return render(request, 'users/login.html', {'form': form})
 
 def index(request):
     return render(request, 'users/index.html')
