@@ -21,7 +21,7 @@ def detect_ingredients(request):
                     destination.write(chunk)
 
             # YOLOv5 모델 불러오기
-            # model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:/Users/funny/OneDrive/바탕 화면/Ingredient_Detecting/best_yolov5x.pt')
+            model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:/Users/chqh1/Desktop/yolov5x 2차 결과/yolov5x 2차 결과/best.pt')
 
             # 이미지 불러오기 및 객체 탐지 수행
             img = Image.open(img_path)
