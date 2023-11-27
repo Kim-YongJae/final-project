@@ -1,0 +1,25 @@
+<!-- your_app/templates/your_app/post_edit.html -->
+{% extends 'base.html' %}
+
+{% load static %}
+{% block content %}
+    <link href="{% static 'css/post_edit_style.css' %}" rel="stylesheet">
+    <div class="board_wrap">
+        <div class="board_title">
+            <strong>댓글 수정하기</strong>
+            <p>댓글을 수정해주세요.</p>
+        </div>
+        <div class="board_write_wrap">
+            <form method="post">
+                {% csrf_token %}
+                <div class="cont1">
+                    {{ form.content }}
+                </div>
+                <div class="bt_wrap">
+                    <input type="submit" value="수정">
+                    <a href="{% url 'post_detail' pk=comment.post.pk %}">취소</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -78,19 +78,15 @@
                         </nav>
                     </div>
                     {% endif %}
-                    <div class="sb-sidenav-menu-heading"> 레시피 관리</div>
-                    <a class="nav-link collapsed" href="{% url 'R_index' %}">
+                    <div class="sb-sidenav-menu-heading"> 레시피</div>
+                    <a class="nav-link collapsed" href="{% url 'detect_ingredients' %}">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        레시피
-                    </a>
-                    <a class="nav-link" href="{% url 'M_index' %}">
-                        <div class="sb-nav-link-icon"><i class="fa fa-camera-retro"></i></div>
                         레시피 추천
                     </a>
-                    <div class="sb-sidenav-menu-heading">그 외</div>
-                    <a class="nav-link" href="{% url 'S_index' %}">
+                    <div class="sb-sidenav-menu-heading">커뮤니티</div>
+                    <a class="nav-link" href="{% url 'post_list' %}">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        서비스
+                        게시판
                     </a>
 
                 </div>
