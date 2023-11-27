@@ -23,6 +23,7 @@ class PasswordChangeForm(PasswordChangeForm):
             'class': 'form-control',
         })
 
+# 내 정보 수정
 class UserChangeForm(UserChangeForm):
     password = None
     last_name = forms.CharField(label='성', widget=forms.TextInput(
@@ -51,5 +52,25 @@ class RegisterForm(UserCreationForm):
         model = User  # 내장 User 모델을 사용
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
         # 폼에서 사용할 필드들을 지정
+
+
+# 20231124 비밀번호 찾기 화면에서 초기화랑 비밀번호 새로 변경
+class ResetPasswordForm(forms.Form):
+    username = forms.CharField(max_length=65, label='아이디')
+    email = forms.EmailField(label='이메일')
+    new_password = forms.CharField(max_length=65, widget=forms.PasswordInput, label='새 비밀번호')
+    confirm_new_password = forms.CharField(max_length=65, widget=forms.PasswordInput, label='새 비밀번호 확인')
+    # 새로운 비밀번호가 일치하는지 확인하는 코드인데 필요한가?
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     new_password = cleaned_data.get('new_password')
+    #     confirm_new_password = cleaned_data.get('confirm_new_password')
+    #
+    #     if new_password and confirm_new_password and new_password != confirm_new_password:
+    #         raise forms.ValidationError("새 비밀번호가 일치하지 않습니다.")
+    #     return cleaned_data
+
+
+
 
 
