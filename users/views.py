@@ -111,24 +111,38 @@ def register(request):
         messages.error(request, f"Signup 실패")
         return render(request, 'users/register.html', {'form': form})
 
-
+# 20231123 아이디 찾기 화면 수정
 def search_id(request):
     id_found = False  # 아이디를 찾았는지 여부를 나타내는 변수 초기화
     found_id = ""  # 찾은 아이디를 저장하는 변수 초기화
     if request.method == "POST":  # POST 요청인 경우에만 처리
-        first_name = request.POST.get('first_name')  # POST 데이터에서 이름 추출
-        last_name = request.POST.get('last_name')  # POST 데이터에서 성 추출
+        email = request.POST.get('email')  # POST 데이터에서 이메일 추출
         try:
-            user = User.objects.get(first_name=first_name, last_name=last_name)  # 이름과 성으로 사용자 검색
+            user = User.objects.get(email=email)  # 이메일로 사용자 검색
             id_found = True  # 아이디를 찾았음을 표시
             found_id = user.username  # 찾은 사용자의 아이디 저장
-            messages.success(request, f"{first_name + last_name}님의 아이디를 찾았습니다.")  # 성공 메시지 추가
-        except User.DoesNotExist:  # 해당 조건의 사용자가 없는 경우
-            messages.error(request, f"입력한 이름과 성에 해당하는 사용자가 없습니다.")  # 에러 메시지 추가
+            messages.success(request, f"{email}로 등록된 아이디를 찾았습니다.")  # 성공 메시지 추가
+        except User.DoesNotExist:  # 해당 이메일의 사용자가 없는 경우
+            messages.error(request, f"입력한 이메일로 등록된 사용자가 없습니다.")  # 에러 메시지 추가
     return render(request, 'users/search_id.html', {'id_found': id_found, 'found_id': found_id})
 
+# def search_id(request):
+#     id_found = False  # 아이디를 찾았는지 여부를 나타내는 변수 초기화
+#     found_id = ""  # 찾은 아이디를 저장하는 변수 초기화
+#     if request.method == "POST":  # POST 요청인 경우에만 처리
+#         first_name = request.POST.get('first_name')  # POST 데이터에서 이름 추출
+#         last_name = request.POST.get('last_name')  # POST 데이터에서 성 추출
+#         try:
+#             user = User.objects.get(first_name=first_name, last_name=last_name)  # 이름과 성으로 사용자 검색
+#             id_found = True  # 아이디를 찾았음을 표시
+#             found_id = user.username  # 찾은 사용자의 아이디 저장
+#             messages.success(request, f"{first_name + last_name}님의 아이디를 찾았습니다.")  # 성공 메시지 추가
+#         except User.DoesNotExist:  # 해당 조건의 사용자가 없는 경우
+#             messages.error(request, f"입력한 이름과 성에 해당하는 사용자가 없습니다.")  # 에러 메시지 추가
+#     return render(request, 'users/search_id.html', {'id_found': id_found, 'found_id': found_id})
 
-# 사용자 검증과 비밀번호 재설정 함수
+
+# 사용자 검증과 비밀번호 재설정 함수(비밀번호 찾기에서 아디,이메일 확인했을때 비밀번호 변경으로 넘어감)
 def check_user_and_reset_password(request, user, new_password):
     form = SetPasswordForm(user, {'new_password1': new_password, 'new_password2': new_password})
     if form.is_valid():
@@ -159,21 +173,64 @@ def check_user(request):
             messages.error(request, f"해당 이름 또는 이메일로 된 사용자가 없습니다.")
     return render(request, 'users/find_password.html', {'password_found': False})
 
+# 20231124 비밀번호 초기화후 변경 코드 추가
+from .forms import ResetPasswordForm
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
+
+def reset_password(request):
+    form = ResetPasswordForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            username = form.cleaned_data.get('username')
+            email = form.cleaned_data.get('email')
+            new_password = form.cleaned_data.get('new_password')
+            confirm_new_password = form.cleaned_data.get('confirm_new_password')
+            try:
+                user = User.objects.get(username=username, email=email)
+                if new_password == confirm_new_password:
+                    user.password = make_password(new_password)
+                    user.save()
+                    # messages.success(request, "비밀번호가 성공적으로 변경되었습니다. 다시 로그인해주세요.")
+                    logout(request)  # 로그아웃
+                    return redirect('login')  # 로그인 화면으로 이동
+                    # return render(request, 'users/find_password.html', {'password_changed': True})
+                else:
+                    messages.error(request, "새 비밀번호가 일치하지 않습니다!")
+            except User.DoesNotExist:
+                messages.error(request, f"해당 아이디 또는 이메일로 된 사용자가 없습니다!")
+    return render(request, 'users/find_password.html', {'form': form, 'password_changed': False})
+
 
 # 비밀번호 재설정 뷰
-def find_password(request):
-    if request.method == "POST" and request.POST.get('new_password'):
-        username = request.POST.get('username')
-        email = request.POST.get('email')
-        try:
-            user = User.objects.get(username=username, email=email)
-            new_password = request.POST.get('new_password')
-            return check_user_and_reset_password(request, user, new_password)
-        except User.DoesNotExist:
-            messages.error(request, f"해당 이름 또는 이메일로 된 사용자가 없습니다.")
-    elif request.method == "POST":
-        return check_user(request)
-    return render(request, 'users/find_password.html', {'password_found': False})
+# def find_password(request):
+#     if request.method == "POST" and request.POST.get('new_password'):
+#         username = request.POST.get('username')
+#         email = request.POST.get('email')
+#         try:
+#             user = User.objects.get(username=username, email=email)
+#             new_password = request.POST.get('new_password')
+#             return check_user_and_reset_password(request, user, new_password)
+#         except User.DoesNotExist:
+#             messages.error(request, f"해당 이름 또는 이메일로 된 사용자가 없습니다.")
+#     elif request.method == "POST":
+#         return check_user(request)
+#     return render(request, 'users/find_password.html', {'password_found': False})
+#
+# # 비밀번호 재설정 뷰
+# def reset_password(request):
+#     if request.method == "POST":
+#         form = PasswordChangeForm(request.user, request.POST)
+#         if form.is_valid():
+#             user = form.save()
+#             update_session_auth_hash(request, user)  # 세션의 인증 해시 갱신
+#             messages.success(request, "비밀번호가 성공적으로 변경되었습니다.")
+#             return redirect('Information_Modification')  # 변경 후 리다이렉트할 페이지
+#         else:
+#             messages.error(request, "비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.")
+#     else:
+#         form = PasswordChangeForm(request.user)
+#     return render(request, 'users/login.html', {'form': form})
 
 def index(request):
     return render(request, 'users/index.html')
