@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     "users",
     "models",
     "recipes",
-    "services"
+    "services",
+    "profiles",
 ]
 
 MIDDLEWARE = [
