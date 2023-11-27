@@ -23,6 +23,7 @@ class PasswordChangeForm(PasswordChangeForm):
             'class': 'form-control',
         })
 
+# 내 정보 수정
 class UserChangeForm(UserChangeForm):
     password = None
     last_name = forms.CharField(label='성', widget=forms.TextInput(

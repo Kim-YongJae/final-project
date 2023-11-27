@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     "models",
     "recipes",
     "services",
-    "profiles",
 ]
 
 MIDDLEWARE = [
