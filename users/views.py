@@ -142,7 +142,7 @@ def search_id(request):
 #     return render(request, 'users/search_id.html', {'id_found': id_found, 'found_id': found_id})
 
 
-# 사용자 검증과 비밀번호 재설정 함수
+# 사용자 검증과 비밀번호 재설정 함수(비밀번호 찾기에서 아디,이메일 확인했을때 비밀번호 변경으로 넘어감)
 def check_user_and_reset_password(request, user, new_password):
     form = SetPasswordForm(user, {'new_password1': new_password, 'new_password2': new_password})
     if form.is_valid():
