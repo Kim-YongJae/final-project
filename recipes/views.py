@@ -49,3 +49,18 @@ def detect_ingredients(request):
     else:
         form = ImageUploadForm()
     return render(request, 'recipes/recommend_recipe.html', {'form': form})
+
+class RecipeList(View):
+    def get(self, request):
+        recipes = Recipe.objects.all().order_by('id')    # 모든 Recipe 객체를 가져와서 ID 기준으로 오름차순 정렬
+        paginator = Paginator(recipes, 10)      # Paginator를 사용하여 10개씩 페이지로 나눔
+        page_number = request.GET.get("page")           # URL에서 'page' 매개변수를 가져와서 현재 페이지 번호를 설정
+        recipe_list = paginator.get_page(page_number)    # 현재 페이지의 Recipe 객체들을 가져옴
+        context = {'recipe_list': recipe_list}             # templet에 넣을 데이터 설정
+        return render(request, 'recipes/recipes_list.html', context) # 렌더링
+
+class RecipeDetail(View):
+    def get(self, request, recipe_id):
+        recipe = get_object_or_404(Recipe, pk=recipe_id)  # 주어진 recipe_id에 해당하는 Recipe 객체를 가져오거나, 객체가 없으면 404 에러를 나타냄
+        context = {'recipe': recipe}
+        return render(request, 'recipes/recipe_detail.html', context)
