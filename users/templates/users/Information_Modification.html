@@ -1,5 +1,5 @@
-<!-- information_modification.html -->
 {% extends 'base.html' %}
+
 {% block content %}
 <style>
     /* 스타일링 코드 */
@@ -34,43 +34,40 @@
     <!-- 프로필 사진 변경 버튼 아래: 작성한 글 목록 -->
     <div class="user-posts">
         <!-- 작성한 글 목록 출력 -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">최근 작성한 게시물</h2>
+                        {% if user_posts %}
+                            <ul class="list-group">
+                                {% for post in user_posts %}
+                                    <!-- 게시물 제목을 클릭하면 해당 게시물 상세 페이지로 이동 -->
+                                    <li class="list-group-item">
+                                        <a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a>
+                                        (작성일: {{ post.created_at }})
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="card-text">아직 작성한 게시물이 없습니다.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- 다른 정보 표시 -->
+            <div class="col-md-6">
+                <!-- 다른 정보 내용 -->
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
     document.getElementById('profile-upload-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const fileInput = document.getElementById('file-input');
-        const formData = new FormData();
-        formData.append('profile_picture', fileInput.files[0]);
-
-        fetch('/upload_profile_picture/', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}'
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json(); // JSON 형식으로 응답을 받음
-            }
-            throw new Error('Network response was not ok.');
-        })
-
-        .then(data => {
-            const imageUrl = data.profile_picture_url; // 서버로부터 받은 새 이미지 URL
-            // 이미지 업데이트
-            const profileImage = document.getElementById('profile-image');
-            profileImage.src = imageUrl;
-            // 프로필 이미지 업로드 성공 시 이미지 업데이트
-        })
-
-        .catch(error => {
-            console.error('There has been a problem with your fetch operation:', error);
-            // 프로필 이미지 업로드 실패 시 에러 처리
-        });
+        // 프로필 이미지 업로드 관련 자바스크립트 코드
+        // ...
     });
-
 </script>
 {% endblock content %}

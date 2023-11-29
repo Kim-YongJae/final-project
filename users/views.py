@@ -5,11 +5,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.forms import SetPasswordForm
-from django.contrib.auth.models import User
 # 회원가입 비밀번호 조건 안맞을 시 표시
 from django.contrib.auth.password_validation import validate_password
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from services.models import Post # 20231129 메인화면에 게시글 보이게하려고
 
 
 # 회원정보 변경
@@ -292,8 +292,9 @@ def profile_edit(request):
     return render(request, 'users/profile_edit.html')
 
 # # 20231128 프로필 메인화면
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Profile
+from django.contrib import messages
 
 def profile_view(request):
     user = request.user
@@ -303,30 +304,51 @@ def profile_view(request):
 
     return render(request, 'Information_Modification.html', {'user': user, 'user_posts': user_posts, 'profile': profile})
 
-from django.shortcuts import render, get_object_or_404
-from django.contrib import messages
-from .models import Profile
-
+# 20231129 프로필사진, 게시글까지 추가
 def Information_Modification(request):
     try:
+        # 사용자의 프로필 정보 가져오기
         user_profile = Profile.objects.get(user=request.user)
 
+        # 사용자가 최근에 작성한 5개의 게시글 가져오기
+        user_posts = Post.objects.filter(author=request.user).order_by('-created_at')[:5]
+
         if request.method == 'POST':
-            if 'profile_picture' in request.FILES:  # 파일이 업로드되었는지 확인
+            if 'profile_picture' in request.FILES:
                 profile_picture = request.FILES['profile_picture']
-                # 프로필 이미지를 업로드하고 프로필 객체에 연결
                 user_profile.profile_picture = profile_picture
                 user_profile.save()
                 messages.success(request, "프로필 이미지가 업데이트되었습니다.")
-
                 # 업데이트된 프로필 정보를 다시 가져옵니다
                 user_profile = Profile.objects.get(user=request.user)
-                return render(request, 'users/Information_Modification.html', {'user_profile': user_profile})
+                return render(request, 'users/Information_Modification.html', {'user_profile': user_profile, 'user_posts': user_posts})
 
-        return render(request, 'users/Information_Modification.html', {'user_profile': user_profile})
+        return render(request, 'users/Information_Modification.html', {'user_profile': user_profile, 'user_posts': user_posts})
     except Profile.DoesNotExist:
         messages.error(request, "프로필 정보를 찾을 수 없습니다.")
         return render(request, 'users/Information_Modification.html', {})
+
+# 20231128 프로필사진
+# def Information_Modification(request):
+#     try:
+#         user_profile = Profile.objects.get(user=request.user)
+#
+#         if request.method == 'POST':
+#             if 'profile_picture' in request.FILES:  # 파일이 업로드되었는지 확인
+#                 profile_picture = request.FILES['profile_picture']
+#                 # 프로필 이미지를 업로드하고 프로필 객체에 연결
+#                 user_profile.profile_picture = profile_picture
+#                 user_profile.save()
+#                 messages.success(request, "프로필 이미지가 업데이트되었습니다.")
+#
+#                 # 업데이트된 프로필 정보를 다시 가져옵니다
+#                 user_profile = Profile.objects.get(user=request.user)
+#                 return render(request, 'users/Information_Modification.html', {'user_profile': user_profile})
+#
+#         return render(request, 'users/Information_Modification.html', {'user_profile': user_profile})
+#     except Profile.DoesNotExist:
+#         messages.error(request, "프로필 정보를 찾을 수 없습니다.")
+#         return render(request, 'users/Information_Modification.html', {})
 
 
 from django.http import JsonResponse

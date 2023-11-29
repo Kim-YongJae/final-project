@@ -216,7 +216,7 @@ information_modification 코드2 <- 새로고침하면 이미지 바뀌는 코�
 </script>
 {% endblock content %}
 
-information_modification.html 코드3 <- 사진 업로드하면 이미지 바로 바뀌는 코드
+-----------information_modification.html 코드3 <- 사진 업로드하면 이미지 바로 바뀌는 코드
 
 코드를 살펴보았는데, 기본적인 부분은 이미지를 업로드하고 새 이미지 URL을 받아온 다음, JavaScript를 통해 해당 이미지를 DOM에 반영하고 있습니다. 그러나 실제로 이미지를 바로 업데이트하는 부분에 문제가 있을 수 있습니다.
 
@@ -262,7 +262,7 @@ Copy code
 })
 위의 변경 사항을 적용하면, 이미지를 업로드한 후 JavaScript 코드에서 받은 URL을 이용하여 DOM을 업데이트할 수 있게 됩니다. 이렇게 하면 새로고침 없이도 이미지가 변경될 것입니다.
 
-수정된 html 코드
+-------------------수정된 html 코드
 <!-- information_modification.html -->
 {% extends 'base.html' %}
 {% block content %}
@@ -337,5 +337,80 @@ Copy code
         });
     });
 
+</script>
+{% endblock content %}
+
+------information_modification.html 코드4 <- 게시글까지 가져오는 코드
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* 스타일링 코드 */
+</style>
+
+<div class="container">
+    <!-- 왼쪽 상단: 프로필 사진 -->
+    <div class="profile-section">
+        <div class="profile-picture">
+            {% if user_profile.profile_picture %}
+                <img id="profile-image" src="{{ user_profile.profile_picture.url }}" alt="프로필 사진">
+            {% else %}
+                <p>프로필 사진이 없습니다.</p>
+            {% endif %}
+            <!-- 프로필 사진 업로드 폼 -->
+            <form method="post" enctype="multipart/form-data" id="profile-upload-form">
+                {% csrf_token %}
+                <input type="file" name="profile_picture" id="file-input">
+                <input type="submit" value="사진 업로드">
+            </form>
+        </div>
+
+        <!-- 오른쪽 상단: 회원 정보 -->
+        <div class="user-info">
+            <p>아이디: {{ user.username }}</p>
+            <p>이메일: {{ user.email }}</p>
+            <p>성: {{ user.last_name }}</p>
+            <p>이름: {{ user.first_name }}</p>
+        </div>
+    </div>
+
+    <!-- 프로필 사진 변경 버튼 아래: 작성한 글 목록 -->
+    <div class="user-posts">
+        <!-- 작성한 글 목록 출력 -->
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">최근 작성한 게시물</h2>
+                        {% if user_posts %}
+                            <ul class="list-group">
+                                {% for post in user_posts %}
+                                    <!-- 게시물 제목을 클릭하면 해당 게시물 상세 페이지로 이동 -->
+                                    <li class="list-group-item">
+                                        <a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a>
+                                        (작성일: {{ post.created_at }})
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="card-text">아직 작성한 게시물이 없습니다.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- 다른 정보 표시 -->
+            <div class="col-md-6">
+                <!-- 다른 정보 내용 -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('profile-upload-form').addEventListener('submit', function(event) {
+        // 프로필 이미지 업로드 관련 자바스크립트 코드
+        // ...
+    });
 </script>
 {% endblock content %}

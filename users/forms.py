@@ -49,11 +49,11 @@ class RegisterForm(UserCreationForm):
     first_name = forms.CharField(max_length=30, label='이름')  # 이름 입력 필드
     last_name = forms.CharField(max_length=30, label='성')   # 성 입력 필드
     # 20231127 수정
-    nickname = forms.CharField(max_length=50, label='닉네임')  # 닉네임 입력 필드
-    age = forms.IntegerField(label='나이')  # 나이 입력 필드
+    # nickname = forms.CharField(max_length=50, label='닉네임')  # 닉네임 입력 필드
+    # age = forms.IntegerField(label='나이')  # 나이 입력 필드
     class Meta:
         model = User  # 내장 User 모델을 사용
-        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2', 'nickname', 'age']
+        fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
         # 폼에서 사용할 필드들을 지정
 
 
