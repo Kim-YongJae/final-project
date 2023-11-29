@@ -5,11 +5,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from django.contrib.auth.forms import SetPasswordForm
-from django.contrib.auth.models import User
 # 회원가입 비밀번호 조건 안맞을 시 표시
 from django.contrib.auth.password_validation import validate_password
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from services.models import Post
 
 
 # 회원정보 변경
@@ -245,3 +245,10 @@ def Withdrawal(request):
 
 def profile_edit(request):
     return render(request, 'users/profile_edit.html')
+
+
+def profile_view(request):
+    # 최근 작성한 게시물을 가져옵니다.
+    latest_posts = Post.objects.filter(author=request.user).order_by('-created_at')[:3]
+
+    return render(request, 'users/profile.html', {'latest_posts': latest_posts})

@@ -20,5 +20,13 @@
             {% endfor %}
         </ul>
     </div>
+    {% if recommended_recipes %}
+        <h2>추천 레시피</h2>
+        <ul>
+            {% for recipe in recommended_recipes %}
+                <li><a href="{% url 'recipe_detail' recipe.id %}">{{ recipe.food_name }}</a></li>
+            {% endfor %}
+        </ul>
+{% endif %}
 </body>
 </html>
