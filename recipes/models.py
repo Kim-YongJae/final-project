@@ -10,6 +10,7 @@ class Recipe(models.Model):
     ingredients = models.TextField()
     recipe_steps = models.TextField()
     label = models.JSONField(default=list)
+    food_photo = models.ImageField(upload_to='recipes/recipe_photos/', null=True, blank=True)
 
     # ArrayField(models.IntegerField()) sqlite에서 지원하지 않음 json.loads()를 통해서 리스트형태로 변환가능[]
 

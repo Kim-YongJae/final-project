@@ -41,7 +41,7 @@ def detect_ingredients(request):
                     destination.write(chunk)
 
             # YOLOv5 모델 불러오기
-            model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:/Users/jdu/Desktop/Project 2/best_yolov5x.pt')
+            model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:/Users/funny/OneDrive/바탕 화면/yolov5x/best.pt')
 
             # 이미지 불러오기 및 객체 탐지 수행
             img = Image.open(img_path)
@@ -62,7 +62,7 @@ def detect_ingredients(request):
             else:
                 unique_detected_classes = []  # 또는 예외 처리에 맞게 적절한 처리를 수행하세요
 
-            return render(request, 'recipes/recommend_recipe.html', {'form': form, 'detected_classes': unique_detected_classes,'recommended_recipes': recommended_recipes})
+            return render(request, 'recipes/recommend_recipe.html', {'form': form, 'detected_classes': unique_detected_classes, 'recommended_recipes': recommended_recipes})
     else:
         form = ImageUploadForm()
     return render(request, 'recipes/recommend_recipe.html', {'form': form})
@@ -77,6 +77,9 @@ class RecipeList(View):
         return render(request, 'recipes/recipes_list.html', context) # 렌더링
 
 class RecipeDetail(View):
+    def upload_image(self, request):
+        recipe_photo = Recipe.objects.all()
+        return render(request, 'recipes/recipe_detail.html',{'recipe_photo': recipe_photo})
     def get(self, request, recipe_id):
         recipe = get_object_or_404(Recipe, pk=recipe_id)  # 주어진 recipe_id에 해당하는 Recipe 객체를 가져오거나, 객체가 없으면 404 에러를 나타냄
         context = {'recipe': recipe}
@@ -103,12 +106,14 @@ def recommend_recipes(classes):
         for model_idx in model_label:
             if model_idx in label:
                 count += 1
-        if count >= len(label) * 0.5:
+        if count / len(label) >= 0.5:
             recommended_recipes.append({
             'id': recipe.id,
-            'food_name': recipe.food_name
+            'food_name': recipe.food_name,
+            'count_ratio': count / len(label)
             # 필요한 경우 다른 속성도 추가가능
         })
 
+    recommended_recipes.sort(key=lambda x: x['count_ratio'], reverse=True)
 
     return recommended_recipes
