@@ -352,12 +352,14 @@ def Information_Modification(request):
 
 
 from django.http import JsonResponse
+from PIL import Image
 
 def upload_profile_picture(request):
     if request.method == 'POST':
         profile_picture = request.FILES['profile_picture']
         # 사용자의 프로필 객체 가져오기
         profile, created = Profile.objects.get_or_create(user=request.user)
+
         # 프로필 사진 업데이트 또는 저장
         profile.profile_picture = profile_picture
         profile.save()
