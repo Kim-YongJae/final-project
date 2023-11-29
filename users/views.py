@@ -329,8 +329,7 @@ def Information_Modification(request):
         return render(request, 'users/Information_Modification.html', {})
 
 
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.http import JsonResponse
 
 def upload_profile_picture(request):
     if request.method == 'POST':
@@ -344,9 +343,29 @@ def upload_profile_picture(request):
         # 새 이미지 URL 가져오기
         new_image_url = profile.profile_picture.url
 
-        # Information_Modification 페이지로 리디렉션하면서 이미지 URL을 전달합니다.
-        return redirect('Information_Modification')
+        # 새 이미지 URL을 JSON 형태로 반환
+        return JsonResponse({'profile_picture_url': new_image_url})
     # POST 요청이 아닐 경우 다른 처리
     # ...
+
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
+# def upload_profile_picture(request):
+#     if request.method == 'POST':
+#         profile_picture = request.FILES['profile_picture']
+#         # 사용자의 프로필 객체 가져오기
+#         profile, created = Profile.objects.get_or_create(user=request.user)
+#         # 프로필 사진 업데이트 또는 저장
+#         profile.profile_picture = profile_picture
+#         profile.save()
+#
+#         # 새 이미지 URL 가져오기
+#         new_image_url = profile.profile_picture.url
+#
+#         # Information_Modification 페이지로 리디렉션하면서 이미지 URL을 전달합니다.
+#         return redirect('Information_Modification')
+#     # POST 요청이 아닐 경우 다른 처리
+#     # ...
 
 

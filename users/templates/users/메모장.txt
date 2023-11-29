@@ -215,3 +215,127 @@ information_modification 코드2 <- 새로고침하면 이미지 바뀌는 코�
     });
 </script>
 {% endblock content %}
+
+information_modification.html 코드3 <- 사진 업로드하면 이미지 바로 바뀌는 코드
+
+코드를 살펴보았는데, 기본적인 부분은 이미지를 업로드하고 새 이미지 URL을 받아온 다음, JavaScript를 통해 해당 이미지를 DOM에 반영하고 있습니다. 그러나 실제로 이미지를 바로 업데이트하는 부분에 문제가 있을 수 있습니다.
+
+우선, upload_profile_picture 뷰에서 이미지가 업로드되고 새 URL을 전달하고 있어야 합니다. 하지만 해당 코드에서는 새 이미지 URL을 반환하고 페이지를 리디렉션하는 대신, 페이지 리로드 없이 JavaScript를 통해 이미지를 업데이트하려는 것으로 보입니다.
+
+JavaScript 부분에서 이미지를 업데이트하는 코드는 크게 문제가 없어 보입니다. 하지만 실제로 서버에서 새 이미지 URL을 받아오는 부분이 필요합니다. upload_profile_picture 뷰에서 새 이미지 URL을 반환하는 대신, 해당 URL을 JSON 형식으로 전달해야 합니다.
+
+따라서 upload_profile_picture 뷰에서 이미지를 업로드하고 새 URL을 JSON 형식으로 반환하도록 수정해야 합니다. 그 후 JavaScript 코드에서 받은 URL을 이용하여 DOM을 업데이트할 수 있을 것입니다.
+
+# views.py 이렇게 변경
+
+from django.http import JsonResponse
+
+def upload_profile_picture(request):
+    if request.method == 'POST':
+        profile_picture = request.FILES['profile_picture']
+        # 사용자의 프로필 객체 가져오기
+        profile, created = Profile.objects.get_or_create(user=request.user)
+        # 프로필 사진 업데이트 또는 저장
+        profile.profile_picture = profile_picture
+        profile.save()
+
+        # 새 이미지 URL 가져오기
+        new_image_url = profile.profile_picture.url
+
+        # 새 이미지 URL을 JSON 형태로 반환
+        return JsonResponse({'profile_picture_url': new_image_url})
+    # POST 요청이 아닐 경우 다른 처리
+    # ...
+위의 코드는 upload_profile_picture 뷰에서 이미지를 업로드하고, 새 이미지 URL을 JSON 형식으로 반환하도록 수정한 부분입니다. 이렇게 하면 JavaScript에서 해당 URL을 받아와서 이미지를 업데이트할 수 있을 것입니다.
+
+그리고 JavaScript 코드에서 이미지를 업데이트하는 부분은 아래와 같이 수정되어야 할 것입니다.
+
+javascript
+Copy code
+// JavaScript 코드
+.then(data => {
+    const imageUrl = data.profile_picture_url; // 서버로부터 받은 새 이미지 URL
+    // 이미지 업데이트
+    const profileImage = document.getElementById('profile-image');
+    profileImage.src = imageUrl;
+    // 프로필 이미지 업로드 성공 시 이미지 업데이트
+})
+위의 변경 사항을 적용하면, 이미지를 업로드한 후 JavaScript 코드에서 받은 URL을 이용하여 DOM을 업데이트할 수 있게 됩니다. 이렇게 하면 새로고침 없이도 이미지가 변경될 것입니다.
+
+수정된 html 코드
+<!-- information_modification.html -->
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    /* 스타일링 코드 */
+</style>
+
+<div class="container">
+    <!-- 왼쪽 상단: 프로필 사진 -->
+    <div class="profile-section">
+        <div class="profile-picture">
+            {% if user_profile.profile_picture %}
+                <img id="profile-image" src="{{ user_profile.profile_picture.url }}" alt="프로필 사진">
+            {% else %}
+                <p>프로필 사진이 없습니다.</p>
+            {% endif %}
+            <!-- 프로필 사진 업로드 폼 -->
+            <form method="post" enctype="multipart/form-data" id="profile-upload-form">
+                {% csrf_token %}
+                <input type="file" name="profile_picture" id="file-input">
+                <input type="submit" value="사진 업로드">
+            </form>
+        </div>
+
+        <!-- 오른쪽 상단: 회원 정보 -->
+        <div class="user-info">
+            <p>아이디: {{ user.username }}</p>
+            <p>이메일: {{ user.email }}</p>
+            <p>성: {{ user.last_name }}</p>
+            <p>이름: {{ user.first_name }}</p>
+        </div>
+    </div>
+
+    <!-- 프로필 사진 변경 버튼 아래: 작성한 글 목록 -->
+    <div class="user-posts">
+        <!-- 작성한 글 목록 출력 -->
+    </div>
+</div>
+
+<script>
+    document.getElementById('profile-upload-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const fileInput = document.getElementById('file-input');
+        const formData = new FormData();
+        formData.append('profile_picture', fileInput.files[0]);
+
+        fetch('/upload_profile_picture/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json(); // JSON 형식으로 응답을 받음
+            }
+            throw new Error('Network response was not ok.');
+        })
+
+        .then(data => {
+            const imageUrl = data.profile_picture_url; // 서버로부터 받은 새 이미지 URL
+            // 이미지 업데이트
+            const profileImage = document.getElementById('profile-image');
+            profileImage.src = imageUrl;
+            // 프로필 이미지 업로드 성공 시 이미지 업데이트
+        })
+
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+            // 프로필 이미지 업로드 실패 시 에러 처리
+        });
+    });
+
+</script>
+{% endblock content %}
