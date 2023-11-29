@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+
+
+{% block content %}
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+        <!-- Sidebar 내용... -->
+      </nav>
+
+      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">프로필</h1>
+        </div>
+
+        <!-- 최근 작성한 게시물 표시 -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <h2 class="card-title">최근 작성한 게시물</h2>
+                {% if latest_posts %}
+                  <ul class="list-group">
+                    {% for post in latest_posts %}
+                      <!-- 게시물 제목을 클릭하면 해당 게시물 상세 페이지로 이동 -->
+                      <li class="list-group-item"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a> (작성일: {{ post.created_at }})</li>
+                    {% endfor %}
+                  </ul>
+                {% else %}
+                  <p class="card-text">아직 작성한 게시물이 없습니다.</p>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+          <!-- 사용자 정보 표시 -->
+          <div class="col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <p class="card-text"><strong>ID:</strong> {{ user.username }}</p>
+                <p class="card-text"><strong>이름:</strong> {{ user.get_full_name }}</p>
+                <p class="card-text"><strong>이메일:</strong> {{ user.email }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+{% endblock %}

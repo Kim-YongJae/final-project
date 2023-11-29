@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from users import views
+from .views import profile_view
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -31,6 +32,7 @@ urlpatterns = [
     path("Withdrawal/", views.Withdrawal, name="Withdrawal"),
     path("profile_edit/", views.profile_edit_view, name="profile_edit"),
     path('profile_password/', views.password_edit_view, name='profile_password'),
+    path('profile/', profile_view, name='profile'),
 
 ]
 
