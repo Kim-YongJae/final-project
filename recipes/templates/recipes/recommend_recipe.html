@@ -3,6 +3,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <img src="{{ uploaded_image_url }}" alt="Uploaded Image" width="300" height="200">
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form }}

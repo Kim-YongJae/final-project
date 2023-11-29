@@ -40,6 +40,8 @@ def detect_ingredients(request):
                 for chunk in uploaded_image.chunks():
                     destination.write(chunk)
 
+            uploaded_image_url = f'/media/{uploaded_image.name}'
+
             # YOLOv5 모델 불러오기
             model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:/Users/funny/OneDrive/바탕 화면/yolov5x/best.pt')
 
@@ -62,7 +64,7 @@ def detect_ingredients(request):
             else:
                 unique_detected_classes = []  # 또는 예외 처리에 맞게 적절한 처리를 수행하세요
 
-            return render(request, 'recipes/recommend_recipe.html', {'form': form, 'detected_classes': unique_detected_classes, 'recommended_recipes': recommended_recipes})
+            return render(request, 'recipes/recommend_recipe.html', {'form': form, 'detected_classes': unique_detected_classes, 'recommended_recipes': recommended_recipes, 'uploaded_image_url': uploaded_image_url})
     else:
         form = ImageUploadForm()
     return render(request, 'recipes/recommend_recipe.html', {'form': form})
