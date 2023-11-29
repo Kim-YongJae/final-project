@@ -291,10 +291,62 @@ def Withdrawal(request):
 def profile_edit(request):
     return render(request, 'users/profile_edit.html')
 
-# # 20231127 프로필 메인화면
-# from .models import Profile
-#
-# @login_required
-# def profile_view(request):
-#     profile = Profile.objects.get(user=request.user)
-#     return render(request, 'Information_Modification.html', {'profile': profile})
+# # 20231128 프로필 메인화면
+from django.shortcuts import render
+from .models import Profile
+
+def profile_view(request):
+    user = request.user
+    user_posts = user.post_set.all()[:5]  # 최근 작성한 5개의 글 가져오기
+
+    profile = Profile.objects.get(user=user)  # 사용자 프로필 정보 가져오기
+
+    return render(request, 'Information_Modification.html', {'user': user, 'user_posts': user_posts, 'profile': profile})
+
+from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
+from .models import Profile
+
+def Information_Modification(request):
+    try:
+        user_profile = Profile.objects.get(user=request.user)
+
+        if request.method == 'POST':
+            if 'profile_picture' in request.FILES:  # 파일이 업로드되었는지 확인
+                profile_picture = request.FILES['profile_picture']
+                # 프로필 이미지를 업로드하고 프로필 객체에 연결
+                user_profile.profile_picture = profile_picture
+                user_profile.save()
+                messages.success(request, "프로필 이미지가 업데이트되었습니다.")
+
+                # 업데이트된 프로필 정보를 다시 가져옵니다
+                user_profile = Profile.objects.get(user=request.user)
+                return render(request, 'users/Information_Modification.html', {'user_profile': user_profile})
+
+        return render(request, 'users/Information_Modification.html', {'user_profile': user_profile})
+    except Profile.DoesNotExist:
+        messages.error(request, "프로필 정보를 찾을 수 없습니다.")
+        return render(request, 'users/Information_Modification.html', {})
+
+
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
+def upload_profile_picture(request):
+    if request.method == 'POST':
+        profile_picture = request.FILES['profile_picture']
+        # 사용자의 프로필 객체 가져오기
+        profile, created = Profile.objects.get_or_create(user=request.user)
+        # 프로필 사진 업데이트 또는 저장
+        profile.profile_picture = profile_picture
+        profile.save()
+
+        # 새 이미지 URL 가져오기
+        new_image_url = profile.profile_picture.url
+
+        # Information_Modification 페이지로 리디렉션하면서 이미지 URL을 전달합니다.
+        return redirect('Information_Modification')
+    # POST 요청이 아닐 경우 다른 처리
+    # ...
+
+

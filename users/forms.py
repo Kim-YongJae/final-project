@@ -75,5 +75,15 @@ class RegisterForm(UserCreationForm):
 
 
 
+# 20231128 프로필 메인화면
+from django import forms
+from .models import Profile
+
+class ProfileImageForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['profile_picture']  # Profile 모델의 필드 이름을 여기에 정확하게 기입
+
+
 
 

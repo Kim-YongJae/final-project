@@ -1,64 +1,71 @@
+<!-- information_modification.html -->
 {% extends 'base.html' %}
 {% block content %}
 <style>
-    .container {
-        width: 50%;
-        margin: auto;
-    }
-.profile_title {
-        padding-right: 20px;
-    }
+    /* 스타일링 코드 */
 </style>
-<div class="container" >
-    <div style="margin-top: 5rem !important;">
-        <div class="col-12">
 
-            <div class="row justify-content-center">
-                <div class="card" style="padding-left: 0px; padding-right: 0px;">
-                    <div class="card-header bg-primary text-white text-center">
-                        <strong style="font-size: 18px;"><i class="fas fa-user-cog"></i>&nbsp;&nbsp;내 정보</strong>
-                    </div>
-                    <div><br>
-                            {% if messages %}
-                            <ul class="messages">
-                                {% for message in messages %}
-                                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                                {% endfor %}
-                            </ul>
-                            {% endif %}
-                            </div>
-                    <div class="card-body">
-                        <table style="color:black; margin-left:10px;">
-                            <tr>
-                                <td class="profile_title">아이디</td>
-                                <td class="profile_content">{{ user.username }}</td>
-                            </tr>
-                            <tr>
-                                <td class="profile_title">이메일</td>
-                                <td class="profile_content">{{ user.email }}</td>
-                            </tr>
-                            <tr>
-                                <td class="profile_title">성</td>
-                                <td class="profile_content">{{ user.last_name }}</td>
-                            </tr>
-                            <tr>
-                                <td class="profile_title">이름</td>
-                                <td class="profile_content">{{ user.first_name }}</td>
-                            </tr>
-
-                        </table>
-
-                        <hr>
-                        <div style="text-align: center;">
-                        <!-- <div style="margin-left: 10px;"> -->
-                            <a href="{% url 'profile_edit' %}" style="color:#d14040f2; font-size:15px;"><i class="fas fa-user-edit"></i>&nbsp;내정보수정</a>&nbsp;&middot;&nbsp;
-                            <a href="{% url 'profile_password' %}" style="color:#d14040f2; font-size:15px;"><i class="fas fa-user-lock"></i>&nbsp;비밀번호변경</a>&nbsp;&middot;&nbsp;
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div class="container">
+    <!-- 왼쪽 상단: 프로필 사진 -->
+    <div class="profile-section">
+        <div class="profile-picture">
+            {% if user_profile.profile_picture %}
+                <img id="profile-image" src="{{ user_profile.profile_picture.url }}" alt="프로필 사진">
+            {% else %}
+                <p>프로필 사진이 없습니다.</p>
+            {% endif %}
+            <!-- 프로필 사진 업로드 폼 -->
+            <form method="post" enctype="multipart/form-data" id="profile-upload-form">
+                {% csrf_token %}
+                <input type="file" name="profile_picture" id="file-input">
+                <input type="submit" value="사진 업로드">
+            </form>
         </div>
+
+        <!-- 오른쪽 상단: 회원 정보 -->
+        <div class="user-info">
+            <p>아이디: {{ user.username }}</p>
+            <p>이메일: {{ user.email }}</p>
+            <p>성: {{ user.last_name }}</p>
+            <p>이름: {{ user.first_name }}</p>
+        </div>
+    </div>
+
+    <!-- 프로필 사진 변경 버튼 아래: 작성한 글 목록 -->
+    <div class="user-posts">
+        <!-- 작성한 글 목록 출력 -->
     </div>
 </div>
 
+<script>
+    document.getElementById('profile-upload-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const fileInput = document.getElementById('file-input');
+        const formData = new FormData();
+        formData.append('profile_picture', fileInput.files[0]);
+
+        fetch('/upload_profile_picture/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json(); // JSON 형식으로 응답을 받음
+            }
+            throw new Error('Network response was not ok.');
+        })
+        .then(data => {
+            const imageUrl = data.profile_picture_url; // 서버로부터 받은 새 이미지 URL
+            document.getElementById('profile-image').src = imageUrl;
+            // 프로필 이미지 업로드 성공 시 이미지 업데이트
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+            // 프로필 이미지 업로드 실패 시 에러 처리
+        });
+    });
+</script>
 {% endblock content %}

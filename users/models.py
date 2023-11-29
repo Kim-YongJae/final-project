@@ -30,3 +30,12 @@ from django.db import models
 #         Profile.objects.create(user=instance)
 #     else:
 #         instance.profile.save()
+
+# 20231128 프로필을 위한 모델
+from django.db import models
+from django.contrib.auth.models import User
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    profile_picture = models.ImageField(upload_to='profile_images', blank=True, null=True)
+    # 추가적인 프로필 필드들을 여기에 추가할 수 있습니다.

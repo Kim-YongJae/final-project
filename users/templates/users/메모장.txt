@@ -63,3 +63,155 @@ find_password 화면 한번에 아이디 이메일 비밀번호까지 변경햇�
 <!--    });-->
 <!--</script>-->
 <!--{% endblock content %}-->
+
+
+기존 information_modification.html
+
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    .container {
+        width: 50%;
+        margin: auto;
+    }
+.profile_title {
+        padding-right: 20px;
+    }
+</style>
+<div class="container" >
+    <div style="margin-top: 5rem !important;">
+        <div class="col-12">
+
+            <div class="row justify-content-center">
+                <div class="card" style="padding-left: 0px; padding-right: 0px;">
+                    <div class="card-header bg-primary text-white text-center">
+                        <strong style="font-size: 18px;"><i class="fas fa-user-cog"></i>&nbsp;&nbsp;내 정보</strong>
+                    </div>
+                    <div><br>
+                            {% if messages %}
+                            <ul class="messages">
+                                {% for message in messages %}
+                                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                            </div>
+                    <div class="card-body">
+                        <table style="color:black; margin-left:10px;">
+                            <tr>
+                                <td class="profile_title">아이디</td>
+                                <td class="profile_content">{{ user.username }}</td>
+                            </tr>
+                            <tr>
+                                <td class="profile_title">이메일</td>
+                                <td class="profile_content">{{ user.email }}</td>
+                            </tr>
+                            <tr>
+                                <td class="profile_title">성</td>
+                                <td class="profile_content">{{ user.last_name }}</td>
+                            </tr>
+                            <tr>
+                                <td class="profile_title">이름</td>
+                                <td class="profile_content">{{ user.first_name }}</td>
+                            </tr>
+
+                        </table>
+
+                        <hr>
+                        <div style="text-align: center;">
+                        <!-- <div style="margin-left: 10px;"> -->
+                            <a href="{% url 'profile_edit' %}" style="color:#d14040f2; font-size:15px;"><i class="fas fa-user-edit"></i>&nbsp;내정보수정</a>&nbsp;&middot;&nbsp;
+                            <a href="{% url 'profile_password' %}" style="color:#d14040f2; font-size:15px;"><i class="fas fa-user-lock"></i>&nbsp;비밀번호변경</a>&nbsp;&middot;&nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+
+information_modification 코드2 <- 새로고침하면 이미지 바뀌는 코드
+사진이 바로 업데이트되지 않는 문제는 JavaScript에서 서버로부터 새 이미지 URL을 받아와서 DOM을 업데이트하는 로직에 문제가 있을 수 있어.
+
+현재의 JavaScript 코드는 이미지를 업로드하고 서버에서 받은 URL을 기반으로 이미지를 변경하는 방식이야. 이 방식은 성공적으로 이미지를 업로드하고 나서 새로고침을 해야만 변경된 이미지를 볼 수 있어.
+
+이 문제를 해결하기 위해서는 JavaScript에서 이미지를 업로드한 후에 서버로부터 새 이미지 URL을 받아온 다음, 받은 URL로 DOM을 직접 업데이트해야 해. 그러면 사용자가 페이지를 새로고침하지 않아도 이미지가 바로 변경될 거야.
+
+그것을 구현하기 위해서는 fetch 요청에서 서버로부터 받은 이미지 URL을 이용하여 이미지 DOM을 업데이트하는 부분을 수정해야 할 거야. 이미지를 변경하는 코드를 살펴보고, 새 URL을 받아온 후에 DOM을 업데이트하도록 로직을 변경해보는 것이 좋을 것 같아.
+
+현재 JavaScript 코드에서 이미지를 업로드하고 서버로부터 새 이미지 URL을 받아와서 DOM을 업데이트하는 부분을 수정해보면 도움이 될 수 있어. 아래는 수정을 위해 제안하는 방향입니다:
+
+<!-- information_modification.html -->
+{% extends 'base.html' %}
+{% block content %}
+<style>
+    /* 스타일링 코드 */
+</style>
+
+<div class="container">
+    <!-- 왼쪽 상단: 프로필 사진 -->
+    <div class="profile-section">
+        <div class="profile-picture">
+            {% if user_profile.profile_picture %}
+                <img id="profile-image" src="{{ user_profile.profile_picture.url }}" alt="프로필 사진">
+            {% else %}
+                <p>프로필 사진이 없습니다.</p>
+            {% endif %}
+            <!-- 프로필 사진 업로드 폼 -->
+            <form method="post" enctype="multipart/form-data" id="profile-upload-form">
+                {% csrf_token %}
+                <input type="file" name="profile_picture" id="file-input">
+                <input type="submit" value="사진 업로드">
+            </form>
+        </div>
+
+        <!-- 오른쪽 상단: 회원 정보 -->
+        <div class="user-info">
+            <p>아이디: {{ user.username }}</p>
+            <p>이메일: {{ user.email }}</p>
+            <p>성: {{ user.last_name }}</p>
+            <p>이름: {{ user.first_name }}</p>
+        </div>
+    </div>
+
+    <!-- 프로필 사진 변경 버튼 아래: 작성한 글 목록 -->
+    <div class="user-posts">
+        <!-- 작성한 글 목록 출력 -->
+    </div>
+</div>
+
+<script>
+    document.getElementById('profile-upload-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const fileInput = document.getElementById('file-input');
+        const formData = new FormData();
+        formData.append('profile_picture', fileInput.files[0]);
+
+        fetch('/upload_profile_picture/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json(); // JSON 형식으로 응답을 받음
+            }
+            throw new Error('Network response was not ok.');
+        })
+        .then(data => {
+            const imageUrl = data.profile_picture_url; // 서버로부터 받은 새 이미지 URL
+            document.getElementById('profile-image').src = imageUrl;
+            // 프로필 이미지 업로드 성공 시 이미지 업데이트
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+            // 프로필 이미지 업로드 실패 시 에러 처리
+        });
+    });
+</script>
+{% endblock content %}
