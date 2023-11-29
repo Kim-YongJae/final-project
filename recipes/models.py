@@ -1,4 +1,5 @@
 from django.db import models
+import json
 
 # Create your models here.
 class Recipe(models.Model):
@@ -8,7 +9,7 @@ class Recipe(models.Model):
     food_name = models.CharField(max_length=255)
     ingredients = models.TextField()
     recipe_steps = models.TextField()
-    label = models.CharField(max_length=255)
+    label = models.JSONField(default=list)
 
     # ArrayField(models.IntegerField()) sqlite에서 지원하지 않음 json.loads()를 통해서 리스트형태로 변환가능[]
 
