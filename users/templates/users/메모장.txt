@@ -414,3 +414,101 @@ Copy code
     });
 </script>
 {% endblock content %}
+
+------information_modification.html 코드5 <- 위치 선정
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    /* 스타일링 코드 */
+</style>
+
+<div class="container">
+    <div class="row">
+        <!-- 왼쪽 상단: 프로필 사진 -->
+        <div class="col-md-6">
+            <div class="profile-section">
+                <div class="profile-picture">
+                    {% if user_profile.profile_picture %}
+                        <img id="profile-image" src="{{ user_profile.profile_picture.url }}" alt="프로필 사진">
+                    {% else %}
+                        <p>프로필 사진이 없습니다.</p>
+                    {% endif %}
+                    <!-- 프로필 사진 업로드 폼 -->
+                    <form method="post" enctype="multipart/form-data" id="profile-upload-form">
+                        {% csrf_token %}
+                        <input type="file" name="profile_picture" id="file-input">
+                        <input type="submit" value="사진 업로드">
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- 오른쪽 상단: 회원 정보 -->
+        <div class="col-md-6">
+            <div class="user-info">
+                <p>아이디: {{ user.username }}</p>
+                <p>이메일: {{ user.email }}</p>
+                <p>성: {{ user.last_name }}</p>
+                <p>이름: {{ user.first_name }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 왼쪽 하단: 작성한 글 목록 -->
+    <div class="row">
+        <div class="col-md-12">
+            <div class="user-posts">
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="card-title">최근 작성한 게시물</h2>
+                        {% if user_posts %}
+                            <ul class="list-group">
+                                {% for post in user_posts %}
+                                    <li class="list-group-item">
+                                        <a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a>
+                                        (작성일: {{ post.created_at }})
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {% else %}
+                            <p class="card-text">아직 작성한 게시물이 없습니다.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('profile-upload-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const fileInput = document.getElementById('file-input');
+        const formData = new FormData();
+        formData.append('profile_picture', fileInput.files[0]);
+
+        fetch('/upload_profile_picture/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Network response was not ok.');
+        })
+        .then(data => {
+            const imageUrl = data.profile_picture_url;
+            const profileImage = document.getElementById('profile-image');
+            profileImage.src = imageUrl;
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+    });
+</script>
+{% endblock content %}
