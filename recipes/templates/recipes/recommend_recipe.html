@@ -1,12 +1,7 @@
-<!-- upload_image.html -->
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Image Upload</title>
-</head>
-<body>
+{% block content %}
+    <img src="{{ uploaded_image_url }}" alt="Uploaded Image" width="300" height="200">
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form }}
@@ -20,5 +15,12 @@
             {% endfor %}
         </ul>
     </div>
-</body>
-</html>
+    {% if recommended_recipes %}
+        <h2>추천 레시피</h2>
+        <ul>
+            {% for recipe in recommended_recipes %}
+                <li><a href="{% url 'recipe_detail' recipe.id %}">{{ recipe.food_name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

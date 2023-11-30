@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <img src="{{ recipe.food_photo.url }}" alt="음식 사진" width="300" height="200">
+  <p><strong>음식 이름:</strong> {{ recipe.food_name }}</p>
+  <p><strong>재료:</strong> {{ recipe.ingredients }}</p>
+  <p><strong>레시피 단계:</strong> {{ recipe.recipe_steps|linebreaks }}</p>
+  <a href="{% url 'recipe_list' %}">레시피 목록으로 돌아가기</a>
+{% endblock %}

@@ -16,7 +16,10 @@ Including another URLconf
 """
 from django.urls import path
 from recipes import views
+from recipes.views import RecipeList, RecipeDetail
 
 urlpatterns = [
+    path('recipes/', RecipeList.as_view(), name='recipe_list'),
+    path('recipes/<int:recipe_id>/', RecipeDetail.as_view(), name='recipe_detail'),
     path('recipes/recommend/', views.detect_ingredients, name='detect_ingredients'),
 ]
