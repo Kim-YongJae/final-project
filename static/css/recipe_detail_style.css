@@ -1,0 +1,184 @@
+@charset "UTF-8";
+*{
+    margin: 0;
+    padding: 0;
+}
+
+ul,li{
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.recipe_wrap{
+    width: 1000px;
+    margin: 100px auto;
+}
+
+.recipe_wrap img {
+  display: block; /* 이미지를 블록 요소로 설정하여 가운데 정렬을 적용합니다. */
+  margin: 0 auto 20px; /* 위쪽과 아래쪽에 20px의 마진을 주어 이미지 아래에 공간을 만듭니다. */
+  text-align: center;
+}
+
+.bt_wrap{
+    margin-top: 30px;
+    text-align: center;
+    font-size: 0px;
+}
+
+.bt_wrap a{
+    display: inline-block;
+    min-width: 80px;
+    margin-left: 10px;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 2px;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bt_wrap a:first-child{
+    margin-left: 0;
+}
+
+.bt_wrap a.on{
+    background: #000;
+    color: #fff;
+}
+
+.bt_wrap a:hover{
+    background-color: black;
+    color: white;
+}
+
+.recipe_view{
+    width: 100%;
+    border-top: 2px solid #000;
+}
+
+.recipe_view .title{
+    padding: 20px 15px;
+    border-bottom: 1px dashed #ddd;
+    font-size: 20px;
+}
+
+.recipe_view .ingredients{
+    padding: 15px;
+    border-bottom: 1px solid #000;
+    line-height: 160%;
+    font-size: 14px;
+}
+
+.recipe_view .info{
+    padding: 15px;
+    border-bottom: 1px solid #000;
+    line-height: 160%;
+    font-size: 14px;
+}
+
+.recipe_view .info p{
+    margin-bottom: 0;
+}
+
+.comments-count strong{
+    font-size: 20px;
+}
+
+.comment-list {
+    list-style: none;
+    padding: 0;
+}
+
+.comment-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}
+
+.comment-name {
+    flex: 0 0 auto; /* Flex 아이템 크기를 고정 */
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.comment-content {
+    flex: 2;
+    margin-left: 30px; /* username과 content 사이의 여백 조절 */
+    font-size: 14px;
+}
+
+.comment-time {
+    margin-left: auto; /* comment-time을 오른쪽으로 이동 */
+    font-size: 14px;
+}
+
+.comment-item:last-child {
+    border-bottom: none; /* 마지막 댓글의 밑에 선 제거 */
+}
+
+.comment-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.comment-item {
+
+}
+
+.comment-actions {
+    display: flex;
+}
+
+.edit-comment,
+.delete-comment {
+    margin-right: 2px;
+}
+
+.edit-comment{
+    padding: 3px 5px; /* 위아래 5px, 좌우 10px의 안쪽 여백 */
+    border: 1px solid #000;
+    border-radius: 2px;
+    background-color: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    outline: none;
+    font-size: 12px; /* 버튼의 글자 크기 */
+    width: auto; /* 필요한 경우, 버튼의 너비를 자동으로 조정 */
+    height: auto; /* 필요한 경우, 버튼의 높이를 자동으로 조정 */
+}
+
+.delete-comment input[type="submit"] {
+    padding: 3px 5px; /* 위아래 5px, 좌우 10px의 안쪽 여백 */
+    border: 1px solid #000;
+    border-radius: 2px;
+    background-color: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    outline: none;
+    font-size: 12px; /* 버튼의 글자 크기 */
+    width: auto; /* 필요한 경우, 버튼의 너비를 자동으로 조정 */
+    height: auto; /* 필요한 경우, 버튼의 높이를 자동으로 조정 */
+}
+
+.edit-comment:first-child {
+    margin-left: 10px;
+}
+
+.edit-comment:hover,
+.delete-comment:hover {
+    background-color: black;
+    color: white;
+}
+
+.delete-comment input[type="submit"]:hover {
+    background-color: black;
+    color: white;
+}

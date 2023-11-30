@@ -2,36 +2,43 @@
 
 {% extends 'base.html' %}
 
+{% load static %}
 {% block content %}
-  <h2>레시피 목록</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>음식 이름</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for recipe in recipe_list %}
-        <tr>
-          <td>{{ recipe.id }}</td>
-          <td><a href="{% url 'recipe_detail' recipe.id %}">{{ recipe.food_name }}</a></td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+    <link href="{% static 'css/recipes_list_style.css' %}" rel="stylesheet"/>
+    <div class="board_wrap">
+        <div class="board_title">
+            <strong>레시피</strong>
+            <p>이곳은 레시피 목록입니다.</p>
+        </div>
+        <div class="board_list_wrap">
+            <div class="board_list">
+                {% for recipe in recipe_list %}
+                <div>
+                    <div class="id">{{ recipe.id }}</div>
+                    <div class="food_name">
+                        <li><a href="{% url 'recipe_detail' recipe.id %}">{{ recipe.food_name }}</a></li>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
 
-  {% if recipe_list.has_previous %}
-    <a href="?page=1">첫 페이지</a>
-    <a href="?page={{ recipe_list.previous_page_number }}">이전 페이지</a>
-  {% endif %}
-
-  <span class="current">
-    페이지 {{ recipe_list.number }} / {{ recipe_list.paginator.num_pages }}
-  </span>
-
-  {% if recipe_list.has_next %}
-    <a href="?page={{ recipe_list.next_page_number }}">다음 페이지</a>
-    <a href="?page={{ recipe_list.paginator.num_pages }}">마지막 페이지</a>
-  {% endif %}
+            <div class="board_page">
+                {% if recipe_list.has_previous %}
+                    <a href="?page=1" class="bt first"><<</a>
+                    <a href="?page={{ recipe_list.previous_page_number }}" class="bt prev"><</a>
+                {% endif %}
+                {% for num in recipe_list.paginator.page_range %}
+                    {% if recipe_list.number == num %}
+                        <a href="?page={{ num }}" class="num on">{{ num }}</a>
+                    {% else %}
+                        <a href="?page={{ num }}" class="num">{{ num }}</a>
+                    {% endif %}
+                {% endfor %}
+                {% if recipe_list.has_next %}
+                    <a href="?page={{ recipe_list.next_page_number }}" class="bt next">></a>
+                    <a href="?page={{ recipe_list.paginator.num_pages }}" class="bt last">>></a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}

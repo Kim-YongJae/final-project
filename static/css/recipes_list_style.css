@@ -1,0 +1,162 @@
+@charset "UTF-8";
+*{
+    margin: 0;
+    padding: 0;
+}
+
+ul,li{
+    list-style: none;
+}
+
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
+.board_wrap{
+    width: 1000px;
+    margin: 100px auto;
+}
+
+.board_title{
+    margin-bottom: 30px;
+}
+
+.board_title strong{
+    font-size: 30px;
+}
+
+.board_title p{
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+.bt_wrap2{
+    margin-top: 30px;
+    text-align: center;
+    font-size: 0px;
+}
+
+.bt_wrap2 a{
+    display: inline-block;
+    min-width: 80px;
+    margin-left: 10px;
+    padding: 10px;
+    border: 1px solid #000;
+    border-radius: 2px;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bt_wrap2 a:first-child{
+    margin-left: 0;
+}
+
+.bt_wrap2 a.on{
+    background: #000;
+    color: #fff;
+}
+
+.bt_wrap2 a:hover{
+    background-color: black;
+    color: white;
+}
+
+.board_list{
+    width: 100%;
+    border-top: 2px solid #000;
+}
+
+.board_list > div{
+    border-bottom: 1px solid #ddd;
+    font-size: 0;
+}
+
+.board_list > div.top{
+    border-bottom: 1px solid #999;
+}
+
+.board_list > div:last-child{
+    border-bottom: 1px solid #000;
+}
+
+.board_list > div > div{
+    display: inline-block;
+    padding: 15px 0;
+    text-align: center;
+    font-size: 14px;
+}
+
+.board_list > div.top > div{
+    font-weight: 600;
+}
+
+.board_list .id{
+    width: 10%;
+    vertical-align: middle;
+}
+
+.board_list .food_name{
+    margin-left: 40px;
+    width: 60%;
+    text-align: left;
+    vertical-align: middle;
+    font-weight: 600;
+}
+
+.board_list .top .title{
+    text-align: center;
+}
+
+.board_list .writer{
+    width: 10%;
+    vertical-align: middle;
+}
+
+.board_list .date{
+    width: 10%;
+    vertical-align: middle;
+}
+
+.board_list .count{
+    width: 10%;
+    vertical-align: middle;
+}
+
+.board_page{
+    margin-top: 30px;
+    text-align: center;
+    font-size: 0;
+}
+
+.board_page a{
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    box-sizing: border-box;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+    border-left: 0;
+    line-height: 100%;
+}
+
+.board_page a.bt{
+    padding-top: 7.5px;
+    font-size: 12px;
+    letter-spacing: -1px;
+}
+
+.board_page a.num{
+    padding-top: 6.5px;
+    font-size: 14px;
+}
+
+.board_page a.num.on{
+    border-color: #000;
+    background: #000;
+    color: #fff;
+}
+
+.board_page a:first-child {
+    border-left: 1px solid #ddd;
+}
