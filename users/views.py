@@ -12,6 +12,7 @@ from django.shortcuts import render, redirect
 from services.models import Post # 20231129 메인화면에 게시글 보이게하려고
 
 
+
 # 회원정보 변경
 def profile_edit_view(request):
     if request.method == 'POST':
@@ -296,14 +297,6 @@ from django.shortcuts import render, get_object_or_404
 from .models import Profile
 from django.contrib import messages
 
-def profile_view(request):
-    user = request.user
-    user_posts = user.post_set.all()[:5]  # 최근 작성한 5개의 글 가져오기
-
-    profile = Profile.objects.get(user=user)  # 사용자 프로필 정보 가져오기
-
-    return render(request, 'Information_Modification.html', {'user': user, 'user_posts': user_posts, 'profile': profile})
-
 # 20231129 프로필사진, 게시글까지 추가
 def Information_Modification(request):
     try:
@@ -391,5 +384,3 @@ from django.urls import reverse
 #         return redirect('Information_Modification')
 #     # POST 요청이 아닐 경우 다른 처리
 #     # ...
-
-

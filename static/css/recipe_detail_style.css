@@ -13,22 +13,15 @@ a{
     color: inherit;
 }
 
-.board_wrap{
+.recipe_wrap{
     width: 1000px;
     margin: 100px auto;
 }
 
-.board_title{
-    margin-bottom: 30px;
-}
-
-.board_title strong{
-    font-size: 30px;
-}
-
-.board_title p{
-    margin-top: 5px;
-    font-size: 14px;
+.recipe_wrap img {
+  display: block; /* 이미지를 블록 요소로 설정하여 가운데 정렬을 적용합니다. */
+  margin: 0 auto 20px; /* 위쪽과 아래쪽에 20px의 마진을 주어 이미지 아래에 공간을 만듭니다. */
+  text-align: center;
 }
 
 .bt_wrap{
@@ -62,230 +55,33 @@ a{
     color: white;
 }
 
-.bt_wrap1{
-    margin-top: 30px;
-    text-align: right;
-    font-size: 0px;
-}
-
-.bt_wrap1 a{
-    display: inline-block;
-    min-width: 80px;
-    margin-left: 10px;
-    padding: 10px;
-    border: 1px solid #000;
-    border-radius: 2px;
-    font-size: 14px;
-    text-align: center;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.bt_wrap1 a:first-child{
-    margin-left: 0;
-}
-
-.bt_wrap1 a.on{
-    background: #000;
-    color: #fff;
-}
-
-.bt_wrap1 a:hover{
-    background-color: black;
-    color: white;
-}
-
-.bt_wrap2{
-    margin-top: 5px;
-    text-align: right;
-    font-size: 0px;
-}
-
-.bt_wrap2 a{
-    display: inline-block;
-    min-width: 80px;
-    margin-left: 10px;
-    padding: 10px;
-    border: 1px solid #000;
-    border-radius: 2px;
-    font-size: 14px;
-    text-align: center;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.bt_wrap2 a:first-child{
-    margin-left: 0;
-}
-
-.bt_wrap2 a.on{
-    background: #000;
-    color: #fff;
-}
-
-.bt_wrap2 a:hover{
-    background-color: black;
-    color: white;
-}
-
-.board_list{
+.recipe_view{
     width: 100%;
     border-top: 2px solid #000;
 }
 
-.board_list > div{
-    border-bottom: 1px solid #ddd;
-    font-size: 0;
-}
-
-.board_list > div.top{
-    border-bottom: 1px solid #999;
-}
-
-.board_list > div:last-child{
-    border-bottom: 1px solid #000;
-}
-
-.board_list > div > div{
-    display: inline-block;
-    padding: 15px 0;
-    text-align: center;
-    font-size: 14px;
-}
-
-.board_list > div.top > div{
-    font-weight: 600;
-}
-
-.board_list .num{
-    width: 10%;
-    vertical-align: middle;
-}
-
-.board_list .title{
-    width: 60%;
-    text-align: left;
-    vertical-align: middle;
-}
-
-.board_list .top .title{
-    text-align: center;
-}
-
-.board_list .writer{
-    width: 10%;
-    vertical-align: middle;
-}
-
-.board_list .date{
-    width: 10%;
-    vertical-align: middle;
-}
-
-.board_list .count{
-    width: 10%;
-    vertical-align: middle;
-}
-
-.board_page{
-    margin-top: 30px;
-    text-align: center;
-    font-size: 0;
-}
-
-.board_page a{
-    display: inline-block;
-    width: 32px;
-    height: 32px;
-    box-sizing: border-box;
-    vertical-align: middle;
-    border: 1px solid #ddd;
-    border-left: 0;
-    line-height: 100%;
-}
-
-.board_page a.bt{
-    padding-top: 7.5px;
-    font-size: 12px;
-    letter-spacing: -1px;
-}
-
-.board_page a.num{
-    padding-top: 6.5px;
-    font-size: 14px;
-}
-
-.board_page a.num.on{
-    border-color: #000;
-    background: #000;
-    color: #fff;
-}
-
-.board_page a:first-child{
-    border-left: 1px solid #ddd;
-}
-
-.board_view{
-    width: 100%;
-    border-top: 2px solid #000;
-}
-
-.board_view .title{
+.recipe_view .title{
     padding: 20px 15px;
     border-bottom: 1px dashed #ddd;
     font-size: 20px;
 }
 
-.board_view .info {
-    padding: 15px;
-    border-bottom: 1px solid #999;
-    font-size: 0;
-}
-
-.board_view .info dl{
-    position: relative;
-    display: inline-block;
-    padding: 0 20px;
-}
-
-.board_view .info dl:first-child{
-    padding-left: 0;
-}
-
-.board_view .info dl::before{
-    content: "";
-    position: absolute;
-    top: 5px;
-    left: 0;
-    display: block;
-    width: 1px;
-    height: 13px;
-    background: #ddd;
-}
-
-.board_view .info dl:first-child::before{
-    display: none;
-}
-
-.board_view .info dl dt,
-.board_view .info dl dd{
-    display: inline-block;
-    font-size: 14px;
-    margin-right: 20px;
-}
-
-.board_view .info dl dt{
-
-}
-
-.board_view .info dl dd{
-    margin-left: 10px;
-    color: #777;
-}
-
-.board_view .cont{
+.recipe_view .ingredients{
     padding: 15px;
     border-bottom: 1px solid #000;
     line-height: 160%;
     font-size: 14px;
+}
+
+.recipe_view .info{
+    padding: 15px;
+    border-bottom: 1px solid #000;
+    line-height: 160%;
+    font-size: 14px;
+}
+
+.recipe_view .info p{
+    margin-bottom: 0;
 }
 
 .comments-count strong{
