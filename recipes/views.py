@@ -48,7 +48,9 @@ def detect_ingredients(request):
 
             # YOLOv5 모델 불러오기
 
-            model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:/Users/funny/OneDrive/바탕 화면/yolov5x/best.pt')
+            model = torch.hub.load('ultralytics/yolov5', 'custom', path='')
+            # path= C:/Users/funny/OneDrive/바탕 화면/yolov5x/best.pt
+            # path= C:/Users/chqh1/Desktop/yolov5x 2차 결과/yolov5x 2차 결과/best.pt
 
             # 이미지 불러오기 및 객체 탐지 수행
             img = Image.open(img_path)
@@ -177,3 +179,14 @@ def delete_from_new_model(request, new_model_id):
         new_model_instance.delete()
 
     return redirect('recipe_list')
+
+def recipe_random_list(request):
+    # 랜덤으로 5개의 레시피 가져오기
+    recipes = Recipe.objects.order_by('?')[:5]  # '?'를 사용하여 무작위로 가져옵니다.
+
+    context = {
+        'recipes': recipes
+    }
+
+    return render(request, 'users/index.html', context)
+

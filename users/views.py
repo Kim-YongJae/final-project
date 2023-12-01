@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from services.models import Post # 20231129 메인화면에 게시글 보이게하려고
 from recipes.models import favorite
-
+from recipes.models import Recipe
 
 
 # 회원정보 변경
@@ -49,7 +49,6 @@ def password_edit_view(request):
 
     return render(request, 'users/profile_password.html', {'password_change_form': password_change_form})
 
-
 @login_required
 def delete_account(request):
     if request.method == 'POST':
@@ -58,6 +57,7 @@ def delete_account(request):
         if confirmation == '회원탈퇴':
             request.user.delete()  # 회원 삭제
             logout(request)  # 로그아웃 처리
+            return redirect('index')
         else:
             return HttpResponse(f'탈퇴 요청이 잘못되었습니다. <br>"{withdrawal_button_value}"로 입력함<br>')
     return HttpResponse('삭제되었습니다.')
@@ -278,12 +278,17 @@ def check_user(request):
 #                 messages.error(request, f"해당 아이디 또는 이메일로 된 사용자가 없습니다!")
 #     return render(request, 'users/find_password.html', {'form': form, 'password_changed': False})
 
+<<<<<<< HEAD
 
 def index(request):
     return render(request, 'users/index.html')
 
 # def Information_Modification(request):
 #     return render(request, 'users/Information_Modification.html')
+=======
+def Information_Modification(request):
+    return render(request, 'users/Information_Modification.html')
+>>>>>>> main
 
 
 def Withdrawal(request):
@@ -293,7 +298,7 @@ def Withdrawal(request):
 def profile_edit(request):
     return render(request, 'users/profile_edit.html')
 
-# # 20231128 프로필 메인화면
+# 20231128 프로필 메인화면
 from django.shortcuts import render, get_object_or_404
 from .models import Profile
 from django.contrib import messages
@@ -393,3 +398,13 @@ from django.urls import reverse
 #         return redirect('Information_Modification')
 #     # POST 요청이 아닐 경우 다른 처리
 #     # ...
+
+def recipe_random_list(request):
+    # 랜덤으로 5개의 레시피 가져오기
+    recipes = Recipe.objects.order_by('?')[:4]  # '?'를 사용하여 무작위로 가져옵니다.
+
+    context = {
+        'recipes': recipes
+    }
+
+    return render(request, 'users/index.html', context)

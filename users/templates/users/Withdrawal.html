@@ -9,64 +9,60 @@
         padding-right: 20px;
     }
 </style>
-<div class="container" >
-    <div style="margin-top: 5rem !important;">
-        <div class="col-12">
-
-            <div class="row justify-content-center">
-                <div class="card" style="padding-left: 0px; padding-right: 0px;">
-                    <div class="card-header bg-primary text-white text-center">
-                        <strong style="font-size: 18px;"><i class="fas fa-user-cog"></i>&nbsp;&nbsp;회원 탈퇴</strong>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/Withdrawal_style.css' %}">
+    <div class="board_wrap">
+        <div class="board_title">
+            <h3 class="mb-0" style="text-align: center;">회원탈퇴</h3>
+        </div>
+        <div class="board_view">
+            <table style="color:black; margin-left:10px;">
+                <tr>
+                    <td class="profile_title">아이디</td>
+                    <td class="profile_content">{{ user.username }}</td>
+                </tr>
+                <tr>
+                    <td class="profile_title">이메일</td>
+                    <td class="profile_content">{{ user.email }}</td>
+                </tr>
+                <tr>
+                    <td class="profile_title">성</td>
+                    <td class="profile_content">{{ user.last_name }}</td>
+                </tr>
+                <tr>
+                    <td class="profile_title">이름</td>
+                    <td class="profile_content">{{ user.first_name }}</td>
+                </tr>
+            </table>
+            <hr>
+            <div style="text-align: center;">
+            <!-- <div style="margin-left: 10px;"> -->
+                <p>정말로 회원 탈퇴하시겠습니까?</p>
+                <form id="withdrawalForm" method="post" action="{% url 'delete_account' %}">
+                    {% csrf_token %}
+                    <div>
+                        <input type="text" name="confirmation" id="confirmation" placeholder="회원탈퇴" required>
                     </div>
-                    <div><br>
-                            {% if messages %}
-                            <ul class="messages">
-                                {% for message in messages %}
-                                <li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                                {% endfor %}
-                            </ul>
-                            {% endif %}
-                            </div>
-                    <div class="card-body">
-                        <table style="color:black; margin-left:10px;">
-                            <tr>
-                                <td class="profile_title">아이디</td>
-                                <td class="profile_content">{{ user.username }}</td>
-                            </tr>
-                            <tr>
-                                <td class="profile_title">이메일</td>
-                                <td class="profile_content">{{ user.email }}</td>
-                            </tr>
-                            <tr>
-                                <td class="profile_title">성</td>
-                                <td class="profile_content">{{ user.last_name }}</td>
-                            </tr>
-                            <tr>
-                                <td class="profile_title">이름</td>
-                                <td class="profile_content">{{ user.first_name }}</td>
-                            </tr>
-
-                        </table>
-
-                        <hr>
-                        <div style="text-align: center;">
-                        <!-- <div style="margin-left: 10px;"> -->
-                            <p>정말로 회원 탈퇴하시겠습니까?</p>
-                                <form method="post" action="{% url 'delete_account' %}">
-                                    {% csrf_token %}
-                                    <div>
-                                        <input type="text" name="confirmation" id="confirmation" placeholder="회원탈퇴" required>
-                                    </div>
-                                    <div>
-                                        <button class="btn btn-primary" type="submit" id="withdrawal_Button" name="withdrawal_Button" value="회원탈퇴">회원 탈퇴</button>
-                                    </div>
-
-                                </form>
-                        </div>
+                    <div>
+                        <button class="btn" type="button" name="withdrawal_Button" name="withdrawal_Button" value="회원탈퇴" onclick="confirmWithdrawal()">회원 탈퇴</button>
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     </div>
-</div>
+    <script>
+        function confirmWithdrawal() {
+            // '회원 탈퇴하시겠습니까?' 메시지와 확인/취소 버튼을 갖는 팝업창 생성
+            var response = confirm("정말로 회원 탈퇴하시겠습니까?");
+
+            // 사용자가 확인을 선택한 경우
+            if (response == true) {
+                // 회원 탈퇴 폼에 탈퇴 요청 보내기
+                document.getElementById("withdrawalForm").submit();
+            } else {
+                // 취소한 경우 아무 작업도 수행하지 않음
+                return false;
+            }
+        }
+    </script>
 {% endblock content %}

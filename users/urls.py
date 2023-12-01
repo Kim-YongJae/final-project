@@ -23,7 +23,7 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path("", views.index, name="index"),
+    path("", views.recipe_random_list, name="index"),
     path('search_id/', views.search_id, name='search_id'),
     path('find_password/', views.find_password, name='find_password'), # 20231128 변경
     #path('find_password/', views.reset_password, name='find_password'), #20231124 변경
