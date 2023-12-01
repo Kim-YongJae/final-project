@@ -42,4 +42,21 @@
             </div>
         </div>
     </div>
+    {% if recommended_recipes %}
+        <h2>추천 레시피</h2>
+        <ul>
+            {% for recipe in recommended_recipes %}
+                <li><a href="{% url 'recipe_detail' recipe.id %}">{{ recipe.food_name }}</a></li>
+                {% if recipe.requirement %}
+                    <p>부족한 재료: </p>
+                    <ul>
+                        {% for req in recipe.requirement %}
+                            <li>{{ req }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}
+
