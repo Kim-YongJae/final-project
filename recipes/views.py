@@ -3,7 +3,7 @@ from django.db import connection
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.core.paginator import Paginator
-from recipes.models import Recipe
+from recipes.models import Recipe,favorite
 
 import json
 
@@ -14,16 +14,6 @@ from PIL import Image
 import torch
 import ast
 
-Ingredient_List = ['마늘', '대파', '양파', '고추', '당근', '김치', '통깨', '계란', '감자', '두부', '무',
-                   '콩나물', '애호박', '생강', '멸치', '깻잎', '양배추', '부추','다시마', '어묵',
-                   '소면', '당면', '떡', '배추', '고구마줄기', '오이', '우유', '미역', '숙주', '김',
-                   '단무지', '맛살', '피망', '견과류', '순두부', '염장 미역줄기', '연근', '시금치',
-                   '사과', '새우', '고사리', '황태채', '치즈', '열무', '호박', '만두', '순대', '데친 얼갈이배추',
-                   '파래', '식빵', '닭고기', '돼지고기', '돼지고기 목살', '대패삼겹살', '삼겹살', '소불고기',
-                   '소고기', '비엔나', '스팸', '햄', '소시지', '갈치', '참치', '수육용 삼겹살', '불고기감 소고기',
-                   '감자탕용 돼지등뼈', '오징어', '고등어', '꽃게', '느타리 버섯', '펭이버섯', '표고버섯',' 목이버섯',
-                   '가지', '카레가루', '파프리카', '쪽파', '월계수 잎', '진미채', '메추리알', '고구마', '순두부',
-                   '오미자(매실)청', '도토리묵', '상추','디포리']
 
 
 
@@ -149,3 +139,41 @@ def recommend_recipes(classes):
     recommended_recipes.sort(key=lambda x: x['count_ratio'], reverse=True)
 
     return recommended_recipes
+
+def save_to_new_model(request, recipe_id):
+    recipe = get_object_or_404(Recipe, pk=recipe_id)
+
+    new_model_instance = get_new_model_instance(request, recipe)
+    # 이미 저장된 데이터가 있는지 확인
+    if not new_model_instance:
+        # 저장되지 않은 경우에만 저장
+        new_model_instance = favorite(
+            author=request.user,
+            ffood_name=recipe.food_name,
+            fingredients=recipe.ingredients,
+            frecipe_steps=recipe.recipe_steps
+        )
+        new_model_instance.save()
+
+    return redirect('recipe_list')
+
+def get_new_model_instance(request, recipe):
+    # 이미 저장된 데이터가 있는지 확인
+    new_model_instance = favorite.objects.filter(
+        author=request.user,
+        ffood_name=recipe.food_name,
+        fingredients=recipe.ingredients,
+        frecipe_steps=recipe.recipe_steps
+    ).first()
+    return new_model_instance
+def delete_from_new_model(request, new_model_id):
+    recipe = get_object_or_404(Recipe, pk=new_model_id)
+
+    # get_new_model_instance 함수를 통해 new_model_instance 값을 가져옴
+    new_model_instance = get_new_model_instance(request, recipe)
+
+    if new_model_instance:
+        # new_model_instance가 존재하는 경우에만 삭제 로직 실행
+        new_model_instance.delete()
+
+    return redirect('recipe_list')

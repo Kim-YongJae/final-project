@@ -10,6 +10,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from services.models import Post # 20231129 메인화면에 게시글 보이게하려고
+from recipes.models import favorite
 
 
 
@@ -281,8 +282,8 @@ def check_user(request):
 def index(request):
     return render(request, 'users/index.html')
 
-def Information_Modification(request):
-    return render(request, 'users/Information_Modification.html')
+# def Information_Modification(request):
+#     return render(request, 'users/Information_Modification.html')
 
 
 def Withdrawal(request):
@@ -306,6 +307,9 @@ def Information_Modification(request):
         # 사용자가 최근에 작성한 5개의 게시글 가져오기
         user_posts = Post.objects.filter(author=request.user).order_by('-created_at')[:5]
 
+        # 최근에 저장한 5개의 favorite 객체 가져오기
+        recent_favorites = favorite.objects.filter(author=request.user).order_by('-id')[:5]
+
         if request.method == 'POST':
             if 'profile_picture' in request.FILES:
                 profile_picture = request.FILES['profile_picture']
@@ -314,12 +318,17 @@ def Information_Modification(request):
                 messages.success(request, "프로필 이미지가 업데이트되었습니다.")
                 # 업데이트된 프로필 정보를 다시 가져옵니다
                 user_profile = Profile.objects.get(user=request.user)
-                return render(request, 'users/Information_Modification.html', {'user_profile': user_profile, 'user_posts': user_posts})
+                return render(request, 'users/Information_Modification.html', {'user_profile': user_profile, 'user_posts': user_posts, 'recent_favorites': recent_favorites})
 
-        return render(request, 'users/Information_Modification.html', {'user_profile': user_profile, 'user_posts': user_posts})
+        return render(request, 'users/Information_Modification.html', {'user_profile': user_profile, 'user_posts': user_posts, 'recent_favorites': recent_favorites})
     except Profile.DoesNotExist:
         messages.error(request, "프로필 정보를 찾을 수 없습니다.")
         return render(request, 'users/Information_Modification.html', {})
+
+# def get_recent_favorite_foods(request):
+#     # 최근에 저장한 5개의 favorite 객체 가져오기
+#     recent_favorites = favorite.objects.filter(author=request.user).order_by('-id')[:5]
+#     return render(request, 'users/Information_Modification.html', {'recent_favorites': recent_favorites})
 
 # 20231128 프로필사진
 # def Information_Modification(request):
