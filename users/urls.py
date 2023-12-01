@@ -36,7 +36,6 @@ urlpatterns = [
     path("Withdrawal/", views.Withdrawal, name="Withdrawal"),
     path("profile_edit/", views.profile_edit_view, name="profile_edit"),
     path('profile_password/', views.password_edit_view, name='profile_password'),
-    path('profile/', views.profile_view, name='profile_view'), # 20231128 프로필 메인화면 추가
     path('upload_profile_picture/', views.upload_profile_picture, name='upload_profile_picture'), # 20231128 프로필 메인화면 추가
 ]
 
