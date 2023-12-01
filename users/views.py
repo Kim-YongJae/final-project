@@ -52,7 +52,6 @@ def password_edit_view(request):
 
     return render(request, 'users/profile_password.html', {'password_change_form': password_change_form})
 
-
 @login_required
 def delete_account(request):
     if request.method == 'POST':
@@ -61,6 +60,7 @@ def delete_account(request):
         if confirmation == '회원탈퇴':
             request.user.delete()  # 회원 삭제
             logout(request)  # 로그아웃 처리
+            return redirect('index')
         else:
             return HttpResponse(f'탈퇴 요청이 잘못되었습니다. <br>"{withdrawal_button_value}"로 입력함<br>')
     return HttpResponse('삭제되었습니다.')

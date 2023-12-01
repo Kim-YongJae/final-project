@@ -33,24 +33,36 @@
                     <td class="profile_title">이름</td>
                     <td class="profile_content">{{ user.first_name }}</td>
                 </tr>
-
             </table>
-
             <hr>
             <div style="text-align: center;">
             <!-- <div style="margin-left: 10px;"> -->
                 <p>정말로 회원 탈퇴하시겠습니까?</p>
-                    <form method="post" action="{% url 'delete_account' %}">
-                        {% csrf_token %}
-                        <div>
-                            <input type="text" name="confirmation" id="confirmation" placeholder="회원탈퇴" required>
-                        </div>
-                        <div>
-                            <button class="btn" type="submit" id="withdrawal_Button" name="withdrawal_Button" value="회원탈퇴">회원 탈퇴</button>
-                        </div>
-
-                    </form>
+                <form id="withdrawalForm" method="post" action="{% url 'delete_account' %}">
+                    {% csrf_token %}
+                    <div>
+                        <input type="text" name="confirmation" id="confirmation" placeholder="회원탈퇴" required>
+                    </div>
+                    <div>
+                        <button class="btn" type="button" name="withdrawal_Button" name="withdrawal_Button" value="회원탈퇴" onclick="confirmWithdrawal()">회원 탈퇴</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
+    <script>
+        function confirmWithdrawal() {
+            // '회원 탈퇴하시겠습니까?' 메시지와 확인/취소 버튼을 갖는 팝업창 생성
+            var response = confirm("정말로 회원 탈퇴하시겠습니까?");
+
+            // 사용자가 확인을 선택한 경우
+            if (response == true) {
+                // 회원 탈퇴 폼에 탈퇴 요청 보내기
+                document.getElementById("withdrawalForm").submit();
+            } else {
+                // 취소한 경우 아무 작업도 수행하지 않음
+                return false;
+            }
+        }
+    </script>
 {% endblock content %}

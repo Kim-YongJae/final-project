@@ -27,9 +27,7 @@ a{
     width: 100%;
     border-top: 2px solid #000;
 }
-.p {
-    margin: 10px;
-}
+
 /* 로그인 버튼에 커서를 가져다 대었을 때의 스타일 */
 .btn:hover {
     background-color: black;
@@ -37,8 +35,14 @@ a{
 }
 /* 로그인 버튼에 테두리 스타일 추가 */
 .btn {
+    margin-top: 10px;
+    margin-bottom: 10px;
     border: 1px solid black; /* 테두리를 검정색으로 설정 */
 
+}
+
+.board_view table{
+    margin-top: 1rem;
 }
 
 
