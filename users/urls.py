@@ -17,12 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from users import views
-from .views import profile_view
+# 20231128 프로필 사진때문에 추가?
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path("", views.index, name="index"),
     path('search_id/', views.search_id, name='search_id'),
-    path('find_password/', views.reset_password, name='find_password'), #20231124 변경
+    path('find_password/', views.find_password, name='find_password'), # 20231128 변경
+    #path('find_password/', views.reset_password, name='find_password'), #20231124 변경
     #path('reset_password/', views.reset_password, name='reset_password'),  # reset_password 뷰에 대한 URL 추가 20231124
     path("register/", views.register, name="register"),
     path("login/", views.sign_in, name="login"),
@@ -32,7 +36,10 @@ urlpatterns = [
     path("Withdrawal/", views.Withdrawal, name="Withdrawal"),
     path("profile_edit/", views.profile_edit_view, name="profile_edit"),
     path('profile_password/', views.password_edit_view, name='profile_password'),
-    path('profile/', profile_view, name='profile'),
-
+    path('profile/', views.profile_view, name='profile_view'), # 20231128 프로필 메인화면 추가
+    path('upload_profile_picture/', views.upload_profile_picture, name='upload_profile_picture'), # 20231128 프로필 메인화면 추가
 ]
 
+# 20231128 프로필 사진때문에 추가?
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

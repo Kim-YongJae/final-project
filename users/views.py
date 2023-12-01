@@ -9,7 +9,8 @@ from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.password_validation import validate_password
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
-from services.models import Post
+from services.models import Post # 20231129 메인화면에 게시글 보이게하려고
+
 
 
 # 회원정보 변경
@@ -141,68 +142,30 @@ def search_id(request):
 #             messages.error(request, f"입력한 이름과 성에 해당하는 사용자가 없습니다.")  # 에러 메시지 추가
 #     return render(request, 'users/search_id.html', {'id_found': id_found, 'found_id': found_id})
 
+# 20231127 수정
+# 비밀번호 재설정 뷰(비밀번호 찾기 화면 누르면 아이디와 이메일 넣고 해당 아이디와 이메일 맞으면 비밀번호 재설정으로 넘어감)
+def find_password(request):
+    password_found = False
+    password_changed = False
 
-# 사용자 검증과 비밀번호 재설정 함수(비밀번호 찾기에서 아디,이메일 확인했을때 비밀번호 변경으로 넘어감)
-def check_user_and_reset_password(request, user, new_password):
-    form = SetPasswordForm(user, {'new_password1': new_password, 'new_password2': new_password})
-    if form.is_valid():
-        form.save()
-        logout(request)
-        user = authenticate(request, username=user.username, password=new_password)
-        if user:
-            login(request, user)
-            messages.success(request, f"비밀번호가 성공적으로 변경되었습니다. 다시 로그인해주세요.")
-            return redirect('login')
-        else:
-            messages.error(request, f"비밀번호 변경 후 로그인 중 오류가 발생했습니다.")
-            return redirect('login')
-    else:
-        messages.error(request, f"비밀번호 변경 중 오류가 발생했습니다.")
-        return redirect('find_password')
-
-
-# 사용자 검증 함수
-def check_user(request):
-    if request.method == "POST":
+    if request.method == "POST" and request.POST.get('new_password'):
         username = request.POST.get('username')
         email = request.POST.get('email')
         try:
             user = User.objects.get(username=username, email=email)
-            return render(request, 'users/find_password.html', {'password_found': True, 'user': user})
+            new_password = request.POST.get('new_password')
+            confirm_password = request.POST.get('new_password_confirm')  # 수정: 입력 필드 이름 수정
+            return check_user_and_reset_password(request, user, new_password, confirm_password)
         except User.DoesNotExist:
-            messages.error(request, f"해당 이름 또는 이메일로 된 사용자가 없습니다.")
-    return render(request, 'users/find_password.html', {'password_found': False})
+            messages.error(request, f"해당 이름 또는 이메일로 된 사용자가 없습니다!")
+    elif request.method == "POST":
+        return check_user(request)
+    # 20231128 팜업 메시지때문에 수정
+    return render(request, 'users/find_password.html',
+                  {'password_found': False, 'password_changed': password_changed, 'password_mismatch': False})
 
-# 20231124 비밀번호 초기화후 변경 코드 추가
-from .forms import ResetPasswordForm
-from django.contrib.auth.models import User
-from django.contrib.auth.hashers import make_password
+    #return render(request, 'users/find_password.html', {'password_found': password_found, 'password_changed': password_changed})
 
-def reset_password(request):
-    form = ResetPasswordForm(request.POST or None)
-    if request.method == "POST":
-        if form.is_valid():
-            username = form.cleaned_data.get('username')
-            email = form.cleaned_data.get('email')
-            new_password = form.cleaned_data.get('new_password')
-            confirm_new_password = form.cleaned_data.get('confirm_new_password')
-            try:
-                user = User.objects.get(username=username, email=email)
-                if new_password == confirm_new_password:
-                    user.password = make_password(new_password)
-                    user.save()
-                    # messages.success(request, "비밀번호가 성공적으로 변경되었습니다. 다시 로그인해주세요.")
-                    logout(request)  # 로그아웃
-                    return redirect('login')  # 로그인 화면으로 이동
-                    # return render(request, 'users/find_password.html', {'password_changed': True})
-                else:
-                    messages.error(request, "새 비밀번호가 일치하지 않습니다!")
-            except User.DoesNotExist:
-                messages.error(request, f"해당 아이디 또는 이메일로 된 사용자가 없습니다!")
-    return render(request, 'users/find_password.html', {'form': form, 'password_changed': False})
-
-
-# 비밀번호 재설정 뷰
 # def find_password(request):
 #     if request.method == "POST" and request.POST.get('new_password'):
 #         username = request.POST.get('username')
@@ -216,21 +179,104 @@ def reset_password(request):
 #     elif request.method == "POST":
 #         return check_user(request)
 #     return render(request, 'users/find_password.html', {'password_found': False})
-#
-# # 비밀번호 재설정 뷰
-# def reset_password(request):
-#     if request.method == "POST":
-#         form = PasswordChangeForm(request.user, request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             update_session_auth_hash(request, user)  # 세션의 인증 해시 갱신
-#             messages.success(request, "비밀번호가 성공적으로 변경되었습니다.")
-#             return redirect('Information_Modification')  # 변경 후 리다이렉트할 페이지
+
+# 사용자 검증과 비밀번호 재설정 함수
+def check_user_and_reset_password(request, user, new_password, confirm_password):
+    if new_password == confirm_password:
+        form = SetPasswordForm(user, {'new_password1': new_password, 'new_password2': confirm_password})
+        if form.is_valid():
+            form.save()
+            logout(request)
+            user = authenticate(request, username=user.username, password=new_password)
+            if user:
+                login(request, user)
+                messages.success(request, f"비밀번호가 성공적으로 변경되었습니다. 로그인 되었습니다.")
+                return render(request, 'users/find_password.html', {'password_found': True, 'password_changed': True})  # 수정: 비밀번호 변경 완료 시 플래그 변경
+            else:
+                messages.error(request, f"비밀번호 변경 후 로그인 중 오류가 발생했습니다.")
+                return redirect('login')
+        else:
+            messages.error(request, f"비밀번호 변경 중 오류가 발생했습니다.")
+            return redirect('find_password')
+    # 20231128 팜업 메시지때문에 수정
+    else:
+        messages.error(request, f"입력한 비밀번호가 일치하지 않습니다!")
+        return render(request, 'users/find_password.html', {'password_found': False, 'password_mismatch': True})
+    # else:
+    #     messages.error(request, f"입력한 비밀번호가 일치하지 않습니다!")
+    #     return redirect('find_password')
+
+# def check_user_and_reset_password(request, user, new_password):
+#     form = SetPasswordForm(user, {'new_password1': new_password, 'new_password2': new_password})
+#     if form.is_valid():
+#         form.save()
+#         logout(request)
+#         user = authenticate(request, username=user.username, password=new_password)
+#         if user:
+#             login(request, user)
+#             messages.success(request, f"비밀번호가 성공적으로 변경되었습니다. 다시 로그인해주세요.")
+#             return redirect('login')
 #         else:
-#             messages.error(request, "비밀번호 변경 중 오류가 발생했습니다. 다시 시도해주세요.")
+#             messages.error(request, f"비밀번호 변경 후 로그인 중 오류가 발생했습니다.")
+#             return redirect('login')
 #     else:
-#         form = PasswordChangeForm(request.user)
-#     return render(request, 'users/login.html', {'form': form})
+#         messages.error(request, f"비밀번호 변경 중 오류가 발생했습니다.")
+#         return redirect('find_password')
+
+
+# 사용자 검증 함수
+# 20231128 사용자가 존재하지 않을 때 메시지를 추가 히려고 수정
+def check_user(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        try:
+            user = User.objects.get(username=username, email=email)
+            return render(request, 'users/find_password.html', {'password_found': True, 'user': user})
+        except User.DoesNotExist:
+            messages.error(request, f"해당 이름 또는 이메일로 된 사용자가 없습니다!")  # 수정: 사용자 정보가 없을 때 메시지 추가
+            return render(request, 'users/find_password.html', {'password_found': False, 'user': None, 'user_not_found': True})
+    return render(request, 'users/find_password.html', {'password_found': False})
+
+# def check_user(request):
+#     if request.method == "POST":
+#         username = request.POST.get('username')
+#         email = request.POST.get('email')
+#         try:
+#             user = User.objects.get(username=username, email=email)
+#             return render(request, 'users/find_password.html', {'password_found': True, 'user': user})
+#         except User.DoesNotExist:
+#             messages.error(request, f"해당 이름 또는 이메일로 된 사용자가 없습니다.")
+#     return render(request, 'users/find_password.html', {'password_found': False})
+
+# # 20231124 비밀번호 초기화후 변경 코드 추가
+# from .forms import ResetPasswordForm
+# from django.contrib.auth.models import User
+# from django.contrib.auth.hashers import make_password
+#
+# def reset_password(request):
+#     form = ResetPasswordForm(request.POST or None)
+#     if request.method == "POST":
+#         if form.is_valid():
+#             username = form.cleaned_data.get('username')
+#             email = form.cleaned_data.get('email')
+#             new_password = form.cleaned_data.get('new_password')
+#             confirm_new_password = form.cleaned_data.get('confirm_new_password')
+#             try:
+#                 user = User.objects.get(username=username, email=email)
+#                 if new_password == confirm_new_password:
+#                     user.password = make_password(new_password)
+#                     user.save()
+#                     # messages.success(request, "비밀번호가 성공적으로 변경되었습니다. 다시 로그인해주세요.")
+#                     logout(request)  # 로그아웃
+#                     return redirect('login')  # 로그인 화면으로 이동
+#                     # return render(request, 'users/find_password.html', {'password_changed': True})
+#                 else:
+#                     messages.error(request, "새 비밀번호가 일치하지 않습니다!")
+#             except User.DoesNotExist:
+#                 messages.error(request, f"해당 아이디 또는 이메일로 된 사용자가 없습니다!")
+#     return render(request, 'users/find_password.html', {'form': form, 'password_changed': False})
+
 
 def index(request):
     return render(request, 'users/index.html')
@@ -246,9 +292,103 @@ def Withdrawal(request):
 def profile_edit(request):
     return render(request, 'users/profile_edit.html')
 
+# # 20231128 프로필 메인화면
+from django.shortcuts import render, get_object_or_404
+from .models import Profile
+from django.contrib import messages
 
 def profile_view(request):
-    # 최근 작성한 게시물을 가져옵니다.
-    latest_posts = Post.objects.filter(author=request.user).order_by('-created_at')[:3]
+    user = request.user
+    user_posts = user.post_set.all()[:5]  # 최근 작성한 5개의 글 가져오기
 
-    return render(request, 'users/profile.html', {'latest_posts': latest_posts})
+    profile = Profile.objects.get(user=user)  # 사용자 프로필 정보 가져오기
+
+    return render(request, 'Information_Modification.html', {'user': user, 'user_posts': user_posts, 'profile': profile})
+
+# 20231129 프로필사진, 게시글까지 추가
+def Information_Modification(request):
+    try:
+        # 사용자의 프로필 정보 가져오기
+        user_profile = Profile.objects.get(user=request.user)
+
+        # 사용자가 최근에 작성한 5개의 게시글 가져오기
+        user_posts = Post.objects.filter(author=request.user).order_by('-created_at')[:5]
+
+        if request.method == 'POST':
+            if 'profile_picture' in request.FILES:
+                profile_picture = request.FILES['profile_picture']
+                user_profile.profile_picture = profile_picture
+                user_profile.save()
+                messages.success(request, "프로필 이미지가 업데이트되었습니다.")
+                # 업데이트된 프로필 정보를 다시 가져옵니다
+                user_profile = Profile.objects.get(user=request.user)
+                return render(request, 'users/Information_Modification.html', {'user_profile': user_profile, 'user_posts': user_posts})
+
+        return render(request, 'users/Information_Modification.html', {'user_profile': user_profile, 'user_posts': user_posts})
+    except Profile.DoesNotExist:
+        messages.error(request, "프로필 정보를 찾을 수 없습니다.")
+        return render(request, 'users/Information_Modification.html', {})
+
+# 20231128 프로필사진
+# def Information_Modification(request):
+#     try:
+#         user_profile = Profile.objects.get(user=request.user)
+#
+#         if request.method == 'POST':
+#             if 'profile_picture' in request.FILES:  # 파일이 업로드되었는지 확인
+#                 profile_picture = request.FILES['profile_picture']
+#                 # 프로필 이미지를 업로드하고 프로필 객체에 연결
+#                 user_profile.profile_picture = profile_picture
+#                 user_profile.save()
+#                 messages.success(request, "프로필 이미지가 업데이트되었습니다.")
+#
+#                 # 업데이트된 프로필 정보를 다시 가져옵니다
+#                 user_profile = Profile.objects.get(user=request.user)
+#                 return render(request, 'users/Information_Modification.html', {'user_profile': user_profile})
+#
+#         return render(request, 'users/Information_Modification.html', {'user_profile': user_profile})
+#     except Profile.DoesNotExist:
+#         messages.error(request, "프로필 정보를 찾을 수 없습니다.")
+#         return render(request, 'users/Information_Modification.html', {})
+
+
+from django.http import JsonResponse
+from PIL import Image
+
+def upload_profile_picture(request):
+    if request.method == 'POST':
+        profile_picture = request.FILES['profile_picture']
+        # 사용자의 프로필 객체 가져오기
+        profile, created = Profile.objects.get_or_create(user=request.user)
+
+        # 프로필 사진 업데이트 또는 저장
+        profile.profile_picture = profile_picture
+        profile.save()
+
+        # 새 이미지 URL 가져오기
+        new_image_url = profile.profile_picture.url
+
+        # 새 이미지 URL을 JSON 형태로 반환
+        return JsonResponse({'profile_picture_url': new_image_url})
+    # POST 요청이 아닐 경우 다른 처리
+    # ...
+
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
+# def upload_profile_picture(request):
+#     if request.method == 'POST':
+#         profile_picture = request.FILES['profile_picture']
+#         # 사용자의 프로필 객체 가져오기
+#         profile, created = Profile.objects.get_or_create(user=request.user)
+#         # 프로필 사진 업데이트 또는 저장
+#         profile.profile_picture = profile_picture
+#         profile.save()
+#
+#         # 새 이미지 URL 가져오기
+#         new_image_url = profile.profile_picture.url
+#
+#         # Information_Modification 페이지로 리디렉션하면서 이미지 URL을 전달합니다.
+#         return redirect('Information_Modification')
+#     # POST 요청이 아닐 경우 다른 처리
+#     # ...

@@ -12,6 +12,20 @@ from django.shortcuts import render
 from .forms import ImageUploadForm
 from PIL import Image
 import torch
+import ast
+
+Ingredient_List = ['마늘', '대파', '양파', '고추', '당근', '김치', '통깨', '계란', '감자', '두부', '무',
+                   '콩나물', '애호박', '생강', '멸치', '깻잎', '양배추', '부추','다시마', '어묵',
+                   '소면', '당면', '떡', '배추', '고구마줄기', '오이', '우유', '미역', '숙주', '김',
+                   '단무지', '맛살', '피망', '견과류', '순두부', '염장 미역줄기', '연근', '시금치',
+                   '사과', '새우', '고사리', '황태채', '치즈', '열무', '호박', '만두', '순대', '데친 얼갈이배추',
+                   '파래', '식빵', '닭고기', '돼지고기', '돼지고기 목살', '대패삼겹살', '삼겹살', '소불고기',
+                   '소고기', '비엔나', '스팸', '햄', '소시지', '갈치', '참치', '수육용 삼겹살', '불고기감 소고기',
+                   '감자탕용 돼지등뼈', '오징어', '고등어', '꽃게', '느타리 버섯', '펭이버섯', '표고버섯',' 목이버섯',
+                   '가지', '카레가루', '파프리카', '쪽파', '월계수 잎', '진미채', '메추리알', '고구마', '순두부',
+                   '오미자(매실)청', '도토리묵', '상추','디포리']
+
+
 
 Ingredient_List = ['마늘', '대파', '양파', '고추', '당근', '김치', '통깨', '계란', '감자', '두부', '무',
                    '콩나물', '애호박', '생강', '멸치', '깻잎', '양배추', '부추','다시마', '어묵',
@@ -43,6 +57,7 @@ def detect_ingredients(request):
             uploaded_image_url = f'/media/{uploaded_image.name}'
 
             # YOLOv5 모델 불러오기
+
             model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:/Users/funny/OneDrive/바탕 화면/yolov5x/best.pt')
 
             # 이미지 불러오기 및 객체 탐지 수행
@@ -64,7 +79,6 @@ def detect_ingredients(request):
 
                 # Recommendation algorithm
                 recommended_recipes = recommend_recipes(classes)
-
 
                 unique_detected_classes = list(detected_classes_korean)
 
@@ -112,7 +126,9 @@ def recommend_recipes(classes):
 
     for recipe in recipes:
         label = recipe.label
+
         requirement = []
+
         count = 0
         for model_idx in model_label:
             if model_idx in label:
