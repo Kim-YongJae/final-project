@@ -70,6 +70,25 @@
     </div>
 </div>
 
+
+  <!-- Display recent favorite foods -->
+  <div class="card mt-3">
+    <div class="card-body">
+      <h2 class="card-title">최근 즐겨찾기한 음식</h2>
+      {% if recent_favorites %}
+        <ul class="list-group">
+          {% for food in recent_favorites %}
+            <li class="list-group-item"><a href="{% url 'recipe_detail' food.id %}">{{ food.ffood_name }}</a></li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="card-text">최근에 즐겨찾기한 음식이 없습니다.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
 <script>
     document.getElementById('profile-upload-form').addEventListener('submit', function(event) {
         event.preventDefault();

@@ -38,8 +38,21 @@
         </div>
       </div>
     </div>
-    <div class="bt_wrap">
-      <a href="{% url 'recipe_list' %}" class="back-link">레시피 목록으로 돌아가기</a>
+                <!-- 새로운 모델에 저장하는 버튼 -->
+  <form method="post" action="{% url 'save_to_new_model' recipe.id %}">
+    {% csrf_token %}
+    <button type="submit">즐겨찾기</button>
+  </form>
+
+<!-- 새로운 모델에서 삭제하는 버튼 -->
+
+  <form method="post" action="{% url 'delete_from_new_model' recipe.id %}">
+      {% csrf_token %}
+      <button type="submit">즐겨찾기 삭제</button>
+  </form>
     </div>
   </div>
+    <div class="bt_wrap">
+      <a href="{% url 'recipe_list' %}" class="back-link">레시피 목록으로 돌아가기</a>
+
 {% endblock %}

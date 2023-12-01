@@ -16,10 +16,12 @@ Including another URLconf
 """
 from django.urls import path
 from recipes import views
-from recipes.views import RecipeList, RecipeDetail
+from recipes.views import RecipeList, RecipeDetail,delete_from_new_model,save_to_new_model
 
 urlpatterns = [
     path('recipes/', RecipeList.as_view(), name='recipe_list'),
     path('recipes/<int:recipe_id>/', RecipeDetail.as_view(), name='recipe_detail'),
     path('recipes/recommend/', views.detect_ingredients, name='detect_ingredients'),
+    path('delete_from_new_model/<int:new_model_id>/', delete_from_new_model, name='delete_from_new_model'),
+    path('save_to_new_model/<int:recipe_id>/', save_to_new_model, name='save_to_new_model'),
 ]
