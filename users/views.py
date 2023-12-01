@@ -11,6 +11,12 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from services.models import Post
 
+import random
+from googleapiclient.discovery import build
+from django.conf import settings
+from django.core.cache import cache
+from datetime import datetime, timedelta
+
 
 # 회원정보 변경
 def profile_edit_view(request):
@@ -232,8 +238,6 @@ def reset_password(request):
 #         form = PasswordChangeForm(request.user)
 #     return render(request, 'users/login.html', {'form': form})
 
-def index(request):
-    return render(request, 'users/index.html')
 
 def Information_Modification(request):
     return render(request, 'users/Information_Modification.html')
@@ -252,3 +256,35 @@ def profile_view(request):
     latest_posts = Post.objects.filter(author=request.user).order_by('-created_at')[:3]
 
     return render(request, 'users/profile.html', {'latest_posts': latest_posts})
+def index(request):
+    # 검색 결과가 캐시에 있는지 확인
+    cached_results = cache.get('youtube_search_results')
+
+    if cached_results is None:
+        # YouTube API 초기화
+        youtube = build('youtube', 'v3', developerKey=settings.YOUTUBE_API_KEY)
+
+        # YouTube에서 레시피에 관한 동영상 검색
+        search_response = youtube.search().list(
+            q='레시피',
+            type='video',
+            part='id,snippet',
+            maxResults=10  # 결과 중에서 10개만 가져오기 (원하는 숫자로 조절)
+        ).execute()
+
+        # 검색 결과를 24시간의 타임아웃과 함께 캐시에 저장
+        cache.set('youtube_search_results', search_response, 60 * 60 * 24)
+    else:
+        # 캐시된 결과를 사용
+        search_response = cached_results
+
+    # 검색된 동영상 중에서 4개 선택
+    selected_videos = random.sample(search_response['items'], 4)
+
+    # 각 동영상의 videoId를 가져와 리스트로 저장
+    video_ids = [video['id']['videoId'] for video in selected_videos]
+
+    # 렌더링할 데이터 전달
+    context = {'video_ids': video_ids}
+
+    return render(request, 'users/index.html', context)

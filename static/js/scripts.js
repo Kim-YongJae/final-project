@@ -1,26 +1,16 @@
-/*!
-    * Start Bootstrap - SB Admin v7.0.7 (https://startbootstrap.com/template/sb-admin)
-    * Copyright 2013-2023 Start Bootstrap
-    * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-sb-admin/blob/master/LICENSE)
-    */
-    // 
-// Scripts
-// 
+window.addEventListener('DOMContentLoaded', (event) => {
 
-window.addEventListener('DOMContentLoaded', event => {
-
-    // Toggle the side navigation
     const sidebarToggle = document.body.querySelector('#sidebarToggle');
+
     if (sidebarToggle) {
-        // Uncomment Below to persist sidebar toggle between refreshes
-        // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-        //     document.body.classList.toggle('sb-sidenav-toggled');
-        // }
-        sidebarToggle.addEventListener('click', event => {
+        // 세션 스토리지에서 상태를 가져와서 처음 접속될 때만 사이드바를 숨김
+        const isSidebarToggled = sessionStorage.getItem('sb|sidebar-toggle') !== 'false';
+        document.body.classList.toggle('sb-sidenav-toggled', isSidebarToggled);
+
+        sidebarToggle.addEventListener('click', (event) => {
             event.preventDefault();
             document.body.classList.toggle('sb-sidenav-toggled');
-            localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+            sessionStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled').toString());
         });
     }
-
 });
