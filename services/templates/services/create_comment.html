@@ -5,6 +5,26 @@
 {% block content %}
     <link href="{% static 'css/post_edit_style.css' %}" rel="stylesheet">
     <div class="board_wrap">
+        <div class="nav_bar">
+            <ul class="nav">
+                <li>
+                    <a href="{% url 'index' %}">메인</a>
+                </li>
+                <li>
+                    <a href="{% url 'detect_ingredients' %}">레시피</a>
+                    <ul>
+                        <li><a href="{% url 'detect_ingredients' %}">레시피 추천</a></li>
+                        <li><a href="{% url 'recipe_list' %}">레시피 리스트</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{% url 'index' %}">프로필</a>
+                </li>
+                <li>
+                    <a href="{% url 'post_list' %}">게시판</a>
+                </li>
+            </ul>
+        </div>
         <div class="board_title">
             <strong>댓글 작성하기</strong>
             <p>댓글을 작성해주세요.</p>

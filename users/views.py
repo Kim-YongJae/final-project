@@ -12,6 +12,7 @@ from django.shortcuts import render, redirect
 from services.models import Post # 20231129 메인화면에 게시글 보이게하려고
 
 
+
 # 회원정보 변경
 def profile_edit_view(request):
     if request.method == 'POST':
@@ -391,5 +392,3 @@ from django.urls import reverse
 #         return redirect('Information_Modification')
 #     # POST 요청이 아닐 경우 다른 처리
 #     # ...
-
-

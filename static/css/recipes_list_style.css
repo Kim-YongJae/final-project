@@ -91,15 +91,17 @@ a{
     font-weight: 600;
 }
 
-.board_list .num{
+.board_list .id{
     width: 10%;
     vertical-align: middle;
 }
 
-.board_list .title{
+.board_list .food_name{
+    margin-left: 40px;
     width: 60%;
     text-align: left;
     vertical-align: middle;
+    font-weight: 600;
 }
 
 .board_list .top .title{

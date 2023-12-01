@@ -65,6 +65,7 @@
                     <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
                          data-bs-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav">
+                            <a class="nav-link" href="{% url 'profile' %}">프로필</a>
                             <a class="nav-link" href="{% url 'Information_Modification' %}">회원정보 수정</a>
                             <a class="nav-link" href="{% url 'Withdrawal' %}">회원 탈퇴</a>
                         </nav>
@@ -79,6 +80,10 @@
                     </div>
                     {% endif %}
                     <div class="sb-sidenav-menu-heading"> 레시피</div>
+                    <a class="nav-link collapsed" href="{% url 'recipe_list' %}">
+                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
+                        레시피 리스트
+                    </a>
                     <a class="nav-link collapsed" href="{% url 'detect_ingredients' %}">
                         <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
                         레시피 추천
@@ -112,11 +117,11 @@
         <footer class="py-4 bg-light mt-auto">
             <div class="container-fluid px-4">
                 <div class="d-flex align-items-center justify-content-between small">
-                    <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                    <div class="text-muted">멀티캠퍼스 AI 백엔드 개발자 취업캠프 4회차</div>
                     <div>
-                        <a href="#">Privacy Policy</a>
+                        <a href="#">3조</a>
                         &middot;
-                        <a href="#">Terms &amp; Conditions</a>
+                        <a href="#">Iam 레시피에요</a>
                     </div>
                 </div>
             </div>
@@ -137,6 +142,7 @@
         crossorigin="anonymous"></script>
 <script src="{% static 'js/datatables-simple-demo.js' %}"></script>
 <script src="{% static 'js/custom.js' %}"></script>
+
 
 
 </body>

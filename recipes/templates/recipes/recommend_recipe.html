@@ -5,6 +5,26 @@
 {% block content %}
     <link href="{% static 'css/recommend_recipe_style.css' %}" rel="stylesheet"/>
     <div class="board_wrap">
+        <div class="nav_bar">
+            <ul class="nav">
+                <li>
+                    <a href="{% url 'index' %}">메인</a>
+                </li>
+                <li>
+                    <a href="{% url 'detect_ingredients' %}">레시피</a>
+                    <ul>
+                        <li><a href="{% url 'detect_ingredients' %}">레시피 추천</a></li>
+                        <li><a href="{% url 'recipe_list' %}">레시피 리스트</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{% url 'index' %}">프로필</a>
+                </li>
+                <li>
+                    <a href="{% url 'post_list' %}">게시판</a>
+                </li>
+            </ul>
+        </div>
         <div class="board_title">
             <strong>레시피 추천</strong>
             <p>가지고 있는 재료에 맞는 레시피를 추천해드립니다.</p>
@@ -42,4 +62,20 @@
             </div>
         </div>
     </div>
+    {% if recommended_recipes %}
+        <h2>추천 레시피</h2>
+        <ul>
+            {% for recipe in recommended_recipes %}
+                <li><a href="{% url 'recipe_detail' recipe.id %}">{{ recipe.food_name }}</a></li>
+                {% if recipe.requirement %}
+                    <p>부족한 재료: </p>
+                    <ul>
+                        {% for req in recipe.requirement %}
+                            <li>{{ req }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}
