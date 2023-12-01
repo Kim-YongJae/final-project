@@ -257,3 +257,38 @@ button:hover{
     height: auto;
 
 }
+
+.nav_bar{
+    width: 100%;
+    margin-bottom: 100px;
+}
+
+.nav > li ul{
+    display: none;
+    position: absolute;
+    padding: 0;
+    font-size: 15px;
+    font-weight: 0;
+}
+
+.nav > li:hover ul{
+    display: block;
+    position: absolute;
+}
+.nav {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    padding: 0;
+}
+
+.nav > li {
+    display: inline-block;
+    margin: 0;
+    font-size: 30px;
+    font-weight: 550;
+}
+
+.nav > li:last-child {
+    margin-right: 0; /* 마지막 아이템의 간격 제거 */
+}
