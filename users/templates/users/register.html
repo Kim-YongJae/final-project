@@ -2,59 +2,67 @@
 
 {% block content %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/search_id_style.css' %}">
+<link rel="stylesheet" href="{% static 'css/register_style.css' %}">
     <div class="board_wrap">
         <div class="board_title">
-            <h3 class="mb-0">회원가입</h3>
+            <h3 class="mb-0" style="text-align: center;">회원가입</h3>
         </div>
         <div class="board_view">
             <form method="POST" novalidate>
                 {% csrf_token %}
                 <div class="p">
-                    {{ form.username.label_tag }}
-                    {{ form.username }} <!-- 아이디 입력 필드 -->
+                    <div class="text-center">
+                        {{ form.username }}
+                    </div>
                 </div>
                 <div class="p">
-                    {{ form.first_name.label_tag }}
-                    {{ form.first_name }} <!-- 이름 입력 필드 -->
+                    <div class="text-center">
+                        {{ form.first_name }}
+                    </div>
                 </div>
                 <div class="p">
-                    {{ form.last_name.label_tag }}
-                    {{ form.last_name }} <!-- 성 입력 필드 -->
+                    <div class="text-center">
+                        {{ form.last_name }}
+                    </div>
                 </div>
                 <div class="p">
-                    {{ form.email.label_tag }}
-                    {{ form.email }} <!-- 이메일 입력 필드 -->
+                    <div class="text-center">
+                        {{ form.email }}
+                    </div>
                 </div>
                 <div class="p">
-                    {{ form.password1.label_tag }}
-                    {{ form.password1 }} <!-- 비밀번호 입력 필드 -->
-                    {% if form.password1.errors %}
-                        <div class="text-danger">
-                            {% for error in form.password1.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    <div class="text-center">
+                        {{ form.password1 }}
+                        {% if form.password1.errors %}
+                            <div class="text-danger">
+                                {% for error in form.password1.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
                 <div class="p">
-                    {{ form.password2.label_tag }}
-                    {{ form.password2 }} <!-- 비밀번호 확인 입력 필드 -->
-                    {% if form.password2.errors %}
-                        <div class="text-danger">
-                            {% for error in form.password2.errors %}
-                                {{ error }}
-                            {% endfor %}
-                        </div>
-                    {% endif %}
+                    <div class="text-center">
+                        {{ form.password2 }}
+                        {% if form.password2.errors %}
+                            <div class="text-danger">
+                                {% for error in form.password2.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
-                <div class="p">
+
+                <div class="p" style="text-align: center;">
                     <button class="btn" type="submit">회원가입</button>
                 </div>
             </form>
         </div>
-        <div class="card-footer text-center">
-            <p class="mb-0">이미 계정이 있으신가요? <a href="{% url 'login' %}">로그인</a></p>
+        <div class="p" style="text-align: right;">
+            <p class="small">이미 계정이 있으신가요? <a href="{% url 'login' %}">로그인</a></p>
         </div>
+
     </div>
 {% endblock content %}

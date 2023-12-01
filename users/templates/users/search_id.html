@@ -5,21 +5,20 @@
 <link rel="stylesheet" href="{% static 'css/search_id_style.css' %}">
     <div class="board_wrap">
         <div class="board_title">
-            <h3 class="mb-0">ID 찾기</h3>
+            <h3 class="mb-0" style="text-align: center;">ID 찾기</h3>
         </div>
         <div class="board_view">
             <form method="POST">
                 {% csrf_token %}
                 <div class="p">
-                    <label for="email">이메일</label>
-                    <input type="email" class="form-control" id="email" name="email">
+                    <input type="email" class="form-control" id="email" name="email" placeholder="이메일">
                 </div>
-                <div class="p">
+                <div class="p" style="text-align: center;">
                     <button type="submit" class="btn">아이디 찾기</button>
                 </div>
             </form>
         </div>
-        <div class="p">
+        <div class="p" style="text-align: right;">
             <a href="{% url 'login' %}">로그인</a>
         </div>
         {% if id_found %}

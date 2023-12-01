@@ -38,23 +38,57 @@ class UserChangeForm(UserChangeForm):
         fields = ['username', 'first_name', 'last_name', 'email']
 
 
-
 # 사용자 로그인 폼 정의
+# placeholder + 입력창 가로길이 꽉 채우기 20231201
+from django import forms
+
 class LoginForm(forms.Form):
-    username = forms.CharField(max_length=65)  # 아이디 입력 필드
-    password = forms.CharField(max_length=65, widget=forms.PasswordInput)  # 비밀번호 입력 필드
+    username = forms.CharField(
+        max_length=65,
+        widget=forms.TextInput(attrs={'placeholder': '아이디', 'class': 'form-control'})
+    )
+    password = forms.CharField(
+        max_length=65,
+        widget=forms.PasswordInput(attrs={'placeholder': '비밀번호', 'class': 'form-control'})
+    )
+
+# class LoginForm(forms.Form):
+#     username = forms.CharField(max_length=65, widget=forms.TextInput(attrs={'placeholder': '아이디'}))
+#     password = forms.CharField(max_length=65, widget=forms.PasswordInput(attrs={'placeholder': '비밀번호'}))
+
 
 # 사용자 회원가입 폼 정의
+# placeholder + 가로길이 꽉 채우기 20231201
+from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
+
 class RegisterForm(UserCreationForm):
-    first_name = forms.CharField(max_length=30, label='이름')  # 이름 입력 필드
-    last_name = forms.CharField(max_length=30, label='성')   # 성 입력 필드
-    # 20231127 수정
-    # nickname = forms.CharField(max_length=50, label='닉네임')  # 닉네임 입력 필드
-    # age = forms.IntegerField(label='나이')  # 나이 입력 필드
+    username = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '아이디'}))
+    first_name = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '이름'}))
+    last_name = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '성'}))
+    email = forms.CharField(max_length=30, widget=forms.EmailInput(attrs={'class': 'form-control', 'placeholder': '이메일'}))
+    password1 = forms.CharField(max_length=30, widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '비밀번호'}))
+    password2 = forms.CharField(max_length=30, widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': '비밀번호 확인'}))
+
     class Meta:
-        model = User  # 내장 User 모델을 사용
+        model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
-        # 폼에서 사용할 필드들을 지정
+
+# class RegisterForm(UserCreationForm):
+#     username = forms.CharField(max_length=30, label='아이디')
+#     first_name = forms.CharField(max_length=30, label='이름')  # 이름 입력 필드
+#     last_name = forms.CharField(max_length=30, label='성')   # 성 입력 필드
+#     email = forms.CharField(max_length=30, label='이메일')
+#     password1 = forms.CharField(max_length=30, label='비밀번호')
+#     password2 = forms.CharField(max_length=30, label='비밀번호 확인')
+#     # 20231127 수정
+#     # nickname = forms.CharField(max_length=50, label='닉네임')  # 닉네임 입력 필드
+#     # age = forms.IntegerField(label='나이')  # 나이 입력 필드
+#     class Meta:
+#         model = User  # 내장 User 모델을 사용
+#         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
+#         # 폼에서 사용할 필드들을 지정
 
 
 # 20231124 비밀번호 찾기 화면에서 초기화랑 비밀번호 새로 변경
