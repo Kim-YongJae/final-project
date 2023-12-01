@@ -43,7 +43,8 @@ def detect_ingredients(request):
             uploaded_image_url = f'/media/{uploaded_image.name}'
 
             # YOLOv5 모델 불러오기
-            model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:/Users/chqh1/Desktop/yolov5x 2차 결과/yolov5x 2차 결과/best.pt')
+            model = torch.hub.load('ultralytics/yolov5', 'custom',
+                                   path='C:/Users/chqh1/Desktop/yolov5x 2차 결과/yolov5x 2차 결과/best.pt')
 
             # 이미지 불러오기 및 객체 탐지 수행
             img = Image.open(img_path)
@@ -53,14 +54,19 @@ def detect_ingredients(request):
             if len(results.pred) > 0:
                 predictions = results.pred[0]
                 classes = predictions[:, -1].cpu().numpy().astype(int)
+                classes = list(set(classes))
 
                 class_names = ['garlic', 'welsh_Onion', 'onion', 'chili_Pepper', 'carrot', 'kimchi', 'Egg', 'potato', 'TOFU', 'radish']  # 클래스에 맞게 변경
+                class_names_korean = ['마늘', '대파', '양파', '고추', '당근', '김치', '계란', '감자', '두부', '무']
+
                 detected_classes = [class_names[class_idx] for class_idx in classes]
+                detected_classes_korean = [class_names_korean[class_names.index(detected)] for detected in
+                                           detected_classes]
 
                 # Recommendation algorithm
                 recommended_recipes = recommend_recipes(classes)
 
-                unique_detected_classes = list(set(detected_classes))
+                unique_detected_classes = list(detected_classes_korean)
             else:
                 unique_detected_classes = []  # 또는 예외 처리에 맞게 적절한 처리를 수행하세요
 

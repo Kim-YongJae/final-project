@@ -1,9 +1,25 @@
 {% extends 'base.html' %}
 
+{% load static %}
 {% block content %}
-  <img src="{{ recipe.food_photo.url }}" alt="음식 사진" width="300" height="200">
-  <p><strong>음식 이름:</strong> {{ recipe.food_name }}</p>
-  <p><strong>재료:</strong> {{ recipe.ingredients }}</p>
-  <p><strong>레시피 단계:</strong> {{ recipe.recipe_steps|linebreaks }}</p>
-  <a href="{% url 'recipe_list' %}">레시피 목록으로 돌아가기</a>
+  <link href="{% static 'css/recipe_detail_style.css' %}" rel="stylesheet"/>
+  <div class="recipe_wrap">
+    <img src="{{ recipe.food_photo.url }}" alt="음식 사진" width="300" height="200">
+    <div class="recipe_details_wrap">
+      <div class="recipe_view">
+        <div class="title">
+          {{ recipe.food_name }}
+        </div>
+        <div class="ingredients">
+          {{ recipe.ingredients }}
+        </div>
+        <div class="info">
+          {{ recipe.recipe_steps|linebreaks }}
+        </div>
+      </div>
+    </div>
+    <div class="bt_wrap">
+      <a href="{% url 'recipe_list' %}" class="back-link">레시피 목록으로 돌아가기</a>
+    </div>
+  </div>
 {% endblock %}
