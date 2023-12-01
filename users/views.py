@@ -10,8 +10,12 @@ from django.contrib.auth.password_validation import validate_password
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from services.models import Post # 20231129 메인화면에 게시글 보이게하려고
-
-
+from recipes.models import Recipe
+import random
+from googleapiclient.discovery import build
+from django.conf import settings
+from django.core.cache import cache
+from datetime import datetime, timedelta
 
 # 회원정보 변경
 def profile_edit_view(request):
@@ -277,10 +281,6 @@ def check_user(request):
 #                 messages.error(request, f"해당 아이디 또는 이메일로 된 사용자가 없습니다!")
 #     return render(request, 'users/find_password.html', {'form': form, 'password_changed': False})
 
-
-def index(request):
-    return render(request, 'users/index.html')
-
 def Information_Modification(request):
     return render(request, 'users/Information_Modification.html')
 
@@ -384,3 +384,13 @@ from django.urls import reverse
 #         return redirect('Information_Modification')
 #     # POST 요청이 아닐 경우 다른 처리
 #     # ...
+
+def recipe_random_list(request):
+    # 랜덤으로 5개의 레시피 가져오기
+    recipes = Recipe.objects.order_by('?')[:4]  # '?'를 사용하여 무작위로 가져옵니다.
+
+    context = {
+        'recipes': recipes
+    }
+
+    return render(request, 'users/index.html', context)

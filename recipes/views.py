@@ -149,3 +149,13 @@ def recommend_recipes(classes):
     recommended_recipes.sort(key=lambda x: x['count_ratio'], reverse=True)
 
     return recommended_recipes
+
+def recipe_random_list(request):
+    # 랜덤으로 5개의 레시피 가져오기
+    recipes = Recipe.objects.order_by('?')[:5]  # '?'를 사용하여 무작위로 가져옵니다.
+
+    context = {
+        'recipes': recipes
+    }
+
+    return render(request, 'users/index.html', context)
