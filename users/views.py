@@ -291,7 +291,7 @@ def Withdrawal(request):
 def profile_edit(request):
     return render(request, 'users/profile_edit.html')
 
-# # 20231128 프로필 메인화면
+# 20231128 프로필 메인화면
 from django.shortcuts import render, get_object_or_404
 from .models import Profile
 from django.contrib import messages
