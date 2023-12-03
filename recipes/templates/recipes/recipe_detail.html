@@ -17,7 +17,7 @@
                 </ul>
             </li>
             <li>
-                <a href="{% url 'index' %}">프로필</a>
+                <a href="{% url 'Information_Modification' %}">프로필</a>
             </li>
             <li>
                 <a href="{% url 'post_list' %}">게시판</a>
@@ -26,33 +26,31 @@
     </div>
     <img src="{{ recipe.food_photo.url }}" alt="음식 사진" width="300" height="200">
     <div class="recipe_details_wrap">
-      <div class="recipe_view">
-        <div class="title">
-          {{ recipe.food_name }}
+        <div class="recipe_view">
+            <div class="title">
+                {{ recipe.food_name }}
+            </div>
+            <div class="ingredients">
+                {{ recipe.ingredients }}
+            </div>
+            <div class="info">
+                {{ recipe.recipe_steps|linebreaks }}
+            </div>
         </div>
-        <div class="ingredients">
-          {{ recipe.ingredients }}
-        </div>
-        <div class="info">
-          {{ recipe.recipe_steps|linebreaks }}
-        </div>
-      </div>
     </div>
-                <!-- 새로운 모델에 저장하는 버튼 -->
-  <form method="post" action="{% url 'save_to_new_model' recipe.id %}">
-    {% csrf_token %}
-    <button type="submit">즐겨찾기</button>
-  </form>
-
-<!-- 새로운 모델에서 삭제하는 버튼 -->
-
-  <form method="post" action="{% url 'delete_from_new_model' recipe.id %}">
-      {% csrf_token %}
-      <button type="submit">즐겨찾기 삭제</button>
-  </form>
+    <div class="button-group">          <!-- 새로운 모델에 저장하는 버튼 -->
+        <form method="post" action="{% url 'save_to_new_model' recipe.id %}">
+            {% csrf_token %}
+            <button type="submit" class="favorite-btn">즐겨찾기</button>
+        </form>
+    <!-- 새로운 모델에서 삭제하는 버튼 -->
+        <form method="post" action="{% url 'delete_from_new_model' recipe.id %}">
+            {% csrf_token %}
+            <button type="submit" class="delete-favorite-btn">즐겨찾기 삭제</button>
+        </form>
     </div>
-  </div>
     <div class="bt_wrap">
       <a href="{% url 'recipe_list' %}" class="back-link">레시피 목록으로 돌아가기</a>
-
+    </div>
+  </div>
 {% endblock %}

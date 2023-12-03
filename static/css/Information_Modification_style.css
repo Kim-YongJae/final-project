@@ -39,12 +39,44 @@ a{
     font-size: 30px;
 }
 
-.recommended_recipes{
+.user-info{
     margin-top: 50px;
 }
 
-.recommended_recipes strong{
+.user-info strong{
     font-size: 30px;
+}
+
+.my_write{
+    margin-top: 50px;
+}
+
+.my_write strong{
+    font-size: 30px;
+}
+
+.favorite{
+    margin-top: 50px;
+}
+
+.favorite strong{
+    font-size: 30px;
+}
+
+.info{
+    width: 100%;
+    border-top: 2px solid #000;
+    margin-top: 20px;
+}
+
+.info ul {
+    margin-top: 20px; /* 리스트와 위 요소 간격 설정 */
+    list-style-type: none;
+    padding: 0;
+}
+
+.info ul li {
+    margin-bottom: 20px; /* 리스트 아이템들 간격 설정 */
 }
 
 .bt_wrap2{
@@ -110,32 +142,42 @@ a{
     margin-bottom: 20px; /* 리스트 아이템들 간격 설정 */
 }
 
-.recommend a{
-    font-weight: bold;
-}
-
-.recipes{
+.writes{
     width: 100%;
     border-top: 2px solid #000;
     margin-top: 20px;
 }
 
-.recipes ul {
+.writes .list-group {
     margin-top: 20px; /* 리스트와 위 요소 간격 설정 */
     list-style-type: none;
     padding: 0;
 }
 
-.recipes ul li {
-    margin-bottom: 20px; /* 리스트 아이템들 간격 설정 */
+.writes .list-group-item {
+    border: none;
+    margin-bottom: 20px;
+    list-style-type: none;
+    padding: 0;
 }
 
-.require-ingredient {
-    margin-left: 20px; /* '부족한 재료' 제목의 왼쪽 마진 설정 */
+.favorite-section{
+    width: 100%;
+    border-top: 2px solid #000;
+    margin-top: 20px;
 }
 
-.require-ingredients {
-    margin-left: 40px; /* 재료 리스트 아이템의 왼쪽 마진 설정 */
+.favorite-section .list-group {
+    margin-top: 20px; /* 리스트와 위 요소 간격 설정 */
+    list-style-type: none;
+    padding: 0;
+}
+
+.favorite-section .list-group-item {
+    border: none;
+    margin-bottom: 20px;
+    list-style-type: none;
+    padding: 0;
 }
 
 .board_list{
@@ -254,7 +296,7 @@ button:hover{
     color: white;
 }
 
-#upload-form {
+#profile-upload-form {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -303,4 +345,21 @@ button:hover{
 
 .nav > li:last-child {
     margin-right: 0; /* 마지막 아이템의 간격 제거 */
+}
+
+.profile-picture img{
+    margin-bottom: 10px;
+    width: 300px; /* 이미지의 가로 크기 */
+    height: 200px; /* 이미지의 세로 크기 */
+    background-color: #f0f0f0; /* 비어있는 공간의 배경색 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.profile-picture img img{
+    width: 300px; /* 이미지의 가로 크기 */
+    height: 200px; /* 이미지의 세로 크기 */
+    object-fit: cover;
 }

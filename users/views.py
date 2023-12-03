@@ -278,18 +278,8 @@ def check_user(request):
 #                 messages.error(request, f"해당 아이디 또는 이메일로 된 사용자가 없습니다!")
 #     return render(request, 'users/find_password.html', {'form': form, 'password_changed': False})
 
-<<<<<<< HEAD
-
-def index(request):
-    return render(request, 'users/index.html')
-
-# def Information_Modification(request):
-#     return render(request, 'users/Information_Modification.html')
-=======
 def Information_Modification(request):
     return render(request, 'users/Information_Modification.html')
->>>>>>> main
-
 
 def Withdrawal(request):
     return render(request, 'users/Withdrawal.html')

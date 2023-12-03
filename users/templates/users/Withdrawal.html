@@ -1,52 +1,66 @@
 {% extends 'base.html' %}
 {% block content %}
-<style>
-    .container {
-        width: 50%;
-        margin: auto;
-    }
-.profile_title {
-        padding-right: 20px;
-    }
-</style>
+
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/Withdrawal_style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Withdrawal_style.css' %}">
     <div class="board_wrap">
-        <div class="board_title">
-            <h3 class="mb-0" style="text-align: center;">회원탈퇴</h3>
+        <div class="nav_bar">
+            <ul class="nav">
+                <li>
+                    <a href="{% url 'index' %}">메인</a>
+                </li>
+                <li>
+                    <a href="{% url 'detect_ingredients' %}">레시피</a>
+                    <ul>
+                        <li><a href="{% url 'detect_ingredients' %}">레시피 추천</a></li>
+                        <li><a href="{% url 'recipe_list' %}">레시피 리스트</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="{% url 'Information_Modification' %}">프로필</a>
+                </li>
+                <li>
+                    <a href="{% url 'post_list' %}">게시판</a>
+                </li>
+            </ul>
         </div>
-        <div class="board_view">
-            <table style="color:black; margin-left:10px;">
-                <tr>
-                    <td class="profile_title">아이디</td>
-                    <td class="profile_content">{{ user.username }}</td>
-                </tr>
-                <tr>
-                    <td class="profile_title">이메일</td>
-                    <td class="profile_content">{{ user.email }}</td>
-                </tr>
-                <tr>
-                    <td class="profile_title">성</td>
-                    <td class="profile_content">{{ user.last_name }}</td>
-                </tr>
-                <tr>
-                    <td class="profile_title">이름</td>
-                    <td class="profile_content">{{ user.first_name }}</td>
-                </tr>
-            </table>
-            <hr>
-            <div style="text-align: center;">
-            <!-- <div style="margin-left: 10px;"> -->
-                <p>정말로 회원 탈퇴하시겠습니까?</p>
-                <form id="withdrawalForm" method="post" action="{% url 'delete_account' %}">
-                    {% csrf_token %}
-                    <div>
-                        <input type="text" name="confirmation" id="confirmation" placeholder="회원탈퇴" required>
-                    </div>
-                    <div>
-                        <button class="btn" type="button" name="withdrawal_Button" name="withdrawal_Button" value="회원탈퇴" onclick="confirmWithdrawal()">회원 탈퇴</button>
-                    </div>
-                </form>
+        <div class="board_wrap_withdrawal">
+            <div class="board_title">
+                <h3 class="mb-0" style="text-align: center;">회원탈퇴</h3>
+            </div>
+            <div class="board_view">
+                <table style="color:black; margin-left:10px;">
+                    <tr>
+                        <td class="profile_title">아이디</td>
+                        <td class="profile_content">{{ user.username }}</td>
+                    </tr>
+                    <tr>
+                        <td class="profile_title">이메일</td>
+                        <td class="profile_content">{{ user.email }}</td>
+                    </tr>
+                    <tr>
+                        <td class="profile_title">성</td>
+                        <td class="profile_content">{{ user.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <td class="profile_title">이름</td>
+                        <td class="profile_content">{{ user.first_name }}</td>
+                    </tr>
+                </table>
+                <hr>
+                <div style="text-align: center;">
+                <!-- <div style="margin-left: 10px;"> -->
+                    <p>정말로 회원 탈퇴하시겠습니까?</p>
+                    <form id="withdrawalForm" method="post" action="{% url 'delete_account' %}">
+                        {% csrf_token %}
+                        <div>
+                            <input type="text" name="confirmation" id="confirmation" placeholder="회원탈퇴" required>
+                        </div>
+                        <div>
+                            <button class="btn" type="button" name="withdrawal_Button" name="withdrawal_Button" value="회원탈퇴" onclick="confirmWithdrawal()">회원 탈퇴</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

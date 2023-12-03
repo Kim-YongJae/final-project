@@ -217,3 +217,30 @@ a{
 .nav > li:last-child {
     margin-right: 0; /* 마지막 아이템의 간격 제거 */
 }
+
+.button-group {
+    text-align: right; /* 내용을 오른쪽으로 정렬 */
+}
+
+.favorite-btn,
+.delete-favorite-btn {
+    margin-top: 2px;
+    padding: 3px 5px; /* 위아래 5px, 좌우 10px의 안쪽 여백 */
+    border: 1px solid #000;
+    border-radius: 2px;
+    background-color: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    outline: none;
+    font-size: 12px; /* 버튼의 글자 크기 */
+    width: auto; /* 필요한 경우, 버튼의 너비를 자동으로 조정 */
+    height: auto;
+
+}
+
+.favorite-btn:hover,
+.delete-favorite-btn:hover {
+    background-color: black;
+    color: white;
+}

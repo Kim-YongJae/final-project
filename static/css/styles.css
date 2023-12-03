@@ -102,6 +102,18 @@ body {
   background-color: var(--bs-body-bg);
   -webkit-text-size-adjust: 100%;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  padding-bottom: 100px; /* footer 높이만큼 아래 여백 추가 */
+  box-sizing: border-box; /* 브라우저 기본 패딩/마진 영향 제거 */
+  position: relative;
+}
+
+footer{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 
 hr {
