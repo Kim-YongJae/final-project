@@ -82,36 +82,34 @@
             </div>
         </div>
     </div>
-{% endblock content %}
-<!--
-<script>
-    document.getElementById('profile-upload-form').addEventListener('submit', function(event) {
-        event.preventDefault();
-        const fileInput = document.getElementById('file-input');
-        const formData = new FormData();
-        formData.append('profile_picture', fileInput.files[0]);
+    <script>
+        document.getElementById('profile-upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const fileInput = document.getElementById('file-input');
+            const formData = new FormData();
+            formData.append('profile_picture', fileInput.files[0]);
 
-        fetch('/upload_profile_picture/', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'X-CSRFToken': '{{ csrf_token }}'
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            }
-            throw new Error('Network response was not ok.');
-        })
-        .then(data => {
-            const imageUrl = data.profile_picture_url;
-            const profileImage = document.getElementById('profile-image');
-            profileImage.src = imageUrl;
-        })
-        .catch(error => {
-            console.error('There has been a problem with your fetch operation:', error);
+            fetch('/upload_profile_picture/', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(data => {
+                const imageUrl = data.profile_picture_url;
+                const profileImage = document.getElementById('profile-image');
+                profileImage.src = imageUrl;
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
         });
-    });
-</script>
--->
+    </script>
+{% endblock content %}
