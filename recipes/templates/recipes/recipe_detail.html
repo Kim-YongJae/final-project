@@ -38,6 +38,18 @@
             </div>
         </div>
     </div>
+<!-- 평점을 5점 만점으로 표시 -->
+<p>평점: {{ recipe.rating|default:0|floatformat:1 }}/5.0</p>
+
+<!-- 평점을 남기는 폼 -->
+<form method="post" action="{% url 'recipe_detail' recipe.id %}">
+    {% csrf_token %}
+    <label for="rating">평점 남기기:</label>
+    <input type="number" name="rating" min="0" max="5" step="0.1" required>
+    <button type="submit" class="favorite-btn">평가하기</button>
+</form>
+
+
     <div class="button-group">          <!-- 새로운 모델에 저장하는 버튼 -->
         <form method="post" action="{% url 'save_to_new_model' recipe.id %}">
             {% csrf_token %}

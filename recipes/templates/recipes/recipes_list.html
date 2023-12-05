@@ -28,15 +28,19 @@
         </div>
         <div class="board_title">
             <strong>레시피</strong>
-            <p>이곳은 레시피 목록입니다.</p>
+                        <!-- 최고 평점순으로 정렬하는 버튼 추가 -->
+            <form method="get" action="{% url 'recipe_list' %}">
+                <button type="submit" name="sort" value="highest_rating" class="favorite-btn">평점순</button>
+            </form>
         </div>
         <div class="board_list_wrap">
             <div class="board_list">
+
                 {% for recipe in recipe_list %}
                 <div>
                     <div class="id">{{ recipe.id }}</div>
                     <div class="food_name">
-                        <li><a href="{% url 'recipe_detail' recipe.id %}">{{ recipe.food_name }}</a></li>
+                        <li><a href="{% url 'recipe_detail' recipe.id %}">{{ recipe.food_name }} 평점: {{ recipe.rating|default:0|floatformat:1 }}/5.0</a></li>
                     </div>
                 </div>
                 {% endfor %}

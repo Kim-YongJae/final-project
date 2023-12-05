@@ -1,12 +1,12 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+
 from django.db import connection
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.core.paginator import Paginator
 from recipes.models import Recipe,favorite
-
+from django.contrib.auth.mixins import LoginRequiredMixin
 import json
-
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 from django.shortcuts import render
 from .forms import ImageUploadForm
@@ -31,6 +31,7 @@ Ingredient_List = ['마늘', '대파', '양파', '고추', '당근', '김치', '
 
 
 def detect_ingredients(request):
+
     if request.method == 'POST':
         form = ImageUploadForm(request.POST, request.FILES)
         if form.is_valid():
@@ -48,9 +49,10 @@ def detect_ingredients(request):
 
             # YOLOv5 모델 불러오기
 
-            model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:/Users/funny/OneDrive/바탕 화면/yolov5x/best.pt')
+            model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:/Users/jdu/Desktop/Project 2/best_yolov5x.pt')
             # path= C:/Users/funny/OneDrive/바탕 화면/yolov5x/best.pt
             # path= C:/Users/chqh1/Desktop/yolov5x 2차 결과/yolov5x 2차 결과/best.pt
+            # path = 'C:/Users/jdu/Desktop/Project 2/best.pt'
 
             # 이미지 불러오기 및 객체 탐지 수행
             img = Image.open(img_path)
@@ -84,21 +86,51 @@ def detect_ingredients(request):
         form = ImageUploadForm()
     return render(request, 'recipes/recommend_recipe.html', {'form': form})
 
-class RecipeList(View):
+class RecipeList(LoginRequiredMixin,View):
+    login_url = '/login/'  # 로그인 페이지의 URL로 수정해주세요
     def get(self, request):
-        recipes = Recipe.objects.all().order_by('id')    # 모든 Recipe 객체를 가져와서 ID 기준으로 오름차순 정렬
-        paginator = Paginator(recipes, 10)      # Paginator를 사용하여 10개씩 페이지로 나눔
-        page_number = request.GET.get("page")           # URL에서 'page' 매개변수를 가져와서 현재 페이지 번호를 설정
-        recipe_list = paginator.get_page(page_number)    # 현재 페이지의 Recipe 객체들을 가져옴
-        context = {'recipe_list': recipe_list}             # templet에 넣을 데이터 설정
-        return render(request, 'recipes/recipes_list.html', context) # 렌더링
+        # 정렬 옵션 가져오기
+        sort_option = request.GET.get('sort', '')
 
-class RecipeDetail(View):
+        # 레시피 목록 가져오기
+        if sort_option == 'highest_rating':
+            recipes = Recipe.objects.all().order_by('-rating')
+        else:
+            recipes = Recipe.objects.all().order_by('id')
+
+        # 페이지네이션 설정
+        paginator = Paginator(recipes, 10)
+        page_number = request.GET.get("page")
+        recipe_list = paginator.get_page(page_number)
+
+        context = {'recipe_list': recipe_list}
+        return render(request, 'recipes/recipes_list.html', context)
+
+class RecipeDetail(LoginRequiredMixin,View):
+    login_url = '/login/'  # 로그인 페이지의 URL로 수정해주세요
     def upload_image(self, request):
         recipe_photo = Recipe.objects.all()
         return render(request, 'recipes/recipe_detail.html',{'recipe_photo': recipe_photo})
     def get(self, request, recipe_id):
         recipe = get_object_or_404(Recipe, pk=recipe_id)  # 주어진 recipe_id에 해당하는 Recipe 객체를 가져오거나, 객체가 없으면 404 에러를 나타냄
+        context = {'recipe': recipe}
+        return render(request, 'recipes/recipe_detail.html', context)
+
+    def post(self, request, recipe_id):
+        recipe = get_object_or_404(Recipe, pk=recipe_id)
+
+        if request.method == 'POST':
+            # 사용자가 평점을 남긴 경우
+            rating = float(request.POST.get('rating'))
+            # 현재 레시피의 총 평점과 평가 횟수 업데이트
+            recipe.rating = ((recipe.rating * recipe.rating_count) + rating) / (recipe.rating_count + 1)
+            recipe.rating_count += 1
+            # 모델 저장
+            recipe.save()
+
+            # 업데이트된 레시피 다시 가져오기
+            recipe = get_object_or_404(Recipe, pk=recipe_id)
+
         context = {'recipe': recipe}
         return render(request, 'recipes/recipe_detail.html', context)
 

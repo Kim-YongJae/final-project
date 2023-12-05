@@ -17,7 +17,7 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="{% url 'index' %}">프로필</a>
+                    <a href="{% url 'Information_Modification' %}">프로필</a>
                 </li>
                 <li>
                     <a href="{% url 'post_list' %}">게시판</a>
@@ -82,8 +82,7 @@
             </div>
         </div>
     </div>
-{% endblock content %}
-<!--
+
 <script>
     document.getElementById('profile-upload-form').addEventListener('submit', function(event) {
         event.preventDefault();
@@ -114,4 +113,8 @@
         });
     });
 </script>
--->
+
+
+{% endblock content %}
+
+
