@@ -278,8 +278,8 @@ def check_user(request):
 #                 messages.error(request, f"해당 아이디 또는 이메일로 된 사용자가 없습니다!")
 #     return render(request, 'users/find_password.html', {'form': form, 'password_changed': False})
 
-def Information_Modification(request):
-    return render(request, 'users/Information_Modification.html')
+# def Information_Modification(request):
+#     return render(request, 'users/Information_Modification.html')
 
 def Withdrawal(request):
     return render(request, 'users/Withdrawal.html')
@@ -294,7 +294,9 @@ from .models import Profile
 from django.contrib import messages
 
 # 20231129 프로필사진, 게시글까지 추가
+
 def Information_Modification(request):
+
     try:
         # 사용자의 프로필 정보 가져오기
         user_profile = Profile.objects.get(user=request.user)
@@ -307,13 +309,7 @@ def Information_Modification(request):
 
         if request.method == 'POST':
             if 'profile_picture' in request.FILES:
-                profile_picture = request.FILES['profile_picture']
-                user_profile.profile_picture = profile_picture
-                user_profile.save()
-                messages.success(request, "프로필 이미지가 업데이트되었습니다.")
-                # 업데이트된 프로필 정보를 다시 가져옵니다
-                user_profile = Profile.objects.get(user=request.user)
-                return render(request, 'users/Information_Modification.html', {'user_profile': user_profile, 'user_posts': user_posts, 'recent_favorites': recent_favorites})
+                return upload_profile_picture
 
         return render(request, 'users/Information_Modification.html', {'user_profile': user_profile, 'user_posts': user_posts, 'recent_favorites': recent_favorites})
     except Profile.DoesNotExist:

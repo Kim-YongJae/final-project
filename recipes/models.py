@@ -12,6 +12,9 @@ class Recipe(models.Model):
     recipe_steps = models.TextField()
     label = models.JSONField(default=list)
     food_photo = models.ImageField(upload_to='recipes/recipe_photos/', null=True, blank=True)
+    # 새로운 필드: 레시피 평점 및 평가 횟수
+    rating = models.FloatField(default=0.0)  # 기본값은 0.0으로 설정해둠
+    rating_count = models.PositiveIntegerField(default=0)
 
     # ArrayField(models.IntegerField()) sqlite에서 지원하지 않음 json.loads()를 통해서 리스트형태로 변환가능[]
 class favorite(models.Model):
