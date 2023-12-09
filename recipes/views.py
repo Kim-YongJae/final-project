@@ -49,6 +49,7 @@ def detect_ingredients(request):
             # YOLOv5 모델 불러오기
 
             model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:/Users/funny/OneDrive/바탕 화면/yolov5x/best.pt')
+            # path= C:/Users/funny/Downloads/yolov5m_train+test_15epoch_1/yolov5m_train+test_15epoch_1/best.pt
             # path= C:/Users/funny/OneDrive/바탕 화면/yolov5x/best.pt
             # path= C:/Users/chqh1/Desktop/yolov5x 2차 결과/yolov5x 2차 결과/best.pt
 
