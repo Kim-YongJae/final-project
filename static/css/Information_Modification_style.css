@@ -2,6 +2,7 @@
 *{
     margin: 0;
     padding: 0;
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
 ul,li{
@@ -13,22 +14,119 @@ a{
     color: inherit;
 }
 
-.board_wrap{
-    width: 1000px;
-    margin: 100px auto;
+contents{
+    font-size: 20px;
+    font-weight: lighter;
 }
 
-.board_title{
-    margin-bottom: 30px;
-}
-
-.board_title strong{
-    font-size: 30px;
-}
-
-.board_title p{
-    margin-top: 5px;
+contents3{
     font-size: 14px;
+    font-weight: 100;
+}
+
+.cont{
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.board_wrap{
+    width: 1878px;
+    margin: 55px auto;
+}
+
+.nav_bar{
+    width: 100%;
+    height: 400px;
+    background-image: url('/static/assets/img/main.png');
+}
+
+.nav > li ul{
+    display: none;
+    position: absolute;
+    padding: 0;
+    font-size: 15px;
+}
+
+.nav > li:hover ul{
+    display: block;
+    position: absolute;
+}
+
+.nav {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    padding: 0;
+}
+
+.nav a{
+    color: black;
+}
+
+.nav a:hover{
+    color: black;
+}
+
+.nav > li {
+    display: inline-block;
+    margin: 0;
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 30px;
+}
+
+.nav > li:last-child {
+    margin-right: 0; /* 마지막 아이템의 간격 제거 */
+}
+
+.amount{
+    position: relative;
+    top: -66px;
+    display: flex;
+    width: 1280px;
+    margin: auto;
+    background: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.amount > li{
+    flex: 1;
+    height: 132px;
+}
+
+.amount > li > div{
+    text-align: center;
+    font-weight: bold;
+    margin-top: 50px;
+    height: 57px;
+}
+
+.amount > li:not(:last-child) > div{
+    border-right: 1px solid #E1E1E1;
+}
+
+.main_text0,
+.main_text0_user,
+.main_text0_write,
+.main_text0_favorite{
+    width: 100%;
+    height: 601px;
+    margin-top: -132px;
+}
+
+.main_text0 > h1,
+.main_text0_user > h1,
+.main_text0_write > h1,
+.main_text0_favorite > h1{
+    padding-top: 116px;
+    text-align: center;
+}
+
+.main_text0 > .contents1,
+.main_text0_user > .contents1
+.main_text0_write > .contents1
+.main_text0_favorite > .contents1{
+    text-align: center;
 }
 
 .ingredients{
@@ -41,25 +139,37 @@ a{
 
 .user-info{
     margin-top: 50px;
+    width: 1280px;
+    height: 302px;
+    margin: auto;
+    padding: 0;
 }
 
-.user-info strong{
+.user-info h1{
     font-size: 30px;
 }
 
 .my_write{
     margin-top: 50px;
+    width: 1280px;
+    height: 302px;
+    margin: auto;
+    padding: 0;
 }
 
-.my_write strong{
+.my_write h1{
     font-size: 30px;
 }
 
 .favorite{
     margin-top: 50px;
+    width: 1280px;
+    height: 302px;
+    margin: auto;
+    padding: 0;
 }
 
-.favorite strong{
+.favorite h1{
     font-size: 30px;
 }
 
@@ -109,6 +219,11 @@ a{
     background-color: black;
     color: white;
 }
+
+.profile-picture{
+    margin-top: 20px;
+}
+
 .img{
     margin-bottom: 10px;
     width: 300px; /* 이미지의 가로 크기 */
@@ -310,41 +425,6 @@ button:hover{
     width: auto; /* 필요한 경우, 버튼의 너비를 자동으로 조정 */
     height: auto;
 
-}
-
-.nav_bar{
-    width: 100%;
-    margin-bottom: 100px;
-}
-
-.nav > li ul{
-    display: none;
-    position: absolute;
-    padding: 0;
-    font-size: 15px;
-    font-weight: 0;
-}
-
-.nav > li:hover ul{
-    display: block;
-    position: absolute;
-}
-.nav {
-    display: flex;
-    justify-content: space-around;
-    list-style: none;
-    padding: 0;
-}
-
-.nav > li {
-    display: inline-block;
-    margin: 0;
-    font-size: 30px;
-    font-weight: 550;
-}
-
-.nav > li:last-child {
-    margin-right: 0; /* 마지막 아이템의 간격 제거 */
 }
 
 .profile-picture img{

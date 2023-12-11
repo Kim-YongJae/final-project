@@ -3,6 +3,9 @@
 {% load static %}
 {% block content %}
     <link href="{% static 'css/recommend_recipe_style.css' %}" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
     <div class="board_wrap">
         <div class="nav_bar">
             <ul class="nav">
@@ -24,51 +27,75 @@
                 </li>
             </ul>
         </div>
-        <div class="board_title">
-            <strong>레시피 추천</strong>
-            <p>가지고 있는 재료에 맞는 레시피를 추천해드립니다.</p>
+        <div class="amount">
+            <li>
+                <div>
+                    <div>맛있게</div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <div>쉽게</div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <div>즐겁게</div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <div>행복하게</div>
+                </div>
+            </li>
         </div>
-        <div class="img">
-            {% if uploaded_image_url %}
-                <img src="{{ uploaded_image_url }}" alt="">
-            {% endif %}
-        </div>
-        <form method="post" enctype="multipart/form-data" id="upload-form">
-            {% csrf_token %}
-            {{ form }}
-            <button type="submit" class="Upload">Upload</button>
-        </form>
-        <div class="ingredients">
-            <strong>탐지된 식재료</strong>
-            <div class="detected_classes">
-                <ul>
-                    {% for ingredient in detected_classes %}
-                        <li>{{ ingredient }}</li>
-                    {% endfor %}
-                </ul>
+        <div class="main_text0">
+            <h1>이미지</h1>
+            <div class="contents1">탐지할 이미지를 올려주세요.</div>
+            <div class="img">
+                {% if uploaded_image_url %}
+                    <img src="{{ uploaded_image_url }}" alt="">
+                {% endif %}
             </div>
+            <form method="post" enctype="multipart/form-data" id="upload-form">
+                {% csrf_token %}
+                {{ form }}
+                <button type="submit" class="Upload">Upload</button>
+            </form>
         </div>
-        <div class="recommended_recipes">
-            <strong>추천 레시피</strong>
-            <div class="recipes">
-                {% if recommended_recipes %}
-                    <ul>
-                        {% for recipe in recommended_recipes %}
-                            <li class="recommend">
-                                <a href="{% url 'recipe_detail' recipe.id %}">{{ recipe.food_name }}</a>
-                            </li>
-                            {% if recipe.requirement %}
-                                <p class="require-ingredient">부족한 재료: </p>
-                                <ul>
-                                    {% for req in recipe.requirement %}
-                                        <li class="require-ingredients">{{ req }}</li>
-                                    {% endfor %}
-                                </ul>
-                            {% endif %}
+        <div class="main_text1">
+            <h1>레시피 추천</h1>
+            <div class="contents1">맛있는 레시피가 많아요.</div>
+            <div class="service">
+                <div class="contents2">
+                    <h1>재료 탐지</h1>
+                    <ul class="detect">
+                        {% for ingredient in detected_classes %}
+                            <li>{{ ingredient }}</li>
                         {% endfor %}
                     </ul>
-                {% endif %}
+                </div>
+                <div class="contents2">
+                    <h1>추천 레시피</h1>
+                    {% if recommended_recipes %}
+                        <ul>
+                            {% for recipe in recommended_recipes %}
+                                <li class="recommend">
+                                    <a href="{% url 'recipe_detail' recipe.id %}">{{ recipe.food_name }}</a>
+                                </li>
+                                {% if recipe.requirement %}
+                                    <p class="require-ingredient">부족한 재료:</p>
+                                    <ul>
+                                        {% for req in recipe.requirement %}
+                                            <li class="require-ingredients">{{ req }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
-{% endblock %}
+{% endblock content %}

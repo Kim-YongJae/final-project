@@ -2,6 +2,7 @@
 *{
     margin: 0;
     padding: 0;
+    font-family: 'Noto Sans KR', sans-serif;
 }
 
 ul,li{
@@ -13,155 +14,29 @@ a{
     color: inherit;
 }
 
+contents{
+    font-size: 20px;
+    font-weight: lighter;
+}
+
+contents3{
+    font-size: 14px;
+    font-weight: 100;
+}
+
+.cont{
+    font-size: 17px;
+    font-weight: bold;
+}
+
 .board_wrap{
-    width: 1000px;
-    margin: 100px auto;
-}
-
-.board_title{
-    margin-bottom: 30px;
-}
-
-.board_title strong{
-    font-size: 30px;
-}
-
-.board_title p{
-    margin-top: 5px;
-    font-size: 14px;
-}
-
-.bt_wrap2{
-    margin-top: 30px;
-    text-align: center;
-    font-size: 0px;
-}
-
-.bt_wrap2 a{
-    display: inline-block;
-    min-width: 80px;
-    margin-left: 10px;
-    padding: 10px;
-    border: 1px solid #000;
-    border-radius: 2px;
-    font-size: 14px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.bt_wrap2 a:first-child{
-    margin-left: 0;
-}
-
-.bt_wrap2 a.on{
-    background: #000;
-    color: #fff;
-}
-
-.bt_wrap2 a:hover{
-    background-color: black;
-    color: white;
-}
-
-.board_list{
-    width: 100%;
-    border-top: 2px solid #000;
-}
-
-.board_list > div{
-    border-bottom: 1px solid #ddd;
-    font-size: 0;
-}
-
-.board_list > div.top{
-    border-bottom: 1px solid #999;
-}
-
-.board_list > div:last-child{
-    border-bottom: 1px solid #000;
-}
-
-.board_list > div > div{
-    display: inline-block;
-    padding: 15px 0;
-    text-align: center;
-    font-size: 14px;
-}
-
-.board_list > div.top > div{
-    font-weight: 600;
-}
-
-.board_list .num{
-    width: 10%;
-    vertical-align: middle;
-}
-
-.board_list .title{
-    width: 60%;
-    text-align: left;
-    vertical-align: middle;
-}
-
-.board_list .top .title{
-    text-align: center;
-}
-
-.board_list .writer{
-    width: 10%;
-    vertical-align: middle;
-}
-
-.board_list .date{
-    width: 10%;
-    vertical-align: middle;
-}
-
-.board_list .count{
-    width: 10%;
-    vertical-align: middle;
-}
-
-.board_page{
-    margin-top: 30px;
-    text-align: center;
-    font-size: 0;
-}
-
-.board_page a{
-    display: inline-block;
-    width: 32px;
-    height: 32px;
-    box-sizing: border-box;
-    vertical-align: middle;
-    border: 1px solid #ddd;
-    border-left: 0;
-    line-height: 100%;
-}
-
-.board_page a.bt{
-    padding-top: 7.5px;
-    font-size: 12px;
-    letter-spacing: -1px;
-}
-
-.board_page a.num{
-    padding-top: 6.5px;
-    font-size: 14px;
-}
-
-.board_page a.num.on{
-    border-color: #000;
-    background: #000;
-    color: #fff;
-}
-
-.board_page a:first-child {
-    border-left: 1px solid #ddd;
+    width: 1878px;
+    margin: 55px auto;
 }
 
 .nav_bar{
     width: 100%;
-    margin-bottom: 100px;
+    height: 718px;
 }
 
 .nav > li ul{
@@ -169,13 +44,13 @@ a{
     position: absolute;
     padding: 0;
     font-size: 15px;
-    font-weight: 0;
 }
 
 .nav > li:hover ul{
     display: block;
     position: absolute;
 }
+
 .nav {
     display: flex;
     justify-content: space-around;
@@ -183,133 +58,157 @@ a{
     padding: 0;
 }
 
+.nav a{
+    color: black;
+}
+
+.nav a:hover{
+    color: black;
+}
+
 .nav > li {
     display: inline-block;
     margin: 0;
     font-size: 30px;
-    font-weight: 550;
+    font-weight: bold;
+    margin-top: 30px;
 }
 
 .nav > li:last-child {
     margin-right: 0; /* 마지막 아이템의 간격 제거 */
 }
 
-.banner {
-    /* 이전 CSS 속성들 유지 */
-    /*background-image: url('/static/assets/img/ingredients2.jpg');*/
-    background-color: #f0f0f0;
-    background-size: cover;
-    border-radius: 10px;
-    display: flex;
-    flex-direction: column;
-    padding-top: 30px; /* 상단 여백을 조절하세요 */
-    padding-bottom: 30px; /* 하단 여백을 조절하세요 */
-    margin-bottom: 10px;
+.welcome-message{
+    margin: 230px auto 244px auto;
+    color: black;
 }
 
-.jumbotron {
-    margin-bottom: 20px; /* jumbotron과 introduction-section 사이의 간격을 조절하세요 */
+.welcome-message > h2{
+    font-size: 20px;
     text-align: right;
-    margin-right: 30px;
-}
-
-.introduction-section {
-    margin-top: 20px; /* introduction-section과 상단 여백 사이의 간격을 조절하세요 */
-    text-align: left;
-    margin-left: 30px;
-}
-
-.introduction-section h1{
-    margin-bottom: 30px;
-}
-
-.img-container {
-    display: flex;
-    flex-wrap: nowrap; /* 줄 바꿈 없이 요소들을 가로로 나열 */
-    overflow-x: auto; /* 요소들이 넘칠 경우 가로 스크롤 생성 */
-    gap: 10px; /* 요소들 간의 간격 설정 */
-}
-
-.video {
-    flex: 0 0 auto; /* 요소들의 크기를 자동으로 조정하지 않고 고정 크기 유지 */
-    width: 300px; /* 각각의 요소 너비를 조정할 수 있습니다. 필요에 따라 변경하세요 */
-}
-
-/* 추가적인 스타일링은 필요에 따라 적용하세요 */
-.video iframe {
-    width: 100%;
-}
-
-.card {
-    margin-bottom: 10px; /* 카드 사이 간격 조절 */
-    width: 14.5rem; /* 카드 폭 조절 */
-    background-color: #fff; /* 카드 배경을 흰색으로 설정 */
-    color: #000; /* 텍스트 색상을 검은색으로 설정 */
-    border: 1px solid #000; /* 테두리를 검은색으로 설정 */
-}
-
-.card:hover {
-    border-color: #555; /* 호버 시 테두리 색상 변경 */
-}
-
-/*
-.jumbotron {
-    background-image: url('{% static "assets/img/ingredients.jpg" %}');
-    background-size: cover;
-    background-position: center;
-    color: #fff;
-    text-align: right;
-    padding: 10px;
-    margin-bottom: 30px;
-}
-
-.welcome-message {
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.introduction-section {
-    background-image: url('{% static "assets/img/intro-bg1.jpg" %}');
-    background-size: cover;
-    background-position: center;
-    color: #fff;
-    text-align: left;
-    padding: 50px;
-    margin-bottom: 30px;
-}
-
-.introduction-section h1 {
+    padding-right: 30px;
     margin-bottom: 20px;
-    font-size: 36px;
-    color: #fffacd;
+    font-weight: 600;
 }
 
-.introduction-section p {
-    font-size: 18px;
-    line-height: 1.6;
-    text-align: left;
-    color: #FFFFFF;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+.welcome-message > h1{
+    text-align: center;
+    font-size: 48px;
+    font-weight: 600;
+}
+
+.welcome-message > h4{
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
 }
 
 .recipe-section {
-    margin-bottom: 30px;
-}
-
-.img-container {
     display: flex;
-    justify-content: space-between;
-    margin: 0 -10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    background-color: red;
 }
 
-.video {
+.amount{
+    position: relative;
+    top: -66px;
+    display: flex;
+    width: 1280px;
+    margin: auto;
+    background: white;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.amount > li{
     flex: 1;
-    margin: 0 10px;
+    height: 132px;
 }
 
-.video iframe {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.amount > li > div{
+    text-align: center;
+    font-weight: bold;
+    margin-top: 50px;
+    height: 57px;
 }
-*/
+
+.amount > li:not(:last-child) > div{
+    border-right: 1px solid #E1E1E1;
+}
+
+.main_text0{
+    width: 100%;
+    height: 601px;
+    margin-top: -132px;
+    background: #f1f2f3;
+}
+
+.main_text0 > h1{
+    padding-top: 116px;
+    text-align: center;
+}
+
+.main_text0 > .contents1{
+    text-align: center;
+}
+
+.icons{
+    display: flex;
+    width: 1280px;
+    height: 302px;
+    margin: auto;
+    padding: 0;
+}
+
+.icons > li{
+    flex: 1;
+    background: white;
+    margin-top: 49px;
+    height: 302px;
+    text-align: center;
+}
+
+.icons > li > .icon_img{
+    margin-top: 36px;
+    margin-bottom: 10px;
+}
+
+.icons > li:not(:last-child){
+    margin-right: 20px;
+}
+
+.icons .contents3{
+    width: 215px;
+    margin: auto;
+    letter-spacing: -1px;
+}
+
+.main_text1{
+    width: 100%;
+    height: 659px;
+}
+
+.main_text1 > h1{
+    padding-top: 50px;
+    text-align: center;
+}
+
+.main_text1 > .contents1{
+    text-align: center;
+}
+
+.service{
+    width: 1280px;
+    display: flex;
+    margin: 49px auto;
+    height: 427px;
+}
+
+.service > .contents2{
+    padding: 20px;
+}
+
+.service > .contents2 > h2{
+    margin-bottom: 27px;
+}

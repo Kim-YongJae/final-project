@@ -4,6 +4,9 @@
 {% load static %}
 {% block content %}
     <link href="{% static 'css/post_detail_style.css' %}" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
     <div class="board_wrap">
         <div class="nav_bar">
             <ul class="nav">
@@ -25,92 +28,114 @@
                 </li>
             </ul>
         </div>
-        <div class="board_title">
-            <strong>게시판</strong>
-            <p>이곳은 커뮤니티입니다.</p>
+        <div class="amount">
+            <li>
+                <div>
+                    <div>맛있게</div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <div>쉽게</div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <div>즐겁게</div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <div>행복하게</div>
+                </div>
+            </li>
         </div>
-        <div class="board_view_wrap">
-            <div class="board_view">
-                <div class="title">
-                    {{ post.title }}
+        <div class="main_text0">
+            <h1>게시판</h1>
+            <div class="contents1">다같이 소통해요.</div>
+            <div class="board_view_wrap">
+                <div class="board_view">
+                    <div class="title">
+                        {{ post.title }}
+                    </div>
+                    <div class="info">
+                        <dl>
+                            <dt>번호</dt>
+                            <dt>{{ post.id }}</dt>
+                        </dl>
+                        <dl>
+                            <dt>글쓴이</dt>
+                            <dt>{{ post.author.username }}</dt>
+                        </dl>
+                        <dl>
+                            <dt>작성일</dt>
+                            <dt>{{ post.created_at|date:"Y.m.d H:i:s" }}</dt>
+                        </dl>
+                        <dl>
+                            <dt>조회</dt>
+                            <dt>{{ post.views }}</dt>
+                        </dl>
+                    </div>
+                    <div class="cont">
+                        {{ post.content | safe }}
+                    </div>
                 </div>
-                <div class="info">
-                    <dl>
-                        <dt>번호</dt>
-                        <dt>{{ post.id }}</dt>
-                    </dl>
-                    <dl>
-                        <dt>글쓴이</dt>
-                        <dt>{{ post.author.username }}</dt>
-                    </dl>
-                    <dl>
-                        <dt>작성일</dt>
-                        <dt>{{ post.created_at|date:"Y.m.d H:i:s" }}</dt>
-                    </dl>
-                    <dl>
-                        <dt>조회</dt>
-                        <dt>{{ post.views }}</dt>
-                    </dl>
+                {% if user.is_authenticated %}
+                    {% if post.author != user %}
+                    {% else %}
+                        <div class="bt_wrap">
+                            <a href="{% url 'post_edit' post.pk %}">수정</a>
+                            <a href="#" class="delete-post" data-post-id="{{ post.pk }}">삭제</a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+                <div class="bt_wrap1">
+                    <a href="{% url 'post_list' %}">전체 글</a>
                 </div>
-                <div class="cont">
-                    {{ post.content | safe }}
-                </div>
-            </div>
-            {% if user.is_authenticated %}
-                {% if post.author != user %}
+                {% if not user.is_authenticated %}
+                    <div class="bt_wrap2">
+                        <a href="#" id="comment-new">댓글 쓰기</a>
+                    </div>
                 {% else %}
-                    <div class="bt_wrap">
-                        <a href="{% url 'post_edit' post.pk %}">수정</a>
-                        <a href="#" class="delete-post" data-post-id="{{ post.pk }}">삭제</a>
+                    <div class="bt_wrap2">
+                        <a href="{% url 'comment_new' post.pk %}">댓글 쓰기</a>
                     </div>
                 {% endif %}
-            {% endif %}
-            <div class="bt_wrap1">
-                <a href="{% url 'post_list' %}">전체 글</a>
-            </div>
-            {% if not user.is_authenticated %}
-                <div class="bt_wrap2">
-                    <a href="#" id="comment-new">댓글 쓰기</a>
+                <div class="comments-count">
+                    {% with total_comments=post.comment_set.all|length %}
+                        <strong>전체 댓글 {{ total_comments }}개</strong>
+                    {% endwith %}
                 </div>
-            {% else %}
-                <div class="bt_wrap2">
-                    <a href="{% url 'comment_new' post.pk %}">댓글 쓰기</a>
-                </div>
-            {% endif %}
-            <div class="comments-count">
-                {% with total_comments=post.comment_set.all|length %}
-                    <strong>전체 댓글 {{ total_comments }}개</strong>
-                {% endwith %}
-            </div>
-            <div class="comments-section">
-                {% if post.comment_set.all %}
-                    <ul class="comment-list">
-                        {% for comment in post.comment_set.all %}
-                            <li class="comment-item">
-                                <div class="comment-name">
-                                    <span>{{ comment.author.username }}</span>
-                                </div>
-                                <div class="comment-content">
-                                    <span>{{ comment.content }}</span>
-                                </div>
-                                <div class="comment-time">
-                                    <span>{{ comment.created_at|date:"Y.m.d H:i:s" }}</span>
-                                </div>
-                                {% if comment.author == user %}
-                                    <!-- 사용자의 댓글에 대한 수정 및 삭제 링크 -->
-                                    <div class="comment-actions">
-                                        <a href="{% url 'comment_edit' comment.pk %}" class="edit-comment">수정</a>
-                                        <form method="POST" action="{% url 'comment_delete' comment.pk %}" class="delete-comment">
-                                            {% csrf_token %}
-                                            <input type="submit" value="삭제">
-                                        </form>
+                <div class="comments-section">
+                    {% if post.comment_set.all %}
+                        <ul class="comment-list">
+                            {% for comment in post.comment_set.all %}
+                                <li class="comment-item">
+                                    <div class="comment-name">
+                                        <span>{{ comment.author.username }}</span>
                                     </div>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                {% endif %}
+                                    <div class="comment-content">
+                                        <span>{{ comment.content }}</span>
+                                    </div>
+                                    <div class="comment-time">
+                                        <span>{{ comment.created_at|date:"Y.m.d H:i:s" }}</span>
+                                    </div>
+                                    {% if comment.author == user %}
+                                        <!-- 사용자의 댓글에 대한 수정 및 삭제 링크 -->
+                                        <div class="comment-actions">
+                                            <a href="{% url 'comment_edit' comment.pk %}" class="edit-comment">수정</a>
+                                            <form method="POST" action="{% url 'comment_delete' comment.pk %}" class="delete-comment">
+                                                {% csrf_token %}
+                                                <input type="submit" value="삭제">
+                                            </form>
+                                        </div>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

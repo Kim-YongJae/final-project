@@ -3,6 +3,9 @@
 {% load static %}
 {% block content %}
     <link href="{% static 'css/Information_Modification_style.css' %}" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
     <div class="board_wrap">
         <div class="nav_bar">
             <ul class="nav">
@@ -24,61 +27,89 @@
                 </li>
             </ul>
         </div>
-        <div class="board_title">
-            <strong>프로필</strong>
-            <p>회원정보를 확인 할 수 있습니다.</p>
+        <div class="amount">
+            <li>
+                <div>
+                    <div>맛있게</div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <div>쉽게</div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <div>즐겁게</div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <div>행복하게</div>
+                </div>
+            </li>
         </div>
-        <div class="profile-picture">
-            {% if user_profile.profile_picture %}
-                <img id="profile-image" src="{{ user_profile.profile_picture.url }}" alt="프로필 사진" width="410" height="410">
-            {% else %}
-                <p>프로필 사진이 없습니다.</p>
-            {% endif %}
-            <!-- 프로필 사진 업로드 폼 -->
-            <form method="post" enctype="multipart/form-data" id="profile-upload-form">
-                {% csrf_token %}
-                <input type="file" name="profile_picture" id="file-input">
-                <input type="submit" value="사진 업로드">
-            </form>
-        </div>
-        <div class="user-info">
-            <strong>유저 정보</strong>
-            <div class="info">
-                <ul>
-                    <li>아이디: {{ user.username }}</li>
-                    <li>이메일: {{ user.email }}</li>
-                    <li>성: {{ user.last_name }}</li>
-                    <li>이름: {{ user.first_name }}</li>
-                </ul>
+        <div class="main_text0">
+            <h1>프로필</h1>
+            <div class="contents1">자신의 정보를 확인하세요.</div>
+            <div class="profile-picture">
+                {% if user_profile.profile_picture %}
+                    <img id="profile-image" src="{{ user_profile.profile_picture.url }}" alt="프로필 사진" width="410" height="410">
+                {% else %}
+                    <p>프로필 사진이 없습니다.</p>
+                {% endif %}
+                <!-- 프로필 사진 업로드 폼 -->
+                <form method="post" enctype="multipart/form-data" id="profile-upload-form">
+                    {% csrf_token %}
+                    <input type="file" name="profile_picture" id="file-input">
+                    <input type="submit" value="사진 업로드">
+                </form>
             </div>
         </div>
-        <div class="my_write">
-            <strong>작성한 게시글</strong>
-            <div class="writes">
-                {% if user_posts %}
-                    <ul class="list-group">
-                        {% for post in user_posts %}
-                            <li class="list-group-item">
-                                <a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a>
-                                (작성일: {{ post.created_at|date:"Y.m.d H:i:s" }})
-                            </li>
-                        {% endfor %}
+        <div class="main_text0_user">
+            <div class="user-info">
+                <h1>유저 정보</h1>
+                <div class="info">
+                    <ul>
+                        <li>아이디: {{ user.username }}</li>
+                        <li>이메일: {{ user.email }}</li>
+                        <li>성: {{ user.last_name }}</li>
+                        <li>이름: {{ user.first_name }}</li>
                     </ul>
-                {% else %}
-                {% endif %}
+                </div>
             </div>
         </div>
-        <div class="favorite">
-            <strong>즐겨찾기 레시피</strong>
-            <div class="favorite-section">
-                {% if recent_favorites %}
-                    <ul class="list-group">
-                        {% for food in recent_favorites %}
-                            <li class="list-group-item"><a href="{% url 'recipe_detail' food.id %}">{{ food.ffood_name }}</a></li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                {% endif %}
+        <div class="main_text0_write">
+            <div class="my_write">
+                <h1>작성한 게시글</h1>
+                <div class="writes">
+                    {% if user_posts %}
+                        <ul class="list-group">
+                            {% for post in user_posts %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a>
+                                    (작성일: {{ post.created_at|date:"Y.m.d H:i:s" }})
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="main_text0_favorite">
+            <div class="favorite">
+                <h1>즐겨찾기 레시피</h1>
+                <div class="favorite-section">
+                    {% if recent_favorites %}
+                        <ul class="list-group">
+                            {% for food in recent_favorites %}
+                                <li class="list-group-item"><a href="{% url 'recipe_detail' food.id %}">{{ food.ffood_name }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

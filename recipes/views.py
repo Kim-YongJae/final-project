@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.core.paginator import Paginator
 from recipes.models import Recipe,favorite
+from random import sample
 
 import json
 
@@ -183,11 +184,8 @@ def delete_from_new_model(request, new_model_id):
 
 def recipe_random_list(request):
     # 랜덤으로 5개의 레시피 가져오기
-    recipes = Recipe.objects.order_by('?')[:5]  # '?'를 사용하여 무작위로 가져옵니다.
+    all_recipes = Recipe.objects.all()
+    random_recipes = sample(list(all_recipes), 4)  # 랜덤으로 4개의 레시피 선택
 
-    context = {
-        'recipes': recipes
-    }
-
-    return render(request, 'users/index.html', context)
+    return render(request, 'users/index.html', {'random_recipes': random_recipes})
 

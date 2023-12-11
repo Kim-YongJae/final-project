@@ -5,6 +5,9 @@
 {% load static %}
 {% block content %}
     <link href="{% static 'css/recipes_list_style.css' %}" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
     <div class="board_wrap">
         <div class="nav_bar">
             <ul class="nav">
@@ -26,38 +29,59 @@
                 </li>
             </ul>
         </div>
-        <div class="board_title">
-            <strong>레시피</strong>
-            <p>이곳은 레시피 목록입니다.</p>
-        </div>
-        <div class="board_list_wrap">
-            <div class="board_list">
-                {% for recipe in recipe_list %}
+        <div class="amount">
+            <li>
                 <div>
-                    <div class="id">{{ recipe.id }}</div>
-                    <div class="food_name">
-                        <li><a href="{% url 'recipe_detail' recipe.id %}">{{ recipe.food_name }}</a></li>
-                    </div>
+                    <div>맛있게</div>
                 </div>
-                {% endfor %}
-            </div>
-
-            <div class="board_page">
-                {% if recipe_list.has_previous %}
-                    <a href="?page=1" class="bt first"><<</a>
-                    <a href="?page={{ recipe_list.previous_page_number }}" class="bt prev"><</a>
-                {% endif %}
-                {% for num in recipe_list.paginator.page_range %}
-                    {% if recipe_list.number == num %}
-                        <a href="?page={{ num }}" class="num on">{{ num }}</a>
-                    {% else %}
-                        <a href="?page={{ num }}" class="num">{{ num }}</a>
+            </li>
+            <li>
+                <div>
+                    <div>쉽게</div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <div>즐겁게</div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <div>행복하게</div>
+                </div>
+            </li>
+        </div>
+        <div class="main_text0">
+            <h1>레시피 목록</h1>
+            <div class="contents1">레시피들이 모여있어요.</div>
+            <div class="board_list_wrap">
+                <div class="board_list">
+                    {% for recipe in recipe_list %}
+                    <div>
+                        <div class="id">{{ recipe.id }}</div>
+                        <div class="food_name">
+                            <li><a href="{% url 'recipe_detail' recipe.id %}">{{ recipe.food_name }}</a></li>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="board_page">
+                    {% if recipe_list.has_previous %}
+                        <a href="?page=1" class="bt first"><<</a>
+                        <a href="?page={{ recipe_list.previous_page_number }}" class="bt prev"><</a>
                     {% endif %}
-                {% endfor %}
-                {% if recipe_list.has_next %}
-                    <a href="?page={{ recipe_list.next_page_number }}" class="bt next">></a>
-                    <a href="?page={{ recipe_list.paginator.num_pages }}" class="bt last">>></a>
-                {% endif %}
+                    {% for num in recipe_list.paginator.page_range %}
+                        {% if recipe_list.number == num %}
+                            <a href="?page={{ num }}" class="num on">{{ num }}</a>
+                        {% else %}
+                            <a href="?page={{ num }}" class="num">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% if recipe_list.has_next %}
+                        <a href="?page={{ recipe_list.next_page_number }}" class="bt next">></a>
+                        <a href="?page={{ recipe_list.paginator.num_pages }}" class="bt last">>></a>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

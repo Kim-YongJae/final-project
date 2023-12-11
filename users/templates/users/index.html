@@ -3,8 +3,11 @@
 {% load static %}
 {% block content %}
     <link href="{% static 'css/index_style.css' %}" rel="stylesheet"/>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300&display=swap" rel="stylesheet">
     <div class="board_wrap">
-        <div class="nav_bar">
+        <div class="nav_bar" style="background-image: url('static/assets/img/main.png');">
             <ul class="nav">
                 <li>
                     <a href="{% url 'index' %}">메인</a>
@@ -23,41 +26,102 @@
                     <a href="{% url 'post_list' %}">게시판</a>
                 </li>
             </ul>
-        </div>
-        <div class="banner">
-            <div class="jumbotron">
-                <p class="welcome-message">
+            <div class="welcome-message">
+                <h2>
                     {% if user.is_authenticated %}
                         안녕하세요, {{ user.username }}님!
                     {% else %}
                         로그인을 하면 커뮤니티를 즐길 수 있어요!
                     {% endif %}
-                </p>
-            </div>
-            <div class="introduction-section">
+                </h2>
                 <h1>레시피 매직, Iam 레시피에요</h1>
-                <p>
+                <h4>
                     레시피의 마법같은 세계로 여러분을 초대합니다. <br>
                     AI의 특별한 능력을 활용하여 식재료를 찍은 사진을 인식하고, 맞춤형 레시피를 제안해 드립니다.
-                </p>
+                </h4>
             </div>
         </div>
-        <div class="recipe-section text-center">
-            <div class="row row-cols-4">
-                {% for recipe in recipes %}
-                    <div class="col mb-4">
-                        <div class="card">
-                            <img src="{{ recipe.food_photo.url }}" class="card-img-top" alt="{{ recipe.food_name }}">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ recipe.food_name }}</h5>
-                                <p class="card-text"></p>
-                                <div class=bt_wrap2>
-                                    <a href="{% url 'recipe_detail' recipe.id %}" class="button">자세히 보기</a>
-                                </div>
-                            </div>
-                        </div>
+        <div class="amount">
+            <li>
+                <div>
+                    <div>맛있게</div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <div>쉽게</div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <div>즐겁게</div>
+                </div>
+            </li>
+            <li>
+                <div>
+                    <div>행복하게</div>
+                </div>
+            </li>
+        </div>
+        <div class="main_text0">
+            <h1>ABOUT</h1>
+            <div class="contents1">우리는 이런 서비스를 제공해요.</div>
+            <ul class="icons">
+                <li>
+                    <div class="icon_img">
+                        <img src="static/assets/img/그림1_1.png">
                     </div>
-                {% endfor %}
+                    <div class="cont">
+                        재료 탐지
+                    </div>
+                    <div class="contents3">
+                        사진을 이용하여 객체 분석을 진행합니다.
+                    </div>
+                </li>
+                <li>
+                    <div class="icon_img">
+                        <img src="static/assets/img/그림2_2.png">
+                    </div>
+                    <div class="cont">
+                        음식 추천
+                    </div>
+                    <div class="contents3">
+                        탐지된 재료들로 만들기 적합한 음식을 추천합니다.
+                    </div>
+                </li>
+                <li>
+                    <div class="icon_img">
+                        <img src="static/assets/img/그림3_3.png">
+                    </div>
+                    <div class="cont">
+                        레시피 제공
+                    </div>
+                    <div class="contents3">
+                        추천한 음식들의 레시피를 알려줍니다.
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="main_text1">
+            <h1>RECIPE</h1>
+            <div class="contents1">맛있는 레시피가 많아요.</div>
+            <div class="service">
+                <div class="food_photo">
+                    <img src="static/assets/img/간장계란밥_1.jpg">
+                </div>
+                <div class="contents2">
+                    <h2>간장계란밥</h2>
+                    <br>
+                    <br>
+                    <br>다들 간장계란밥을 아실거에요
+                    <br>간단한 재료만으로
+                    <br>쉬운 요리방법으로
+                    <br>아주 맛있는 요리가 완성되죠.
+                    <br>
+                    <br>옛날에도 지금에도 싼 가격으로 만들어 먹을 수 있는
+                    <br>간장계란밥을 여러분도 만들어 먹어보세요!
+
+                </div>
             </div>
         </div>
     </div>
