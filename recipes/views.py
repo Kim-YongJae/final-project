@@ -48,11 +48,9 @@ def detect_ingredients(request):
             uploaded_image_url = f'/media/{uploaded_image.name}'
 
             # YOLOv5 모델 불러오기
+            # model_path에 모델 절대경로 기입
 
-            model = torch.hub.load('ultralytics/yolov5', 'custom', path='C:/Users/funny/OneDrive/바탕 화면/yolov5x/best.pt')
-            # path= C:/Users/funny/Downloads/yolov5m_train+test_15epoch_1/yolov5m_train+test_15epoch_1/best.pt
-            # path= C:/Users/funny/OneDrive/바탕 화면/yolov5x/best.pt
-            # path= C:/Users/chqh1/Desktop/yolov5x 2차 결과/yolov5x 2차 결과/best.pt
+            model = torch.hub.load('ultralytics/yolov5', 'custom', path='model_path')
 
             # 이미지 불러오기 및 객체 탐지 수행
             img = Image.open(img_path)
